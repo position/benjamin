@@ -1,14 +1,17 @@
-import { Component, ElementRef, AfterContentInit, NgZone, ChangeDetectorRef } from '@angular/core';
+import { Component } from '@angular/core';
+import { fadeAnimation } from './app-routing.animation';
 
 @Component({
     selector: 'uxe-benjamin',
-    templateUrl: `./app.component.html`
+    templateUrl: './app.component.html',
+    animations: [ fadeAnimation ]
 })
-export class AppComponent implements AfterContentInit {
-    constructor(
-    ){
-    }
-
-    ngAfterContentInit(){
+export class AppComponent {
+    public navLinks = [
+        { path: 'profile', label: 'Profile' },
+        { path: 'introduction', label: 'Introduction' },
+        { path: 'portfolio', label: 'Portfolio' }
+    ];
+    constructor(){
     }
 }

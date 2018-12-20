@@ -1,1 +1,13 @@
 <scene id="scene"></scene>
+
+<article class="benjaminContainer" [@fadeAnimation]="page.isActivated ? page.activatedRoute : ''">
+    <header class="benjaminHeader">
+        <h1>Benjamin</h1>
+        <nav class="navigation">
+            <a *ngFor="let link of navLinks" [routerLink]="link.path" routerLinkActive #rla="routerLinkActive">
+                {{link.label}}
+            </a>
+        </nav>
+    </header>
+    <router-outlet #page="outlet"></router-outlet>
+</article>

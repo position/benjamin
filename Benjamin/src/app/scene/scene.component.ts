@@ -2,7 +2,8 @@ import { AfterViewInit, Component, ElementRef, Input, ViewChild, HostListener } 
 import * as THREE from 'three-full';
 import * as Stats from 'stats.js';
 import * as dat from 'dat.gui';
-import { Fog } from 'three';
+
+import { CreateGeomtryService } from '../service/create-geomtry.service';
 
 @Component({
     selector: 'scene',
@@ -19,7 +20,7 @@ export class SceneComponent implements AfterViewInit {
     public farClippingPane: number = 1100;
 
     public controls: THREE.OrbitControls;
-    public cube: THREE.Mesh;
+    public sphere: THREE.Mesh;
     public orange: THREE.Mesh;
     public trophy: THREE.Mesh;
     public animationFrame: any;
@@ -41,10 +42,10 @@ export class SceneComponent implements AfterViewInit {
 
     constructor(
         private elementRef: ElementRef,
+        private createGeomtry: CreateGeomtryService
         ) {
         this.stats = new Stats();
         this.elementRef.nativeElement.appendChild(this.stats.dom);
-        
     }
 
     /* LIFECYCLE */
@@ -54,7 +55,7 @@ export class SceneComponent implements AfterViewInit {
         this.createCamera();
         this.createText();
         this.createPlane();
-        this.createBoxGeometry();
+        this.createSphereGeometry();
         this.startRendering();
         this.addControls();
         this.setGui();
@@ -69,26 +70,14 @@ export class SceneComponent implements AfterViewInit {
         const axes = new THREE.AxesHelper(200);
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(0xbdd0a2);
-        this.scene.fog = new THREE.FogExp2(0x4f6134, 0.005);
-        
+        //this.scene.fog = new THREE.FogExp2(0x4f6134, 0.005);
         //this.scene.add(grid);
         this.scene.add(axes);
         
-        
-        this.imageLoader.load("./assets/img/wood.jpg", (data) => {
-            this.texture.image = data;
-            this.texture.needsUpdate = true;
-        });
-
-        this.imageLoader.load("./assets/img/metal.jpg", (data) => {
-            this.texture.image = data;
-            this.texture.needsUpdate = true;
-        });
-
-        this.onTextureLoadingCompleted();
+        this.onCreateSphere();
     }
 
-    private onTextureLoadingCompleted(){
+    private onCreateSphere(){
         let material_univ = new THREE.MeshLambertMaterial({
             color: 0xbdd0a2,
             side: THREE.BackSide
@@ -109,20 +98,23 @@ export class SceneComponent implements AfterViewInit {
     }
 
     private createText(){
-        this.textLoader.load('./assets/fonts/droid_serif_regular.typeface.json', (font) => {
+        this.textLoader.load('./assets/fonts/droid_serif_regular.typeface.json', (font: any) => {
             const textGeometry = new THREE.TextGeometry('Benjamin', {
                 font: font,
-                size: 8,
+                size: 5,
                 height: 1,
                 curveSegment: 12,
-                bevelEnabled: true,
-                bevelThickness: 10,
-                bevelSize: 1,
-                bevelSegments: 5
+                bevelEnabled: false,
+                side: THREE.DoubleSide
             });
-            const material = new THREE.MeshLambertMaterial({ color: 0x2b2f26, side: THREE.DoubleSide });
-            const text = new THREE.Mesh(textGeometry, material);
+            textGeometry.translate(-15, 3, 0);
 
+            const material = new THREE.MeshPhongMaterial({ 
+                color: 0xfff600,
+                specular: 0xffffff,
+                shininess: 30
+            });
+            const text = new THREE.Mesh(textGeometry, material);
             this.scene.add(text);
         });
     }
@@ -130,17 +122,16 @@ export class SceneComponent implements AfterViewInit {
     private createLight() {
         const light = new THREE.DirectionalLight(0xffffff, 1);
         const lightHelper = new THREE.DirectionalLightHelper( light, 15 );
-        light.position.set(-50, 50, 50);
+        light.position.set(-30, 50, 50);
         light.angle = Math.PI / 5;
         this.scene.add(light);
         this.scene.add(lightHelper);
 
-        const spotLight = new THREE.SpotLight(0xffffff, 1);
+        const spotLight = new THREE.SpotLight(0xffffff, 1, 30, Math.PI / 4, 1);
         const spotLightHelper = new THREE.SpotLightHelper( spotLight, 1 );
-        spotLight.position.set(50, 50, -30);
-        spotLight.castShadow = true;
-        spotLight.angle = Math.PI / 12;
-        spotLight.penumbra = 0;
+        spotLight.position.set(0, 30, 0);
+        //spotLight.castShadow = true;
+        //spotLight.penumbra = 0;
         //this.scene.add(spotLight);
         //this.scene.add(spotLightHelper);
     }
@@ -185,7 +176,7 @@ export class SceneComponent implements AfterViewInit {
     public render = () => {
         this.renderer.render(this.scene, this.camera);
         this.animationFrame = requestAnimationFrame(this.render);
-        this.animationBoxGeometry();
+        this.animationSphereGeometry();
         this.stats.update();
         this.camera.updateProjectionMatrix();
     }
@@ -197,27 +188,26 @@ export class SceneComponent implements AfterViewInit {
         //this.controls.addEventListener('change', this.render);
     }
 
-    public createBoxGeometry(){
-        let boxGeometrys = new CreateGeometrys(20);
-        //this.cube = boxGeometrys.setBoxs();
-        this.cube = boxGeometrys.setSphere();
-        this.cube.forEach((cube: any) => {
+    public createSphereGeometry(){
+        this.sphere = this.createGeomtry.setSphere(20);
+        this.sphere.forEach((cube: any) => {
             this.scene.add(cube);
         });
     }
 
-    public animationBoxGeometry(){
+    public animationSphereGeometry(){
         const radius = 3;
         
         this.radianX += 0.003;
         this.radianY += 0.003;
-        this.cube.forEach((cube: any, index: number) => {
+        this.sphere.forEach((cube: any, index: number) => {
+            let idx: number = (index + 1) * 0.5;
             //cube.rotation.x += 0.05;
             cube.rotation.y += 0.05;
             //cube.rotation.z += 0.05;
-            cube.position.x = Math.cos(this.radianX * index + 1) * radius * (index + 1);
+            cube.position.x = Math.cos(this.radianX * idx) * radius * (index + 1);
             //cube.position.y = Math.cos(this.radianX) * radius;
-            cube.position.z = Math.sin(this.radianY * index + 1) * radius * (index + 1);
+            cube.position.z = Math.sin(this.radianY * idx) * radius * (index + 1);
             
         });
     }
@@ -230,17 +220,9 @@ export class SceneComponent implements AfterViewInit {
                 this.camera.position.x = 20;
                 this.camera.position.y = 30;
                 this.camera.position.z = 60;
-                //this.cube.position.x = 0;
-                //this.cube.position.y = 0;
-                //this.cube.position.z = 0;
             }   
         };
         let cam = this.gui.addFolder('Camera');
-        //let boxCube = this.gui.addFolder('Cube');
-        // boxCube.add(this.cube.position, 'x', -200, 200, 1).listen();
-        // boxCube.add(this.cube.position, 'y', -200, 200, 1).listen();
-        // boxCube.add(this.cube.position, 'z', -200, 200, 1).listen();
-        // boxCube.open();
         cam.add(this.camera.position, 'x', -200, 200, 1).listen();
         cam.add(this.camera.position, 'y', -200, 200, 1).listen();
         cam.add(this.camera.position, 'z', -200, 200, 1).listen();
@@ -303,51 +285,3 @@ export class SceneComponent implements AfterViewInit {
         //console.log("onKeyPress: " + event.key);
     }
 }
-
-
-class CreateGeometrys{
-    public camera: THREE.PerspectiveCamera;
-    public scene: THREE.Scene;
-    public mesh: THREE.Mesh;
-    public geometry = new THREE.BoxGeometry(1, 1, 1);
-    public sphere = THREE.SphereGeometry;
-    public meterial = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
-
-    constructor(private boxIndex: number){
-    }
-
-    public setBoxs(){
-        let cubes = [];
-        for(let i = 0; i < this.boxIndex; i++){
-            this.meterial = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff });    
-            this.mesh = new THREE.Mesh(this.geometry, this.meterial);
-            this.mesh.position.x = Math.random() * 50 - i;
-            this.mesh.position.y = Math.random() * 50 - i;
-            this.mesh.position.z = Math.random() * 50 - i;
-            this.mesh.scale.x = Math.random() + 0.5;
-            this.mesh.scale.y = Math.random() + 0.5;
-            this.mesh.scale.z = Math.random() + 0.5;
-            cubes.push(this.mesh);
-        }
-        return cubes;
-    }
-
-    public setSphere(){
-        let spheres = [];
-        for(let i = 0; i < this.boxIndex; i++){
-            let radius = Math.random() * 1;
-            this.sphere = new THREE.SphereGeometry(radius, 30, 30);
-            this.meterial = new THREE.MeshLambertMaterial({ color: 0xbad790 });
-            
-            this.mesh = new THREE.Mesh(this.sphere, this.meterial);
-            this.mesh.position.x = Math.random() * 50;
-            this.mesh.position.y = Math.random() * 50 + 0.5;
-            this.mesh.position.z = Math.random() * 50;
-            
-            spheres.push(this.mesh);
-        }
-        return spheres;
-    }
-    
-}
-

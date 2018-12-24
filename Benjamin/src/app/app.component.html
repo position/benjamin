@@ -4,7 +4,7 @@
     <header class="benjaminHeader">
         <h1>UXE. Benjamin</h1>
         <nav class="navigation">
-            <a *ngFor="let link of navLinks" [routerLink]="link.path" routerLinkActive #rla="routerLinkActive">
+            <a *ngFor="let link of navLinks" [routerLink]="link.path" routerLinkActive #rla="routerLinkActive" [class.active]="rla.isActive">
                 {{link.label}}
             </a>
         </nav>

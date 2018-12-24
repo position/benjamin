@@ -12,6 +12,9 @@ $ux-dashboard-font-path:'./assets/fonts/Roboto-Medium.woff';
 
 *{margin:0;padding:0;}
 html, body{background-color:#2b2f26;height:100%;overflow:hidden;}
+body{font-family: 'Roboto', sans-serif; font-size:1em;}
+h1{font-weight:normal;}
+a{text-decoration: none;}
 router-outlet ~ * {
 	position: absolute;
 	height: 100%;
@@ -39,16 +42,31 @@ uxe-benjamin{
 	z-index: 10;
 	.benjaminHeader{
 		display:flex;
+		justify-content: space-between;
+		padding:10px;
 		h1{
 			flex:1 0;
+			color:#fff;
+			font-size:1em;
 		}
 		.navigation{
-			flex: 0 0 300px;
+			flex: 0 0;
 			display:flex;
 			> a{
 				display: block;
-				color: #fff;
+				color: rgba(#fff, 0.7);
+				font-size:0.9em;
+				margin-right:10px;
+				transition: color 0.3s ease-out;
+				.active, &:hover{color: rgba(#fff, 1);}
+				&:active{color: rgba(#fff, 0.5);}
 			}
+		}
+	}
+	.benjaminSection{
+		p{
+			font-size: 4em;
+			color: #fff;
 		}
 	}
 }

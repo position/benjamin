@@ -45,7 +45,7 @@ export class SceneComponent implements AfterViewInit {
         private createGeomtry: CreateGeomtryService
         ) {
         this.stats = new Stats();
-        this.elementRef.nativeElement.appendChild(this.stats.dom);
+        //this.elementRef.nativeElement.appendChild(this.stats.dom);
     }
 
     /* LIFECYCLE */
@@ -58,7 +58,7 @@ export class SceneComponent implements AfterViewInit {
         this.createSphereGeometry();
         this.startRendering();
         this.addControls();
-        this.setGui();
+        //this.setGui();
     }
     
     private get canvas(): HTMLCanvasElement {
@@ -176,7 +176,7 @@ export class SceneComponent implements AfterViewInit {
     public render = () => {
         this.renderer.render(this.scene, this.camera);
         this.animationFrame = requestAnimationFrame(this.render);
-        this.animationSphereGeometry();
+        //this.animationSphereGeometry();
         this.stats.update();
         this.camera.updateProjectionMatrix();
     }

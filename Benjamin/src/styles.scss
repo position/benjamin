@@ -1,3 +1,8 @@
+//Line Color
+$scrollbar-line: #000 !default;
+$scrollbar-track: #000 !default;
+$scrollbar-thumb: #4d4d4d !default;
+
 $count: 10;
 $time: 2; //in seconds
 $size: 100;
@@ -29,6 +34,11 @@ router-outlet ~ * {
 	height: 100%;
 	width: 100%;
 }
+/* scroll style start */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:$scrollbar-track;border-left:1px solid $scrollbar-line;}
+::-webkit-scrollbar-thumb{background:$scrollbar-thumb;border-radius:3px;border-left:1px solid $scrollbar-line;}
+::-webkit-scrollbar-thumb:hover{background:lighten($scrollbar-thumb, 20%);}
   
 canvas{width:100%;height:100%;}
 uxe-benjamin{
@@ -75,7 +85,7 @@ uxe-benjamin{
 	}
 	.benjaminSection{
 		height:100%;
-		.profileListWrap{
+		.sectionArea{
 			position:absolute;
 			width:80%;
 			padding:10px;
@@ -85,19 +95,42 @@ uxe-benjamin{
 			left:50%;
 			transform:translateX(-50%);
 			color:rgba(#fff, 0.5);
-			.profileList{
-				display:flex;
-				flex-wrap: wrap;
-				.tit, .answer{
-					border-bottom:1px solid rgba(#ccc, 0.3);
-					padding:5px 0;
-					font-size: 0.9em;
-					font-weight:normal;
+			&.profileListWrap{	
+				max-height:500px;
+				overflow-y: auto;
+				.profileList{
+					display:flex;
+					flex-wrap: wrap;
+					.tit, .answer{
+						border-top:1px solid rgba(#ccc, 0.1);
+						padding:5px 0;
+						font-size: 0.9em;
+						font-weight:normal;
+						line-height:150%;
+					}
+					.tit{width:30%;}
+					.answer{width:70%;}
 				}
-				.tit{width:30%;}
-				.answer{width:70%;}
+			}
+			&.introductionWrap{
+				max-height:500px;
+				overflow-y: auto;
+				.introTitle{
+
+				}
+				.introSec{
+					h3{
+						margin:10px 0;
+					}
+					p{
+						font-size: 0.9em;
+						line-height: 150%;
+					}
+				}
+				
 			}
 		}
+		
 	}
 }
 

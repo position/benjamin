@@ -31,7 +31,7 @@ export class SceneComponent implements AfterViewInit {
     // private loadingManager = new THREE.LoadingManager();
     // private daeLoader = new THREE.ColladaLoader();
     // private objLoader = new THREE.OBJLoader();
-    // private textureLoader = new THREE.TextureLoader();	
+    // private textureLoader = new THREE.TextureLoader();
     // private imageLoader = new THREE.ImageLoader();
     // private texture = new THREE.Texture;
 
@@ -42,6 +42,26 @@ export class SceneComponent implements AfterViewInit {
 
     public assetPath: string = environment.assetsPath;
     public fontPath: string = environment.assetsPath + 'fonts/';
+
+    @Input() set routePath(path: string) {
+        if(path){
+            console.log(path);
+            switch (path){
+                case 'profile':
+                    console.log(1);
+                    break;
+                case 'introduction':
+                    console.log(2);
+                    break;
+                case 'portfolio':
+                    console.log(3);
+                    break;
+    
+                default:
+                    console.error('nothing path!!!');
+            }
+        }
+    }
 
     constructor(
         private elementRef: ElementRef,

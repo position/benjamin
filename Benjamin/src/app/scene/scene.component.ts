@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild, HostListener } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild, HostListener, ViewContainerRef, Renderer, NgZone, ChangeDetectorRef } from '@angular/core';
 import * as THREE from 'three-full';
 import * as Stats from 'stats.js';
 import * as dat from 'dat.gui';
@@ -42,7 +42,11 @@ export class SceneComponent implements AfterViewInit {
 
     constructor(
         private elementRef: ElementRef,
-        private createGeomtry: CreateGeomtryService
+        private ngRenderer: Renderer,
+        private viewContainer: ViewContainerRef,
+        private createGeomtry: CreateGeomtryService,
+        private zone: NgZone,
+        private cd: ChangeDetectorRef,
         ) {
         this.stats = new Stats();
         //this.elementRef.nativeElement.appendChild(this.stats.dom);
@@ -182,10 +186,14 @@ export class SceneComponent implements AfterViewInit {
     }
 
     public addControls() {
+        let scene = this.viewContainer.element.nativeElement;
         this.controls = new THREE.OrbitControls(this.camera);
         this.controls.rotateSpeed = 1.0;
         this.controls.zoomSpeed = 1.2;
-        //this.controls.addEventListener('change', this.render);
+        this.controls.enableZoom = false;
+        this.controls.domElement = scene;
+
+        this.zone.run(() => { this.cd.markForCheck(); });
     }
 
     public createSphereGeometry(){

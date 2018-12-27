@@ -1,12 +1,15 @@
+//Default Color
+$black-color: #000 !default;
+$white-color: #fff !default;
 //Line Color
-$scrollbar-line: #000 !default;
-$scrollbar-track: #000 !default;
+$scrollbar-line: $black-color !default;
+$scrollbar-track: $black-color !default;
 $scrollbar-thumb: #4d4d4d !default;
 
-$count: 10;
-$time: 2; //in seconds
-$size: 100;
-$color: #bdd0a2;
+$loader-count: 10;
+$loader-time: 2; //in seconds
+$loader-size: 100;
+$loader-color: #bdd0a2;
 $ux-dashboard-eng-font-path:'./assets/fonts/Roboto-Medium.woff';
 $ux-dashboard-kor-font-path:'./assets/fonts/NanumMyeongjo-Regular.woff';
 
@@ -27,8 +30,8 @@ $ux-dashboard-kor-font-path:'./assets/fonts/NanumMyeongjo-Regular.woff';
 html, body{background-color:#2b2f26;height:100%;overflow:hidden;}
 body{font-family: 'Roboto', 'NanumMyeongjo', sans-serif; font-size:1em;}
 h1, h2, h3, h4, h5, h6{font-weight:normal;}
-a{text-decoration: underline; color:#fff;}
-ol, ul{list-style-type: none;}
+a{text-decoration: underline; color:$white-color;}
+ol, ul, dt{list-style-type: none;}
 router-outlet ~ * {
 	position: absolute;
 	height: 100%;
@@ -66,7 +69,7 @@ uxe-benjamin{
 		padding:10px;
 		h1{
 			flex:1 0;
-			color:#fff;
+			color:$white-color;
 			font-size:1em;
 		}
 		.navigation{
@@ -74,12 +77,12 @@ uxe-benjamin{
 			display:flex;
 			> a{
 				display: block;
-				color: rgba(#fff, 0.7);
+				color: rgba($white-color, 0.7);
 				font-size:0.9em;
 				margin-right:10px;
 				transition: color 0.3s ease-out;
-				&.active, &:hover{color: rgba(#fff, 1);}
-				&:active{color: rgba(#fff, 0.5);}
+				&.active, &:hover{color: rgba($white-color, 1);}
+				&:active{color: rgba($white-color, 0.5);}
 			}
 		}
 	}
@@ -88,13 +91,19 @@ uxe-benjamin{
 		.sectionArea{
 			position:absolute;
 			width:80%;
-			padding:10px;
-			background-color:rgba(#000, 0.3);
+			padding:20px;
+			background-color:rgba($black-color, 0.3);
 			border:1px solid rgba(#333, 0.3);
 			bottom:50px;
 			left:50%;
 			transform:translateX(-50%);
-			color:rgba(#fff, 0.5);
+			color:rgba($white-color, 0.5);
+			h2{
+				margin-bottom:5px;
+				font-style:italic;
+				font-size:1.2em;
+				color:rgba($white-color, 0.7);
+			}
 			&.profileListWrap{	
 				max-height:500px;
 				overflow-y: auto;
@@ -115,25 +124,77 @@ uxe-benjamin{
 			&.introductionWrap{
 				max-height:500px;
 				overflow-y: auto;
-				.introTitle{
-
-				}
 				.introSec{
+					.myPhoto{
+						display:block;
+						width:500px;
+						margin:0 auto;
+					}
 					h3{
 						margin:10px 0;
+					}
+					blockquote{
+						font-size: 1.2em;
+						color:rgba($white-color, 0.7);
+						text-align:center;
+						margin:20px 0;
+						> p{padding-bottom:10px;}
 					}
 					p{
 						font-size: 0.9em;
 						line-height: 150%;
 					}
 				}
-				
+			}
+			&.portfolioWrap{
+				width:calc(100% - 40px);
+				max-height:500px;
+				&::after{
+					content:'';
+					position:absolute;
+					width:100%;
+					height:1px;
+					background-color:rgba($white-color, 0.2);
+					top:50%;
+					left:0;
+				}
+				.portfolioSwiper{
+					.portfolioList{
+						width:290px;
+						height:440px;
+						padding:5px;
+						background-color:rgba($white-color, 1);
+						border:1px solid rgba($black-color, 0.5);
+						box-sizing:border-box;
+						.projectPho{
+							border-bottom:1px solid #ddd;
+							padding-bottom:5px;
+							margin-bottom:10px;
+							img{width:100%;}
+						}
+						.projectList{
+							max-height:205px;
+							overflow-y:auto;
+							color:#000;
+							> ul{
+								> li{
+									display:flex;
+									flex-wrap:wrap;
+									font-size:0.9em;
+									.label{flex:0 0 70px;}
+									.subject{flex:1 0;}
+								}
+							}
+						}
+					}
+				}
 			}
 		}
-		
 	}
 }
 
+
+//loader styles
 .loader {
 	position: absolute;
 	left: 0;
@@ -145,13 +206,30 @@ uxe-benjamin{
 	background-color: #2b2f26;
 	.preloader {
 		/* size */
-		width: $size + px;
-		height: $size + px;
+		width: $loader-size + px;
+		height: $loader-size + px;
 		position: absolute;
 		left: 50%;
 		top: 50%;
 		transform: translateX(-50%) translateY(-50%);
-		animation: rotatePreloader $time + s infinite ease-in;
+		animation: rotatePreloader $loader-time + s infinite ease-in;
+		div{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			opacity: 0;
+			&::before {
+				content: "";
+				position: absolute;
+				left: 50%;
+				top: 0%;
+				width: 10%;
+				height: 10%;
+				background-color: $loader-color;
+				transform: translateX(-50%);
+				border-radius: 50%;
+			}
+		}
 	}
 }
 
@@ -163,46 +241,29 @@ uxe-benjamin{
 		transform: translateX(-50%) translateY(-50%) rotateZ(-360deg);
 	}
 }
-.preloader div {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	opacity: 0;
-}
-.preloader div::before {
-	content: "";
-	position: absolute;
-	left: 50%;
-	top: 0%;
-	width: 10%;
-	height: 10%;
-	background-color: $color;
-	transform: translateX(-50%);
-	border-radius: 50%;
-}
 
-@for $i from 1 through $count {
+@for $i from 1 through $loader-count {
 	.preloader div:nth-child(#{$i}) {
-		transform: rotateZ(((360 / $count) * ($i - 1)) + deg);
-		animation: rotateCircle + $i $time + s infinite linear;
-		z-index: $count - $i;
+		transform: rotateZ(((360 / $loader-count) * ($i - 1)) + deg);
+		animation: rotateCircle + $i $loader-time + s infinite linear;
+		z-index: $loader-count - $i;
 	}
 	@keyframes rotateCircle#{$i} {
-		#{percentage(((50 / $count) * ($i - 1)) / 100)} {
+		#{percentage(((50 / $loader-count) * ($i - 1)) / 100)} {
 			opacity: 0;
 		}
-		#{percentage((((50 / $count) + 0.0001) * ($i - 1)) / 100)} {
+		#{percentage((((50 / $loader-count) + 0.0001) * ($i - 1)) / 100)} {
 			opacity: 1;
-			transform: rotateZ((0 - ((360 / $count) * ($i - 2))) + deg);
+			transform: rotateZ((0 - ((360 / $loader-count) * ($i - 2))) + deg);
 		}
-		#{percentage((((50 / $count) * ($i - 0)) + 2) / 100)} {
-			transform: rotateZ((0 - ((360 / $count) * ($i - 1))) + deg);
+		#{percentage((((50 / $loader-count) * ($i - 0)) + 2) / 100)} {
+			transform: rotateZ((0 - ((360 / $loader-count) * ($i - 1))) + deg);
 		}
-		#{percentage(((50 + ((50 / $count) * ($i - 0))) + 2) / 100)} {
-			transform: rotateZ((0 - ((360 / $count) * ($i - 1))) + deg);
+		#{percentage(((50 + ((50 / $loader-count) * ($i - 0))) + 2) / 100)} {
+			transform: rotateZ((0 - ((360 / $loader-count) * ($i - 1))) + deg);
 		}
 		100% {
-			transform: rotateZ((0 - ((360 / $count) * ($count - 1))) + deg);
+			transform: rotateZ((0 - ((360 / $loader-count) * ($loader-count - 1))) + deg);
 			opacity: 1;
 		}
 	}

@@ -1,3 +1,17 @@
-<p>
-  portfolio works!
-</p>
+<section class="portfolioWrap sectionArea">
+    <h2 class="portfolioTitle">Portfolio</h2>
+    <swiper class="portfolioSwiper" [config]="portfolioSwipeConifg" #portfolioSwipe>
+        <ng-template ngFor let-item [ngForOf]="portfolioLists">
+            <dl class="portfolioList">
+                <dt class="projectPho"><img [src]="item.thumnail" [alt]="item.project"></dt>
+                <dd class="projectList">
+                    <ul>
+                        <li><strong class="label">Project</strong><span class="subject">{{ item.project }}</span></li>
+                        <li><strong class="label">참여도</strong><span class="subject">{{ item.participation }}</span></li>
+                        <li><strong class="label">설명</strong><span class="subject">{{ item.subject }}</span></li>
+                    </ul>
+                </dd>
+            </dl>
+        </ng-template>
+    </swiper>
+</section>

@@ -7,7 +7,9 @@
 		"build": "ng build",
 		"test": "ng test",
 		"lint": "ng lint",
-		"e2e": "ng e2e"
+		"e2e": "ng e2e",
+		"debug": "ng build --watch --aot=true --project=Benjamin --output-hashing none --output-path=debug\\",
+        "release": "ng build --prod --aot=true --project=Benjamin --build-optimizer --output-hashing none --output-path=release\\"
 	},
 	"private": true,
 	"dependencies": {

@@ -127,7 +127,8 @@ uxe-benjamin{
 				.introSec{
 					.myPhoto{
 						display:block;
-						width:500px;
+						max-width:500px;
+						width:90%;
 						margin:0 auto;
 					}
 					h3{
@@ -167,10 +168,16 @@ uxe-benjamin{
 						border:1px solid rgba($black-color, 0.5);
 						box-sizing:border-box;
 						.projectPho{
+							position:relative;
+							height:200px;
 							border-bottom:1px solid #ddd;
-							padding-bottom:5px;
+							padding-bottom:10px;
 							margin-bottom:10px;
-							img{width:100%;}
+							img{
+								position:absolute;
+								width:100%;
+								clip:rect(0, 290px, 200px, 0);
+							}
 						}
 						.projectList{
 							max-height:205px;
@@ -180,6 +187,7 @@ uxe-benjamin{
 								> li{
 									display:flex;
 									flex-wrap:wrap;
+									margin-bottom:10px;
 									font-size:0.9em;
 									.label{flex:0 0 70px;}
 									.subject{flex:1 0;}

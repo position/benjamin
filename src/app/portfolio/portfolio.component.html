@@ -3,7 +3,7 @@
     <swiper class="portfolioSwiper" [config]="portfolioSwipeConifg" #portfolioSwipe>
         <ng-template ngFor let-item [ngForOf]="portfolioLists">
             <dl class="portfolioList">
-                <dt class="projectPho"><img [src]="imgPath + 'img/' + item.thumnail" [alt]="item.project"></dt>
+                <dt class="projectPho"><img [src]="imgPath + item.thumnail" [alt]="item.project"></dt>
                 <dd class="projectList">
                     <ul>
                         <li><strong class="label">Project</strong><span class="subject">{{ item.project }}</span></li>

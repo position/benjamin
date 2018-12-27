@@ -18,8 +18,9 @@ export class PortfolioComponent implements OnInit {
         }
     };
     public portfolioLists: Array<PortfolioData>;
-    public baseUrl = environment.baseUrl;
-    public imgPath: string = environment.assetsPath;
+    public assetPath: string = environment.assetsPath;
+    public imgPath: string = environment.assetsPath + 'img/';
+    
     constructor() { }
 
     ngOnInit() {

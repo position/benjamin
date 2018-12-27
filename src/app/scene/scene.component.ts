@@ -40,7 +40,8 @@ export class SceneComponent implements AfterViewInit {
 
     @ViewChild('canvas') private canvasRef: ElementRef;
 
-    public imgPath: string = environment.assetsPath;
+    public assetPath: string = environment.assetsPath;
+    public fontPath: string = environment.assetsPath + 'fonts/';
 
     constructor(
         private elementRef: ElementRef,
@@ -104,7 +105,7 @@ export class SceneComponent implements AfterViewInit {
     }
 
     private createText(){
-        this.textLoader.load(this.imgPath + 'fonts/droid_serif_regular.typeface.json', (font: any) => {
+        this.textLoader.load(this.fontPath + 'droid_serif_regular.typeface.json', (font: any) => {
             const textGeometry = new THREE.TextGeometry('Benjamin', {
                 font: font,
                 size: 5,

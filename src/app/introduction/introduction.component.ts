@@ -6,7 +6,9 @@ import { environment } from '../../environments/environment';
     templateUrl: './introduction.component.html'
 })
 export class IntroductionComponent implements OnInit {
-    public imgPath: string = environment.assetsPath;
+    public assetPath: string = environment.assetsPath;
+    public imgPath: string = environment.assetsPath + 'img/';
+    public docPath: string = environment.assetsPath + 'doc/';
     
     constructor() { }
 

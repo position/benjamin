@@ -5,11 +5,7 @@
 export const environment = {
     production: false,
     baseUrl: 'http://localhost:4000',
-
-    PORT: 7501,
-    endpoint: {
-        gateway: 'http://apigw-dev.good-game-network.com:8080/',
-    }
+    assetsPath: './assets/'
 };
 
 /*

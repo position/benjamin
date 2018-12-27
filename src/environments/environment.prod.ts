@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+	production: true,
+	baseUrl: 'https://position.github.io/benjamin',
+	assetsPath: '/benjamin/release/assets/'
 };

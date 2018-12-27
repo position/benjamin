@@ -4,6 +4,7 @@ import * as Stats from 'stats.js';
 import * as dat from 'dat.gui';
 
 import { CreateGeomtryService } from '../service/create-geomtry.service';
+import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'scene',
@@ -26,19 +27,20 @@ export class SceneComponent implements AfterViewInit {
     public animationFrame: any;
     public stats: Stats;
     public gui: dat.GUI;
-    
-    private loadingManager = new THREE.LoadingManager();
-    private daeLoader = new THREE.ColladaLoader();
-    private objLoader = new THREE.OBJLoader();
-    private textureLoader = new THREE.TextureLoader();	
-    private imageLoader = new THREE.ImageLoader();
     private textLoader = new THREE.FontLoader();
-    private texture = new THREE.Texture;
+    // private loadingManager = new THREE.LoadingManager();
+    // private daeLoader = new THREE.ColladaLoader();
+    // private objLoader = new THREE.OBJLoader();
+    // private textureLoader = new THREE.TextureLoader();	
+    // private imageLoader = new THREE.ImageLoader();
+    // private texture = new THREE.Texture;
 
     private radianX: number = 0;    
     private radianY: number = 0;
 
     @ViewChild('canvas') private canvasRef: ElementRef;
+
+    public imgPath: string = environment.assetsPath;
 
     constructor(
         private elementRef: ElementRef,
@@ -102,7 +104,7 @@ export class SceneComponent implements AfterViewInit {
     }
 
     private createText(){
-        this.textLoader.load('./assets/fonts/droid_serif_regular.typeface.json', (font: any) => {
+        this.textLoader.load(this.imgPath + 'fonts/droid_serif_regular.typeface.json', (font: any) => {
             const textGeometry = new THREE.TextGeometry('Benjamin', {
                 font: font,
                 size: 5,

@@ -3,4 +3,5 @@ export interface PortfolioData{
     project: string;
     participation: string;
     subject: string;
+    link: string;
 }

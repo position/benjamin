@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild, HostListener, ViewContainerRef, Renderer, NgZone, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild, HostListener, ViewContainerRef, NgZone, ChangeDetectorRef } from '@angular/core';
 import * as THREE from 'three-full';
 import * as Stats from 'stats.js';
 import * as dat from 'dat.gui';
@@ -65,7 +65,6 @@ export class SceneComponent implements AfterViewInit {
 
     constructor(
         private elementRef: ElementRef,
-        private ngRenderer: Renderer,
         private viewContainer: ViewContainerRef,
         private createGeomtry: CreateGeomtryService,
         private zone: NgZone,
@@ -225,7 +224,7 @@ export class SceneComponent implements AfterViewInit {
             this.scene.add(cube);
         });
     }
-
+    
     public animationSphereGeometry(){
         const radius = 3;
         

@@ -32,6 +32,7 @@ body{font-family: 'Roboto', 'NanumMyeongjo', sans-serif; font-size:1em;}
 h1, h2, h3, h4, h5, h6{font-weight:normal;}
 a{text-decoration: underline; color:$white-color;}
 ol, ul, dt{list-style-type: none;}
+button{border:0 none; cursor:pointer;}
 router-outlet ~ * {
 	position: absolute;
 	height: 100%;
@@ -161,6 +162,7 @@ uxe-benjamin{
 				}
 				.portfolioSwiper{
 					.portfolioList{
+						position:relative;
 						width:290px;
 						height:440px;
 						padding:5px;
@@ -192,6 +194,17 @@ uxe-benjamin{
 									.label{flex:0 0 70px;}
 									.subject{flex:1 0;}
 								}
+							}
+							.runBtn{
+								position:absolute;
+								width:50px;
+								height:30px;
+								border-radius:5px;
+								background-color:$black-color;
+								bottom:10px;
+								right:10px;
+								color:$white-color;
+								z-index:10;
 							}
 						}
 					}

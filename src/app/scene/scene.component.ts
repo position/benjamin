@@ -84,7 +84,6 @@ export class SceneComponent implements AfterViewInit {
         this.startRendering('profile');
         this.addControls();
         //this.setGui();
-        console.log('this.routePath', this.routePath);
     }
 
     private get canvas(): HTMLCanvasElement {

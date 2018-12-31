@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild, HostListener, ViewContainerRef, NgZone, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild, HostListener, ViewContainerRef, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import * as THREE from 'three-full';
 import * as Stats from 'stats.js';
 import * as dat from 'dat.gui';
@@ -8,7 +8,8 @@ import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'scene',
-    templateUrl: './scene.component.html'
+    templateUrl: './scene.component.html',
+    changeDetection: ChangeDetectionStrategy.Default
 })
 export class SceneComponent implements AfterViewInit {
 
@@ -42,27 +43,24 @@ export class SceneComponent implements AfterViewInit {
 
     public assetPath: string = environment.assetsPath;
     public fontPath: string = environment.assetsPath + 'fonts/';
-
+    
     @Input() set routePath(path: string) {
         if(path){
-            console.log(path);
+            console.log('path', path);
+            this.startRendering(path);
             switch (path){
                 case 'profile':
-                    console.log(1);
-                    break;
+                break;
+
                 case 'introduction':
-                    console.log(2);
-                    break;
+                break;
+
                 case 'portfolio':
-                    console.log(3);
-                    break;
-    
-                default:
-                    console.error('nothing path!!!');
+                break;
             }
         }
     }
-
+    
     constructor(
         private elementRef: ElementRef,
         private viewContainer: ViewContainerRef,
@@ -72,6 +70,7 @@ export class SceneComponent implements AfterViewInit {
         ) {
         this.stats = new Stats();
         //this.elementRef.nativeElement.appendChild(this.stats.dom);
+        
     }
 
     /* LIFECYCLE */
@@ -82,11 +81,12 @@ export class SceneComponent implements AfterViewInit {
         this.createText();
         this.createPlane();
         this.createSphereGeometry();
-        this.startRendering();
+        this.startRendering('profile');
         this.addControls();
         //this.setGui();
+        console.log('this.routePath', this.routePath);
     }
-    
+
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
     }
@@ -183,7 +183,7 @@ export class SceneComponent implements AfterViewInit {
         return this.canvas.clientWidth / this.canvas.clientHeight;
     }
 
-    private startRendering() {
+    private startRendering(path: string) {
         this.renderer = new THREE.WebGLRenderer({
             canvas: this.canvas,
             antialias: true
@@ -195,16 +195,17 @@ export class SceneComponent implements AfterViewInit {
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.setClearColor(0x000000, 1);
         this.renderer.autoClear = true;        
-
+        if(path )
         this.render();
     }
 
     public render = () => {
         this.renderer.render(this.scene, this.camera);
         this.animationFrame = requestAnimationFrame(this.render);
-        //this.animationSphereGeometry();
         this.stats.update();
         this.camera.updateProjectionMatrix();
+
+        this.animationSphereGeometry();
     }
 
     public addControls() {
@@ -262,7 +263,7 @@ export class SceneComponent implements AfterViewInit {
 
         this.gui.add(options, 'reset');
     }
-    
+   
     /* EVENTS */
     public onMouseDown(event: MouseEvent) {
         //console.log("onMouseDown");

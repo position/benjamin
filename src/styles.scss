@@ -133,14 +133,18 @@ uxe-benjamin{
 						margin:0 auto;
 					}
 					h3{
-						margin:10px 0;
+						margin:20px 0 10px 0;
 					}
 					blockquote{
-						font-size: 1.2em;
+						font-size: 1.5em;
 						color:rgba($white-color, 0.7);
 						text-align:center;
 						margin:20px 0;
 						> p{padding-bottom:10px;}
+						.speaker{
+							padding-left:10px;
+							font-size:0.75em;
+						}
 					}
 					p{
 						font-size: 0.9em;
@@ -166,6 +170,7 @@ uxe-benjamin{
 						width:290px;
 						height:440px;
 						padding:5px;
+						margin-right:20px;
 						background-color:rgba($white-color, 1);
 						border:1px solid rgba($black-color, 0.5);
 						box-sizing:border-box;
@@ -204,7 +209,11 @@ uxe-benjamin{
 								bottom:10px;
 								right:10px;
 								color:$white-color;
+								font-size:0.9em;
+								line-height:100%;
 								z-index:10;
+								&:hover{background-color:lighten($black-color, 10%);}
+								&:active{color:darken($white-color, 10%);line-height:150%;}
 							}
 						}
 					}

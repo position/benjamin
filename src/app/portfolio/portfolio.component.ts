@@ -232,4 +232,8 @@ export class PortfolioComponent implements OnInit {
             }
         ];
     }
+
+    onLinkProject(link: string){
+        window.open(link, "_blank");
+    }
 }

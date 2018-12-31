@@ -10,7 +10,7 @@
                         <li><strong class="label">참여도</strong><span class="subject">{{ item.participation }}</span></li>
                         <li><strong class="label">설명</strong><span class="subject">{{ item.subject }}</span></li>
                     </ul>
-                    <button type="button" class="runBtn" *ngIf="item.link" (click)="onLinkProject()">Run</button>
+                    <button type="button" class="runBtn" *ngIf="item.link" (click)="onLinkProject(item.link)">Run</button>
                 </dd>
             </dl>
         </ng-template>

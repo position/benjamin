@@ -23,5 +23,11 @@
     <script type="text/javascript" src="/benjamin/release/runtime.js"></script>
     <script type="text/javascript" src="/benjamin/release/polyfills.js"></script>
     <script type="text/javascript" src="/benjamin/release/main.js"></script>
+    <script>
+        let pathname = window.location.pathname;
+        if(pathname.indexOf("profile") > -1 || pathname.indexOf("introduction") > -1 || pathname.indexOf("portfolio") > -1){
+            window.location.href = "/benjamin/";
+        }
+    </script>
 </body>
 </html>

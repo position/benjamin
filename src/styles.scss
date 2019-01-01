@@ -205,7 +205,7 @@ uxe-benjamin{
 								width:50px;
 								height:30px;
 								border-radius:5px;
-								background-color:$black-color;
+								background-color:lighten($black-color, 10%);
 								bottom:10px;
 								right:10px;
 								color:$white-color;

@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, ElementRef, Input, ViewChild, HostListener, ViewContainerRef, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import * as THREE from 'three-full';
-import * as Stats from 'stats.js';
 import * as dat from 'dat.gui';
-
 import { CreateGeomtryService } from '../service/create-geomtry.service';
+import { StatsHelperService } from '../service/stats-helper.service';
+
 import { environment } from '../../environments/environment';
 
 @Component({
@@ -12,6 +12,7 @@ import { environment } from '../../environments/environment';
     changeDetection: ChangeDetectionStrategy.Default
 })
 export class SceneComponent implements AfterViewInit {
+    public gui: dat.GUI;
 
     private renderer: THREE.WebGLRenderer;
     private camera: THREE.PerspectiveCamera;
@@ -26,8 +27,7 @@ export class SceneComponent implements AfterViewInit {
     public orange: THREE.Mesh;
     public trophy: THREE.Mesh;
     public animationFrame: any;
-    public stats: Stats;
-    public gui: dat.GUI;
+    
     private textLoader = new THREE.FontLoader();
     // private loadingManager = new THREE.LoadingManager();
     // private daeLoader = new THREE.ColladaLoader();
@@ -63,12 +63,12 @@ export class SceneComponent implements AfterViewInit {
         private elementRef: ElementRef,
         private viewContainer: ViewContainerRef,
         private createGeomtry: CreateGeomtryService,
+        private guiHelper: StatsHelperService,
         private zone: NgZone,
         private cd: ChangeDetectorRef,
         ) {
-        this.stats = new Stats();
-        //this.elementRef.nativeElement.appendChild(this.stats.dom);
         
+        this.guiHelper.addStats(this.elementRef);
     }
 
     /* LIFECYCLE */
@@ -199,10 +199,10 @@ export class SceneComponent implements AfterViewInit {
     public render = () => {
         this.renderer.render(this.scene, this.camera);
         this.animationFrame = requestAnimationFrame(this.render);
-        this.stats.update();
         this.camera.updateProjectionMatrix();
-
         this.animationSphereGeometry();
+
+        this.guiHelper.updateStats();
     }
 
     public addControls() {

@@ -6,9 +6,9 @@
                 <dt class="projectPho"><img [src]="imgPath + item.thumnail" [alt]="item.project"></dt>
                 <dd class="projectList">
                     <ul>
-                        <li><strong class="label">Project</strong><span class="subject">{{ item.project }}</span></li>
-                        <li><strong class="label">참여도</strong><span class="subject">{{ item.participation }}</span></li>
-                        <li><strong class="label">설명</strong><span class="subject">{{ item.subject }}</span></li>
+                        <li><strong class="label">&middot; Project</strong><span class="subject">{{ item.project }}</span></li>
+                        <li><strong class="label">&middot; 참여도</strong><span class="subject">{{ item.participation }}</span></li>
+                        <li><strong class="label">&middot; 설명</strong><span class="subject">{{ item.subject }}</span></li>
                     </ul>
                     <button type="button" class="runBtn" *ngIf="item.link" (click)="onLinkProject(item.link)">Run</button>
                 </dd>

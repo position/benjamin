@@ -11,7 +11,7 @@ $loader-time: 2; //in seconds
 $loader-size: 100;
 $loader-color: #bdd0a2;
 $ux-dashboard-eng-font-path:'./assets/fonts/Roboto-Medium.woff';
-$ux-dashboard-kor-font-path:'./assets/fonts/NanumMyeongjo-Regular.woff';
+$ux-dashboard-kor-font-path:'./assets/fonts/NanumGothic-Regular.woff';
 
 
 @font-face {
@@ -21,14 +21,14 @@ $ux-dashboard-kor-font-path:'./assets/fonts/NanumMyeongjo-Regular.woff';
 }
 
 @font-face {
-    font-family: 'NanumMyeongjo';
+    font-family: 'NanumGothic';
     src: url(#{$ux-dashboard-kor-font-path});
     src: local('NanumMyeongjo-Regular'), url(#{$ux-dashboard-kor-font-path}) format('woff');
 }
 
 *{margin:0;padding:0;}
 html, body{background-color:#2b2f26;height:100%;overflow:hidden;}
-body{font-family: 'Roboto', 'NanumMyeongjo', sans-serif; font-size:1em;}
+body{font-family: 'Roboto', 'NanumGothic', sans-serif; font-size:1em;}
 h1, h2, h3, h4, h5, h6{font-weight:normal;}
 a{text-decoration: underline; color:$white-color;}
 ol, ul, dt{list-style-type: none;}
@@ -196,7 +196,7 @@ uxe-benjamin{
 									flex-wrap:wrap;
 									margin-bottom:10px;
 									font-size:0.9em;
-									.label{flex:0 0 70px;}
+									.label{flex:0 0 70px;padding-left:5px;}
 									.subject{flex:1 0;}
 								}
 							}

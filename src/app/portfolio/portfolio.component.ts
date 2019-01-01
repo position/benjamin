@@ -11,8 +11,11 @@ export class PortfolioComponent implements OnInit {
     @ViewChild('portfolioSwipe') portfolioSwiper: SwiperComponent;
     readonly portfolioSwipeConifg: SwiperConfigInterface = {
         width: 300,
-        spaceBetween: 20,
+        spaceBetween: 0,
         freeMode: true,
+        //freeModeMomentumBounce: true,
+        //freeModeMomentumBounceRatio: 1,
+        preloadImages: true,
         autoplay: <SwiperAutoplayInterface>{
             disableOnInteraction: false
         }

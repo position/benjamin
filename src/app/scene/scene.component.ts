@@ -46,8 +46,6 @@ export class SceneComponent implements AfterViewInit {
     
     @Input() set routePath(path: string) {
         if(path){
-            console.log('path', path);
-            this.startRendering(path);
             switch (path){
                 case 'profile':
                 break;
@@ -81,7 +79,7 @@ export class SceneComponent implements AfterViewInit {
         this.createText();
         this.createPlane();
         this.createSphereGeometry();
-        this.startRendering('profile');
+        this.startRendering();
         this.addControls();
         //this.setGui();
     }
@@ -182,7 +180,7 @@ export class SceneComponent implements AfterViewInit {
         return this.canvas.clientWidth / this.canvas.clientHeight;
     }
 
-    private startRendering(path: string) {
+    private startRendering() {
         this.renderer = new THREE.WebGLRenderer({
             canvas: this.canvas,
             antialias: true
@@ -194,7 +192,7 @@ export class SceneComponent implements AfterViewInit {
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.setClearColor(0x000000, 1);
         this.renderer.autoClear = true;        
-        if(path )
+        
         this.render();
     }
 

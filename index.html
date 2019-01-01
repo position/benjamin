@@ -11,7 +11,7 @@
 
     <link rel="icon" type="image/x-icon" href="/benjamin/release/favicon.ico">
     <link rel="stylesheet" href="/benjamin/release/styles.css"></head>
-
+    
 <body>
     <uxe-benjamin>
         <div class="loader">
@@ -20,14 +20,15 @@
             </div>
         </div>
     </uxe-benjamin>
-    <script type="text/javascript" src="/benjamin/release/runtime.js"></script>
-    <script type="text/javascript" src="/benjamin/release/polyfills.js"></script>
-    <script type="text/javascript" src="/benjamin/release/main.js"></script>
     <script>
         let pathname = window.location.pathname;
         if(pathname.indexOf("profile") > -1 || pathname.indexOf("introduction") > -1 || pathname.indexOf("portfolio") > -1){
             window.location.href = "/benjamin/";
         }
     </script>
+    <script type="text/javascript" src="/benjamin/release/runtime.js"></script>
+    <script type="text/javascript" src="/benjamin/release/polyfills.js"></script>
+    <script type="text/javascript" src="/benjamin/release/main.js"></script>
+    
 </body>
 </html>

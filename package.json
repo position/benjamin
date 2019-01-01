@@ -9,7 +9,7 @@
 		"lint": "ng lint",
 		"e2e": "ng e2e",
 		"debug": "ng build --watch --aot=true --project=Benjamin --output-hashing none --output-path=debug\\",
-		"release": "ng build --prod --aot=true --project=Benjamin --build-optimizer --output-hashing none --output-path=release\\"
+		"release": "ng build --prod --aot=true --project=Benjamin --base-href /benjamin/ --build-optimizer --output-hashing none --output-path=release\\"
 	},
 	"private": true,
 	"dependencies": {
@@ -39,8 +39,9 @@
 		"@types/jasmine": "~2.8.8",
 		"@types/jasminewd2": "~2.0.3",
 		"@types/node": "~8.9.4",
-		"@types/three": "^0.93.10",
 		"@types/swiper": "^4.2.0",
+		"@types/three": "^0.93.10",
+		"angular-cli-ghpages": "^0.5.3",
 		"codelyzer": "~4.5.0",
 		"dat.gui": "^0.7.3",
 		"jasmine-core": "~2.99.1",

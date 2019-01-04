@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild, HostListener, ViewContainerRef, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, HostListener, ViewContainerRef, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import * as THREE from 'three-full';
 import * as dat from 'dat.gui';
 import { CreateGeomtryService } from '../service/create-geomtry.service';
@@ -42,29 +42,14 @@ export class SceneComponent implements AfterViewInit {
 
     public assetPath: string = environment.assetsPath;
     public fontPath: string = environment.assetsPath + 'fonts/';
-    
-    @Input() set routePath(path: string) {
-        if(path){
-            switch (path){
-                case 'profile':
-                break;
 
-                case 'introduction':
-                break;
-
-                case 'portfolio':
-                break;
-            }
-        }
-    }
-    
     constructor(
         private elementRef: ElementRef,
         private viewContainer: ViewContainerRef,
         private createGeomtry: CreateGeomtryService,
         private guiHelper: StatsHelperService,
         private zone: NgZone,
-        private cd: ChangeDetectorRef,
+        private cd: ChangeDetectorRef
         ) {
         this.guiHelper.addStats(this.elementRef);
     }

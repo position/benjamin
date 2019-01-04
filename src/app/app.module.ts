@@ -15,6 +15,7 @@ import { IntroductionComponent } from './introduction/introduction.component';
 import { PortfolioComponent } from './portfolio/portfolio.component';
 
 import { CreateGeomtryService } from './service/create-geomtry.service';
+import { SceneService } from './service/scene.service';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 	direction: 'horizontal',
@@ -38,6 +39,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 	],
 	providers: [
 		CreateGeomtryService,
+		SceneService,
 		{
 			provide: SWIPER_CONFIG,
 			useValue: DEFAULT_SWIPER_CONFIG

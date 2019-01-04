@@ -80,6 +80,7 @@ uxe-benjamin{
 				display: block;
 				color: rgba($white-color, 0.7);
 				font-size:0.9em;
+				text-decoration:none;
 				margin-right:10px;
 				transition: color 0.3s ease-out;
 				&.active, &:hover{color: rgba($white-color, 1);}

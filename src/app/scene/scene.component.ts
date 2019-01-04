@@ -24,8 +24,7 @@ export class SceneComponent implements AfterViewInit {
 
     public controls: THREE.OrbitControls;
     public sphere: THREE.Mesh;
-    public orange: THREE.Mesh;
-    public trophy: THREE.Mesh;
+    public textBenjamin: THREE.Mesh;
     public animationFrame: any;
     
     private textLoader = new THREE.FontLoader();
@@ -67,7 +66,6 @@ export class SceneComponent implements AfterViewInit {
         private zone: NgZone,
         private cd: ChangeDetectorRef,
         ) {
-        
         this.guiHelper.addStats(this.elementRef);
     }
 
@@ -122,6 +120,7 @@ export class SceneComponent implements AfterViewInit {
 
     private createText(){
         this.textLoader.load(this.fontPath + 'droid_serif_regular.typeface.json', (font: any) => {
+            console.log('font', font);
             const textGeometry = new THREE.TextGeometry('Benjamin', {
                 font: font,
                 size: 5,
@@ -130,16 +129,18 @@ export class SceneComponent implements AfterViewInit {
                 bevelEnabled: false,
                 side: THREE.DoubleSide
             });
-            textGeometry.translate(-15, 3, 0);
 
             const material = new THREE.MeshPhongMaterial({ 
                 color: 0xfff600,
                 specular: 0xffffff,
                 shininess: 30
             });
-            const text = new THREE.Mesh(textGeometry, material);
-            this.scene.add(text);
+            this.textBenjamin = new THREE.Mesh(textGeometry, material);
+            this.textBenjamin.position.set(-15, 3, 0);
+            this.scene.add(this.textBenjamin);
         });
+
+        //console.log(this.textBenjamin.position);
     }
 
     private createLight() {
@@ -201,7 +202,7 @@ export class SceneComponent implements AfterViewInit {
         this.animationFrame = requestAnimationFrame(this.render);
         this.camera.updateProjectionMatrix();
         this.animationSphereGeometry();
-
+        
         this.guiHelper.updateStats();
     }
 

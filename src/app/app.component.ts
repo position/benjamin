@@ -26,7 +26,7 @@ export class AppComponent implements OnInit{
 
     ngOnInit(){
         this.onActiveRouteTitle();
-        this.onActiveRoutePath();
+        //this.onActiveRoutePath();
     }
 
     private onActiveRouteTitle(){
@@ -44,7 +44,7 @@ export class AppComponent implements OnInit{
             .subscribe(item => { this.titleService.setTitle(item.title); }
         );
     }
-
+    /*
     private onActiveRoutePath(){
         this.router.events.pipe(
             filter(event => event instanceof NavigationEnd),
@@ -60,4 +60,5 @@ export class AppComponent implements OnInit{
             .subscribe(item => { this.routePath = item[0].path }
         );
     }
+    */
 }

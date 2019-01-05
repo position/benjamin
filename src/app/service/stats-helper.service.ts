@@ -16,6 +16,4 @@ export class StatsHelperService {
     updateStats(){
         this.stats.update();
     }
-
-    
 }

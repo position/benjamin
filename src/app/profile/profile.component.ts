@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, ElementRef, ViewChild, HostListener, ViewContainerRef, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ElementRef, ViewChild, HostListener, ViewContainerRef, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import * as THREE from 'three-full';
 import * as dat from 'dat.gui';
 import { CreateGeomtryService } from '../service/create-geomtry.service';
 import { StatsHelperService } from '../service/stats-helper.service';
+import { FontLoaderService} from '../service/font-loader.service';
 
 import { environment } from '../../environments/environment';
 
@@ -11,7 +12,7 @@ import { environment } from '../../environments/environment';
     templateUrl: './profile.component.html',
     changeDetection: ChangeDetectionStrategy.Default
 })
-export class ProfileComponent implements AfterViewInit {
+export class ProfileComponent implements AfterViewInit, OnDestroy {
     public gui: dat.GUI;
 
     private renderer: THREE.WebGLRenderer;
@@ -26,32 +27,24 @@ export class ProfileComponent implements AfterViewInit {
     public sphere: THREE.Mesh;
     public textBenjamin: THREE.Mesh;
     public animationFrame: any;
-    
-    private textLoader = new THREE.FontLoader();
-    // private loadingManager = new THREE.LoadingManager();
-    // private daeLoader = new THREE.ColladaLoader();
-    // private objLoader = new THREE.OBJLoader();
-    // private textureLoader = new THREE.TextureLoader();
-    // private imageLoader = new THREE.ImageLoader();
-    // private texture = new THREE.Texture;
 
     private radianX: number = 0;    
     private radianY: number = 0;
 
     @ViewChild('canvas') private canvasRef: ElementRef;
-
-    public assetPath: string = environment.assetsPath;
-    public fontPath: string = environment.assetsPath + 'fonts/';
-
+    
     constructor(
         private elementRef: ElementRef,
         private viewContainer: ViewContainerRef,
         private createGeomtry: CreateGeomtryService,
         private guiHelper: StatsHelperService,
+        private fontLoader: FontLoaderService,
         private zone: NgZone,
         private cd: ChangeDetectorRef
         ) {
-        this.guiHelper.addStats(this.elementRef);
+        if(!environment.production){
+            this.guiHelper.addStats(this.elementRef);
+        }
     }
 
     /* LIFECYCLE */
@@ -60,11 +53,13 @@ export class ProfileComponent implements AfterViewInit {
         this.createLight();
         this.createCamera();
         this.createText();
-        this.createPlane();
         this.createSphereGeometry();
         this.startRendering();
         this.addControls();
-        //this.setGui();
+
+        if(!environment.production){
+            this.setGui();
+        }
     }
 
     private get canvas(): HTMLCanvasElement {
@@ -72,15 +67,16 @@ export class ProfileComponent implements AfterViewInit {
     }
 
     private createScene() {
-        const grid = new THREE.GridHelper(100, 50);
-        const axes = new THREE.AxesHelper(200);
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(0xbdd0a2);
-        //this.scene.fog = new THREE.FogExp2(0x4f6134, 0.005);
-        //this.scene.add(grid);
-        this.scene.add(axes);
-        
         this.onCreateSphere();
+        this.createPlane();
+        if(!environment.production){
+            const grid = new THREE.GridHelper(100, 50);
+            const axes = new THREE.AxesHelper(200);
+            //this.scene.add(grid);
+            this.scene.add(axes);
+        }
     }
 
     private onCreateSphere(){
@@ -96,36 +92,31 @@ export class ProfileComponent implements AfterViewInit {
 
     private createPlane(){
         let geometry = new THREE.PlaneGeometry(120, 120, 0);
-        let material = new THREE.MeshLambertMaterial({ color: 0x2b2f26, side: THREE.DoubleSide });
+        let material = new THREE.MeshStandardMaterial({ color: 0x2b2f26, side: THREE.DoubleSide });
         let plane = new THREE.Mesh(geometry, material);
         plane.rotation.x = -Math.PI / 2;
         plane.position.set(0, 0, 0);
         this.scene.add(plane);
     }
 
-    private createText(){
-        this.textLoader.load(this.fontPath + 'droid_serif_regular.typeface.json', (font: any) => {
-            console.log('font', font);
-            const textGeometry = new THREE.TextGeometry('Benjamin', {
-                font: font,
-                size: 5,
-                height: 1,
-                curveSegment: 12,
-                bevelEnabled: false,
-                side: THREE.DoubleSide
-            });
-
-            const material = new THREE.MeshPhongMaterial({ 
-                color: 0xfff600,
-                specular: 0xffffff,
-                shininess: 30
-            });
-            this.textBenjamin = new THREE.Mesh(textGeometry, material);
-            this.textBenjamin.position.set(-15, 3, 0);
-            this.scene.add(this.textBenjamin);
+    private async createText(): Promise<void>{
+        let response = await this.fontLoader.onFontLoader();
+        const textGeometry = new THREE.TextGeometry('Benjamin', {
+            font: response,
+            size: 5,
+            height: 1,
+            curveSegment: 12,
+            bevelEnabled: false,
+            side: THREE.DoubleSide
         });
-
-        //console.log(this.textBenjamin.position);
+        const material = new THREE.MeshPhongMaterial({ 
+            color: 0xfff600,
+            specular: 0xffffff,
+            shininess: 30
+        });
+        this.textBenjamin = new THREE.Mesh(textGeometry, material);
+        this.textBenjamin.position.set(-15, -6, 0);
+        this.scene.add(this.textBenjamin);
     }
 
     private createLight() {
@@ -153,7 +144,6 @@ export class ProfileComponent implements AfterViewInit {
             this.nearClippingPane,
             this.farClippingPane
         );
-
         // Set position and look at
         this.camera.position.set(20, 30, 60);
     }
@@ -191,6 +181,10 @@ export class ProfileComponent implements AfterViewInit {
         this.guiHelper.updateStats();
     }
 
+    public destoryRender(){
+        window.cancelAnimationFrame(this.animationFrame);
+    }
+
     public addControls() {
         let scene = this.viewContainer.element.nativeElement;
         this.controls = new THREE.OrbitControls(this.camera);
@@ -224,6 +218,11 @@ export class ProfileComponent implements AfterViewInit {
             cube.position.z = Math.sin(this.radianY * idx) * radius * (index + 1);
             
         });
+        if(this.textBenjamin){
+            if(this.textBenjamin.position.y < 3){
+                this.textBenjamin.position.y += 0.05;
+            }
+        }
     }
 
     public setGui(){
@@ -246,43 +245,7 @@ export class ProfileComponent implements AfterViewInit {
 
         this.gui.add(options, 'reset');
     }
-   
-    /* EVENTS */
-    public onMouseDown(event: MouseEvent) {
-        //console.log("onMouseDown");
-        event.preventDefault();
-
-        // Example of mesh selection/pick:
-        const raycaster = new THREE.Raycaster();
-        const mouse = new THREE.Vector2();
-        mouse.x = (event.clientX / this.renderer.domElement.clientWidth) * 2 - 1;
-        mouse.y = - (event.clientY / this.renderer.domElement.clientHeight) * 2 + 1;
-        raycaster.setFromCamera(mouse, this.camera);
-
-        let obj: THREE.Object3D[] = [];
-        this.findAllObjects(obj, this.scene);
-        const intersects = raycaster.intersectObjects(obj);
-        //console.log("Scene has " + obj.length + " objects");
-        //console.log(intersects.length + " intersected objects found")
-        intersects.forEach((i) => {
-            //console.log(i.object); // do what you want to do with object
-        });
-    }
-
-    private findAllObjects(pred: THREE.Object3D[], parent: THREE.Object3D) {
-        // NOTE: Better to keep separate array of selected objects
-        if (parent.children.length > 0) {
-            parent.children.forEach((i) => {
-                pred.push(i);
-                this.findAllObjects(pred, i);                
-            });
-        }
-    }
-
-    public onMouseUp(event: MouseEvent) {
-        //console.log("onMouseUp");
-    }
-
+    
     @HostListener('window:resize', ['$event'])
     public onResize(event: Event) {
         this.canvas.style.width = "100%";
@@ -297,5 +260,11 @@ export class ProfileComponent implements AfterViewInit {
     @HostListener('document:keypress', ['$event'])
     public onKeyPress(event: KeyboardEvent) {
         //console.log("onKeyPress: " + event.key);
+    }
+
+    ngOnDestroy(){
+        console.log('Destoryed!!');
+        this.destoryRender();
+        this.gui.destroy();
     }
 }

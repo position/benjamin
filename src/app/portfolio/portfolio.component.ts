@@ -209,7 +209,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         this.controls.rotateSpeed = 1.0;
         this.controls.zoomSpeed = 1.2;
         this.controls.enableZoom = false;
-        this.controls.autoplay = true;
+        this.controls.enableRotate = false;
         this.controls.domElement = scene;
 
         this.zone.run(() => { this.cd.markForCheck(); });

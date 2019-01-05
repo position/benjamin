@@ -288,6 +288,8 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnDestroy(){
         console.log('Destoryed!!');
         this.destoryRender();
-        this.gui.destroy();
+        if(!environment.production){
+            this.gui.destroy();
+        }
     }
 }

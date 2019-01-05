@@ -265,6 +265,8 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     ngOnDestroy(){
         console.log('Destoryed!!');
         this.destoryRender();
-        this.gui.destroy();
+        if(!environment.production){
+            this.gui.destroy();
+        }
     }
 }

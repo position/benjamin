@@ -280,5 +280,10 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         if(!environment.production){
             this.gui.destroy();
         }
+        this.scene = null;
+        this.renderer = null;
+        this.camera = null;
+        this.box = null;
+        this.textWork = null;
     }
 }

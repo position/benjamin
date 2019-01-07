@@ -8,14 +8,14 @@ export class CreateGeomtryService {
 	public camera: THREE.PerspectiveCamera;
     public scene: THREE.Scene;
     public mesh: THREE.Mesh;
-    public box = new THREE.BoxGeometry(1, 1, 1);
-    public sphere: THREE.SphereGeometry;
-    public octahedron: THREE.OctahedronGeometry;
+    public box = new THREE.BoxBufferGeometry(1, 1, 1);
+    public sphere: THREE.SphereBufferGeometry;
+    public octahedron: THREE.OctahedronBufferGeometry;
     public meterial = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
 	constructor() { }
 
 	public setBoxs(boxIndex: number){
-        let cubes = [];
+        let boxs = [];
         for(let i = 0; i < boxIndex; i++){
             this.meterial = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff });    
             this.mesh = new THREE.Mesh(this.box, this.meterial);
@@ -25,16 +25,16 @@ export class CreateGeomtryService {
             this.mesh.scale.x = Math.random() + 0.5;
             this.mesh.scale.y = Math.random() + 0.5;
             this.mesh.scale.z = Math.random() + 0.5;
-            cubes.push(this.mesh);
+            boxs.push(this.mesh);
         }
-        return cubes;
+        return boxs;
     }
 
     public setSphere(sphereIndex: number){
         let spheres = [];
         for(let i = 0; i < sphereIndex; i++){
             let radius = Math.random() * 1;
-            this.sphere = new THREE.SphereGeometry(radius, 30, 30);
+            this.sphere = new THREE.SphereBufferGeometry(radius, 30, 30);
             //color: 0xbad790
             this.meterial = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff });
             
@@ -52,7 +52,7 @@ export class CreateGeomtryService {
         let spheres = [];
         for(let i = 0; i < octahedronIndex; i++){
             let radius = Math.random() * 1;
-            this.octahedron = new THREE.OctahedronGeometry(radius, 0);
+            this.octahedron = new THREE.OctahedronBufferGeometry(radius, 0);
             this.meterial = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff });
 
             this.mesh = new THREE.Mesh(this.octahedron, this.meterial);

@@ -257,5 +257,10 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
         if(!environment.production){
             this.gui.destroy();
         }
+        this.scene = null;
+        this.renderer = null;
+        this.camera = null;
+        this.sphere = null;
+        this.textBenjamin = null;
     }
 }

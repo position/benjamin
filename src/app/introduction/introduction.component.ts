@@ -182,6 +182,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
     public destoryRender(){
         window.cancelAnimationFrame(this.animationFrame);
         while(this.scene.children.length > 0){
+            console.log('scene remove');
             this.scene.remove(this.scene.children[0]);
         }
     }
@@ -257,5 +258,10 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
         if(!environment.production){
             this.gui.destroy();
         }
+        this.scene = null;
+        this.renderer = null;
+        this.camera = null;
+        this.octahedron = null;
+        this.textEngineer = null;
     }
 }

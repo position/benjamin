@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, OnDestroy, ElementRef, ViewChild, HostListener, ViewContainerRef, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ElementRef, ViewChild, HostListener, ViewContainerRef } from '@angular/core';
 import * as THREE from 'three-full';
 import * as dat from 'dat.gui';
 import { CreateGeomtryService } from '../service/create-geomtry.service';
 import { StatsHelperService } from '../service/stats-helper.service';
 import { FontLoaderService} from '../service/font-loader.service';
-
+import { ControlsService} from '../service/controls.service';
 import { environment } from '../../environments/environment';
 
 @Component({
@@ -25,7 +25,6 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
     public nearClippingPane: number = 1;    
     public farClippingPane: number = 1100;
 
-    public controls: THREE.OrbitControls;
     public octahedron: THREE.Mesh;
     public textEngineer: THREE.Mesh;
     public animationFrame: any;
@@ -41,8 +40,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
         private createGeomtry: CreateGeomtryService,
         private guiHelper: StatsHelperService,
         private fontLoader: FontLoaderService,
-        private zone: NgZone,
-        private cd: ChangeDetectorRef
+        private controls: ControlsService
         ) {
         if(!environment.production){
             this.guiHelper.addStats(this.elementRef);
@@ -183,18 +181,14 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
 
     public destoryRender(){
         window.cancelAnimationFrame(this.animationFrame);
+        while(this.scene.children.length > 0){
+            this.scene.remove(this.scene.children[0]);
+        }
     }
 
     public addControls() {
         let scene = this.viewContainer.element.nativeElement;
-        this.controls = new THREE.OrbitControls(this.camera);
-        this.controls.rotateSpeed = 1.0;
-        this.controls.zoomSpeed = 1.2;
-        this.controls.enableZoom = false;
-        this.controls.enableRotate = false;
-        this.controls.domElement = scene;
-
-        this.zone.run(() => { this.cd.markForCheck(); });
+        this.controls.addControl(this.controls, scene, this.camera);
     }
 
     public createOctahedronGeometry(){

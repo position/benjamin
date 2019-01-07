@@ -15,7 +15,6 @@ export class AppComponent implements OnInit{
         { path: 'introduction', label: 'Introduction' },
         { path: 'portfolio', label: 'Portfolio' }
     ];
-    public routePath: string;
 
     constructor(
         private titleService: Title,

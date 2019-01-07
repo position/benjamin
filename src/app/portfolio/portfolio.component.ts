@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, OnInit, OnDestroy, ElementRef, ViewChild, HostListener, ViewContainerRef, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { AfterViewInit, Component, OnInit, OnDestroy, ElementRef, ViewChild, HostListener, ViewContainerRef } from '@angular/core';
 import * as THREE from 'three-full';
 import * as dat from 'dat.gui';
 import { CreateGeomtryService } from '../service/create-geomtry.service';
 import { StatsHelperService } from '../service/stats-helper.service';
 import { FontLoaderService} from '../service/font-loader.service';
-
+import { ControlsService} from '../service/controls.service';
 import { SwiperConfigInterface, SwiperAutoplayInterface, SwiperComponent } from 'ngx-swiper-wrapper';
 import { PortfolioData } from '../interface/portfolio';
 import { PortfolioLists } from './portfolio-lists';
@@ -24,8 +24,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     public fieldOfView: number = 50;
     public nearClippingPane: number = 1;    
     public farClippingPane: number = 1100;
-
-    public controls: THREE.OrbitControls;
+    
     public box: THREE.Mesh;
     public textWork: THREE.Mesh;
     public animationFrame: any;
@@ -54,8 +53,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         private createGeomtry: CreateGeomtryService,
         private guiHelper: StatsHelperService,
         private fontLoader: FontLoaderService,
-        private zone: NgZone,
-        private cd: ChangeDetectorRef
+        private controls: ControlsService
     ) { 
         if(!environment.production){
             this.guiHelper.addStats(this.elementRef);
@@ -201,18 +199,14 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public destoryRender(){
         window.cancelAnimationFrame(this.animationFrame);
+        while(this.scene.children.length > 0){
+            this.scene.remove(this.scene.children[0]);
+        }
     }
 
     public addControls() {
         let scene = this.viewContainer.element.nativeElement;
-        this.controls = new THREE.OrbitControls(this.camera);
-        this.controls.rotateSpeed = 1.0;
-        this.controls.zoomSpeed = 1.2;
-        this.controls.enableZoom = false;
-        this.controls.enableRotate = false;
-        this.controls.domElement = scene;
-
-        this.zone.run(() => { this.cd.markForCheck(); });
+        this.controls.addControl(this.controls, scene, this.camera);
     }
 
     public createBoxGeometry(){
@@ -274,11 +268,6 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         this.camera.aspect = this.getAspectRatio();
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
-    }
-
-    @HostListener('document:keypress', ['$event'])
-    public onKeyPress(event: KeyboardEvent) {
-        //console.log("onKeyPress: " + event.key);
     }
 
     public onLinkProject(link: string){

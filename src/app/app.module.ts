@@ -9,7 +9,6 @@ import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 
 import { AppComponent } from './app.component';
-import { SceneComponent } from './scene/scene.component';
 import { ProfileComponent } from './profile/profile.component';
 import { IntroductionComponent } from './introduction/introduction.component';
 import { PortfolioComponent } from './portfolio/portfolio.component';
@@ -25,7 +24,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 @NgModule({
 	declarations: [
 		AppComponent,
-		SceneComponent,
 		ProfileComponent,
 		IntroductionComponent,
 		PortfolioComponent

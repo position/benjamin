@@ -197,9 +197,16 @@ uxe-benjamin{
 						img{
 							position:absolute;
 							width:100%;
-							height:200px;
-							background-color:$black-color;
 							clip:rect(0, 290px, 200px, 0);
+							&::after{
+								content:'';
+								position: absolute;
+								width:100%;
+								height:200px;
+								background-color:$black-color;
+								left:0;
+								top:0;
+							}
 						}
 					}
 					.projectList{

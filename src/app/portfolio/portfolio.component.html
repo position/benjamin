@@ -7,7 +7,7 @@
         <ng-template ngFor let-item [ngForOf]="portfolioLists">
             <dl class="portfolioList">
                 <dt class="projectPho">
-                    <img src="./assets/img/poster.jpg" [attr.data-src]="imgPath + item.thumnail" [alt]="item.project" class="swiper-lazy">
+                    <img [src]="imgPath + 'poster.jpg'" [attr.data-src]="imgPath + item.thumnail" [alt]="item.project" class="swiper-lazy">
                     <div class="swiper-lazy-preloader"></div>
                 </dt>
                 <dd class="projectList">

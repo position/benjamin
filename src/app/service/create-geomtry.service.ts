@@ -5,18 +5,18 @@ import * as THREE from 'three-full';
 	providedIn: 'root'
 })
 export class CreateGeomtryService {
-	public camera: THREE.PerspectiveCamera;
     public scene: THREE.Scene;
     public mesh: THREE.Mesh;
-    public box = new THREE.BoxBufferGeometry(1, 1, 1);
+    public box: THREE.BoxBufferGeometry;
     public sphere: THREE.SphereBufferGeometry;
     public octahedron: THREE.OctahedronBufferGeometry;
-    public meterial = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
+    public meterial: THREE.MeshLambertMaterial;
 	constructor() { }
 
 	public setBoxs(boxIndex: number){
         let boxs = [];
         for(let i = 0; i < boxIndex; i++){
+            this.box = new THREE.BoxBufferGeometry(1, 1, 1);
             this.meterial = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff });    
             this.mesh = new THREE.Mesh(this.box, this.meterial);
             this.mesh.position.x = Math.random() * 50 - i;
@@ -63,6 +63,13 @@ export class CreateGeomtryService {
             spheres.push(this.mesh);
         }
         return spheres;
+    }
+
+    public destoryGeometry(){
+        this.scene = null;
+        this.box = null;
+        this.octahedron = null;
+        this.sphere = null;
     }
 
 }

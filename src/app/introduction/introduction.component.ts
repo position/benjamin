@@ -21,9 +21,11 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
     private camera: THREE.PerspectiveCamera;
     public scene: THREE.Scene;
 
-    public fieldOfView: number = 50;
-    public nearClippingPane: number = 1;    
-    public farClippingPane: number = 1100;
+    public cameraView: any = {
+        fieldOfView : 50,
+        nearClippingPane : 1,
+        farClippingPane : 1100    
+    };
 
     public octahedron: THREE.Mesh;
     public textEngineer: THREE.Mesh;
@@ -137,10 +139,10 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
     private createCamera() {
         let aspectRatio = this.getAspectRatio();
         this.camera = new THREE.PerspectiveCamera(
-            this.fieldOfView,
+            this.cameraView.fieldOfView,
             aspectRatio,
-            this.nearClippingPane,
-            this.farClippingPane
+            this.cameraView.nearClippingPane,
+            this.cameraView.farClippingPane
         );
         // Set position and look at
         this.camera.position.set(-41, 11, 55);
@@ -255,6 +257,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
     ngOnDestroy(){
         console.log('Destoryed!!');
         this.destoryRender();
+        this.createGeomtry.destoryGeometry();
         if(!environment.production){
             this.gui.destroy();
         }

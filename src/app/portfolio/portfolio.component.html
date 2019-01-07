@@ -6,7 +6,10 @@
     <swiper class="portfolioSwiper" [config]="portfolioSwipeConifg" #portfolioSwipe>
         <ng-template ngFor let-item [ngForOf]="portfolioLists">
             <dl class="portfolioList">
-                <dt class="projectPho"><img [src]="imgPath + item.thumnail" [alt]="item.project"></dt>
+                <dt class="projectPho">
+                    <img src="./assets/img/poster.jpg" [attr.data-src]="imgPath + item.thumnail" [alt]="item.project" class="swiper-lazy">
+                    <div class="swiper-lazy-preloader"></div>
+                </dt>
                 <dd class="projectList">
                     <ul>
                         <li><strong class="label">&middot; Project</strong><span class="subject">{{ item.project }}</span></li>

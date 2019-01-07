@@ -18,9 +18,11 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     private camera: THREE.PerspectiveCamera;
     public scene: THREE.Scene;
 
-    public fieldOfView: number = 50;
-    public nearClippingPane: number = 1;    
-    public farClippingPane: number = 1100;
+    public cameraView: any = {
+        fieldOfView : 50,
+        nearClippingPane : 1,
+        farClippingPane : 1100    
+    };
 
     public sphere: THREE.Mesh;
     public textBenjamin: THREE.Mesh;
@@ -136,10 +138,10 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     private createCamera() {
         let aspectRatio = this.getAspectRatio();
         this.camera = new THREE.PerspectiveCamera(
-            this.fieldOfView,
+            this.cameraView.fieldOfView,
             aspectRatio,
-            this.nearClippingPane,
-            this.farClippingPane
+            this.cameraView.nearClippingPane,
+            this.cameraView.farClippingPane
         );
         // Set position and look at
         this.camera.position.set(20, 30, 60);
@@ -254,6 +256,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     ngOnDestroy(){
         console.log('Destoryed!!');
         this.destoryRender();
+        this.createGeomtry.destoryGeometry();
         if(!environment.production){
             this.gui.destroy();
         }

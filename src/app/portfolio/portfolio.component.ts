@@ -21,9 +21,11 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     private camera: THREE.PerspectiveCamera;
     public scene: THREE.Scene;
 
-    public fieldOfView: number = 50;
-    public nearClippingPane: number = 1;    
-    public farClippingPane: number = 1100;
+    public cameraView: any = {
+        fieldOfView : 50,
+        nearClippingPane : 1,
+        farClippingPane : 1100    
+    };
     
     public box: THREE.Mesh;
     public textWork: THREE.Mesh;
@@ -38,7 +40,9 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         width: 300,
         spaceBetween: 0,
         freeMode: true,
-        preloadImages: true,
+        preloadImages: false,
+        lazy: { loadPrevNext : true, loadPrevNextAmount : 5 },
+        //updateOnImagesReady: true,
         autoplay: <SwiperAutoplayInterface>{
             disableOnInteraction: false
         }
@@ -155,10 +159,10 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     private createCamera() {
         let aspectRatio = this.getAspectRatio();
         this.camera = new THREE.PerspectiveCamera(
-            this.fieldOfView,
+            this.cameraView.fieldOfView,
             aspectRatio,
-            this.nearClippingPane,
-            this.farClippingPane
+            this.cameraView.nearClippingPane,
+            this.cameraView.farClippingPane
         );
         // Set position and look at
         this.camera.position.set(-33, 1, 43);
@@ -183,7 +187,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.setClearColor(0x000000, 1);
-        this.renderer.autoClear = true;        
+        this.renderer.autoClear = true;
         
         this.render();
     }
@@ -202,6 +206,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         while(this.scene.children.length > 0){
             this.scene.remove(this.scene.children[0]);
         }
+        //this.renderer.deallocateObject(this.box);
     }
 
     public addControls() {
@@ -216,7 +221,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
     
-    public animationBoxGeometry(){
+    public animationBoxGeometry = () => {
         const radius = 3;
         
         this.radianX += 0.003;
@@ -277,6 +282,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnDestroy(){
         console.log('Destoryed!!');
         this.destoryRender();
+        this.createGeomtry.destoryGeometry();
         if(!environment.production){
             this.gui.destroy();
         }

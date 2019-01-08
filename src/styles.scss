@@ -10,7 +10,7 @@ $scrollbar-thumb: #4d4d4d !default;
 $loader-count: 10;
 $loader-time: 2; //in seconds
 $loader-size: 100;
-$loader-color: #bdd0a2;
+$loader-color: $white-color;
 $ux-dashboard-eng-font-path:'./assets/fonts/Roboto-Medium.woff';
 $ux-dashboard-kor-font-path:'./assets/fonts/NanumGothic-Regular.woff';
 
@@ -255,7 +255,7 @@ uxe-benjamin{
 	right: 0;
 	width: 100%;
 	height: 100%;
-	background-color: #2b2f26;
+	background-color: $black-color;
 	.preloader {
 		/* size */
 		width: $loader-size + px;

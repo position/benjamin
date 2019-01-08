@@ -179,7 +179,8 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     private startRendering() {
         this.renderer = new THREE.WebGLRenderer({
             canvas: this.canvas,
-            antialias: true
+            antialias: true,
+            autoClear: true
         });
         this.renderer.setPixelRatio(devicePixelRatio);
         this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
@@ -203,10 +204,15 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public destoryRender(){
         window.cancelAnimationFrame(this.animationFrame);
-        while(this.scene.children.length > 0){
-            this.scene.remove(this.scene.children[0]);
+
+        for(let index = this.scene.children.length -1; index > 0; index--) {
+            let removeTarget = this.scene.children[index];
+            if (removeTarget instanceof THREE.Mesh) {
+                this.scene.remove(removeTarget);            
+                removeTarget.geometry.dispose();
+                removeTarget.material.dispose();
+            }
         }
-        //this.renderer.deallocateObject(this.box);
     }
 
     public addControls() {
@@ -286,7 +292,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         if(!environment.production){
             this.gui.destroy();
         }
-        this.scene = null;
+        this.scene.remove(this.box);
         this.renderer = null;
         this.camera = null;
         this.box = null;

@@ -20,7 +20,6 @@ export class StatsHelperService {
     }
 
     setDatGui(gui: dat.GUI, camera: THREE.PerspectiveCamera){
-        gui = new dat.GUI();
         let options = {
             reset : () => {
                 console.log('reset click');
@@ -38,5 +37,9 @@ export class StatsHelperService {
         cam.open();
 
         gui.add(options, 'reset');
+    }
+
+    destoryDatGui(gui: dat.GUI){
+        gui.destroy();
     }
 }

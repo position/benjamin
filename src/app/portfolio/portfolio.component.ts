@@ -3,7 +3,7 @@ import * as THREE from 'three-full';
 import * as dat from 'dat.gui';
 import { CreateGeomtryService } from '../service/create-geomtry.service';
 import { StatsHelperService } from '../service/stats-helper.service';
-import { FontLoaderService} from '../service/font-loader.service';
+import { SceneService} from '../service/scene.service';
 import { ControlsService} from '../service/controls.service';
 import { SwiperConfigInterface, SwiperAutoplayInterface, SwiperComponent } from 'ngx-swiper-wrapper';
 import { PortfolioData } from '../interface/portfolio';
@@ -18,17 +18,12 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     public gui: dat.GUI;
 
     private renderer: THREE.WebGLRenderer;
-    private camera: THREE.PerspectiveCamera;
-    public scene: THREE.Scene;
-
-    public cameraView: any = {
-        fieldOfView : 50,
-        nearClippingPane : 1,
-        farClippingPane : 1100    
-    };
+    private scene: THREE.Scene = new THREE.Scene();
+    private camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera();
     
     public box: THREE.Mesh;
-    public textWork: THREE.Mesh;
+    public textWork: THREE.Mesh = new THREE.Mesh();
+    readonly textPosition: Object = {x : -11, y : -6, z : 0};
     public animationFrame: any;
 
     private radianX: number = 0;    
@@ -56,8 +51,8 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         private viewContainer: ViewContainerRef,
         private createGeomtry: CreateGeomtryService,
         private guiHelper: StatsHelperService,
-        private fontLoader: FontLoaderService,
-        private controls: ControlsService
+        private controls: ControlsService,
+        private sceneService: SceneService
     ) { 
         if(!environment.production){
             this.guiHelper.addStats(this.elementRef);
@@ -69,10 +64,11 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit(){
-        this.createScene();
-        this.createLight();
-        this.createCamera();
-        this.createText();
+        this.sceneService.createScene(this.scene, 0x262f99);
+        this.sceneService.createLight(this.scene, 0xffffff);
+        this.sceneService.createCamera(this.camera, -33, 1, 33, this.getAspectRatio());
+        this.sceneService.createPlane(this.scene, 0x151b60);
+        this.sceneService.createText('Work', this.scene, this.textWork, 0x11e3ff, this.textPosition);
         this.createBoxGeometry();
         this.startRendering();
         this.addControls();
@@ -84,88 +80,6 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
-    }
-
-    private createScene() {
-        this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0x262f99);
-        this.onCreateSphere();
-        this.createPlane();
-        if(!environment.production){
-            const grid = new THREE.GridHelper(100, 50);
-            const axes = new THREE.AxesHelper(200);
-            //this.scene.add(grid);
-            this.scene.add(axes);
-        }
-    }
-
-    private onCreateSphere(){
-        let material_univ = new THREE.MeshLambertMaterial({
-            color: 0x262f99,
-            side: THREE.BackSide
-        });
-        let geometry_univ = new THREE.SphereGeometry(60, 32, 32);
-        let mesh = new THREE.Mesh(geometry_univ, material_univ);
-        
-        this.scene.add(mesh);
-    }
-
-    private createPlane(){
-        let geometry = new THREE.PlaneGeometry(120, 120, 0);
-        let material = new THREE.MeshStandardMaterial({ color: 0x151b60, side: THREE.DoubleSide });
-        let plane = new THREE.Mesh(geometry, material);
-        plane.rotation.x = -Math.PI / 2;
-        plane.position.set(0, 0, 0);
-        this.scene.add(plane);
-    }
-
-    private async createText(): Promise<void>{
-        let response = await this.fontLoader.onFontLoader();
-        const textGeometry = new THREE.TextGeometry('Work', {
-            font: response,
-            size: 5,
-            height: 1,
-            curveSegment: 12,
-            bevelEnabled: false,
-            side: THREE.DoubleSide
-        });
-        const material = new THREE.MeshPhongMaterial({ 
-            color: 0x11e3ff,
-            specular: 0xffffff,
-            shininess: 30
-        });
-        this.textWork = new THREE.Mesh(textGeometry, material);
-        this.textWork.position.set(-11, -6, 0);
-        this.scene.add(this.textWork);
-    }
-
-    private createLight() {
-        const light = new THREE.DirectionalLight(0xffffff, 1);
-        const lightHelper = new THREE.DirectionalLightHelper( light, 15 );
-        light.position.set(-30, 50, 50);
-        light.angle = Math.PI / 5;
-        this.scene.add(light);
-        this.scene.add(lightHelper);
-
-        const spotLight = new THREE.SpotLight(0xffffff, 1, 30, Math.PI / 4, 1);
-        const spotLightHelper = new THREE.SpotLightHelper( spotLight, 1 );
-        spotLight.position.set(0, 30, 0);
-        //spotLight.castShadow = true;
-        //spotLight.penumbra = 0;
-        //this.scene.add(spotLight);
-        //this.scene.add(spotLightHelper);
-    }
-
-    private createCamera() {
-        let aspectRatio = this.getAspectRatio();
-        this.camera = new THREE.PerspectiveCamera(
-            this.cameraView.fieldOfView,
-            aspectRatio,
-            this.cameraView.nearClippingPane,
-            this.cameraView.farClippingPane
-        );
-        // Set position and look at
-        this.camera.position.set(-33, 1, 43);
     }
 
     private getAspectRatio(): number {

@@ -1,80 +1,95 @@
 import { Injectable } from '@angular/core';
 import * as THREE from 'three-full';
-import * as dat from 'dat.gui';
-
+import { FontLoaderService} from '../service/font-loader.service';
 import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SceneService {
-    private renderer: THREE.WebGLRenderer;
-    private camera: THREE.PerspectiveCamera;
-    public scene: THREE.Scene;
+    readonly cameraView: any = {
+        fieldOfView : 50,
+        nearClippingPane : 1,
+        farClippingPane : 1100    
+    };
+    
+    constructor(private fontLoader: FontLoaderService){ }
 
-    public fieldOfView: number = 50;
-    public nearClippingPane: number = 1;    
-    public farClippingPane: number = 1100;
-
-    public animationFrame: any;
-    constructor(){ }
-
-    public createScene() {
-        this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0xd660d0);
-        this.onCreateSphere();
+    public createScene(scene: THREE.Scene, bgColor: number) {
+        scene.background = new THREE.Color(bgColor);
+        this.onCreateSphere(scene, bgColor);
         if(!environment.production){
             const grid = new THREE.GridHelper(100, 50);
             const axes = new THREE.AxesHelper(200);
-            //this.scene.add(grid);
-            this.scene.add(axes);
+            scene.add(grid);
+            scene.add(axes);
         }
     }
 
-    private onCreateSphere(){
+    private onCreateSphere(scene: THREE.Scene, bgColor: number){
         let material_univ = new THREE.MeshLambertMaterial({
-            color: 0xd660d0,
+            color: bgColor,
             side: THREE.BackSide
         });
         let geometry_univ = new THREE.SphereGeometry(60, 32, 32);
         let mesh = new THREE.Mesh(geometry_univ, material_univ);
         
-        this.scene.add(mesh);
+        scene.add(mesh);
     }
 
-    public createPlane(bgColor: number){
+    public createPlane(scene:THREE.Scene, bgColor: number){
         let geometry = new THREE.PlaneGeometry(120, 120, 0);
         let material = new THREE.MeshStandardMaterial({ color: bgColor, side: THREE.DoubleSide });
         let plane = new THREE.Mesh(geometry, material);
         plane.rotation.x = -Math.PI / 2;
         plane.position.set(0, 0, 0);
-        this.scene.add(plane);
+        scene.add(plane);
     }
 
-    public createLight(lightColor: number) {
+    public createLight(scene:THREE.Scene, lightColor: number) {
         const light = new THREE.DirectionalLight(lightColor, 1);
-        const lightHelper = new THREE.DirectionalLightHelper( light, 15 );
+        
         light.position.set(-30, 50, 50);
         light.angle = Math.PI / 5;
-        this.scene.add(light);
-        this.scene.add(lightHelper);
-
-        const spotLight = new THREE.SpotLight(lightColor, 1, 30, Math.PI / 4, 1);
-        const spotLightHelper = new THREE.SpotLightHelper( spotLight, 1 );
-        spotLight.position.set(0, 30, 0);
+        scene.add(light);
+        if(!environment.production){
+            const lightHelper = new THREE.DirectionalLightHelper( light, 15 );
+            scene.add(lightHelper);
+        }
+        //const spotLight = new THREE.SpotLight(lightColor, 1, 30, Math.PI / 4, 1);
+        //const spotLightHelper = new THREE.SpotLightHelper( spotLight, 1 );
+        //spotLight.position.set(0, 30, 0);
         //this.scene.add(spotLight);
         //this.scene.add(spotLightHelper);
     }
 
-    public createCamera(x: number, y: number, z: number, aspectRatio: number) {
-        this.camera = new THREE.PerspectiveCamera(
-            this.fieldOfView,
-            aspectRatio,
-            this.nearClippingPane,
-            this.farClippingPane
-        );
+    public createCamera(camera: THREE.PerspectiveCamera, x: number, y: number, z: number, aspectRatio: number) {
+        camera.fov = this.cameraView.fieldOfView;
+        camera.near = this.cameraView.nearClippingPane;
+        camera.far = this.cameraView.farClippingPane;
+        camera.aspect = aspectRatio;
         // Set position and look at
-        this.camera.position.set(x, y, z);
+        camera.position.set(x, y, z);
     }
     
+    public async createText(text: string, scene:THREE.Scene, textMesh: THREE.Mesh, fontColor: number, position: any): Promise<void>{
+        let response = await this.fontLoader.onFontLoader();
+        const textGeometry = new THREE.TextGeometry(text, {
+            font: response,
+            size: 5,
+            height: 1,
+            curveSegment: 12,
+            bevelEnabled: false,
+            side: THREE.DoubleSide
+        });
+        const material = new THREE.MeshPhongMaterial({ 
+            color: fontColor,
+            specular: 0xffffff,
+            shininess: 30
+        });
+        textMesh.geometry = textGeometry;
+        textMesh.material = material;
+        textMesh.position.set(position.x, position.y, position.z);
+        scene.add(textMesh);
+    }
 }

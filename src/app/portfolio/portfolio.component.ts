@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit, OnDestroy, ElementRef, ViewChild, HostListener, ViewContainerRef } from '@angular/core';
 import * as THREE from 'three-full';
 import * as dat from 'dat.gui';
-import { CreateGeomtryService } from '../service/create-geomtry.service';
+import { CreateGeometryService } from '../service/create-geometry.service';
 import { StatsHelperService } from '../service/stats-helper.service';
 import { SceneService} from '../service/scene.service';
 import { ControlsService} from '../service/controls.service';
@@ -49,7 +49,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(
         private elementRef: ElementRef,
         private viewContainer: ViewContainerRef,
-        private createGeomtry: CreateGeomtryService,
+        private createGeometry: CreateGeometryService,
         private guiHelper: StatsHelperService,
         private controls: ControlsService,
         private sceneService: SceneService
@@ -69,6 +69,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         this.sceneService.createCamera(this.camera, -33, 1, 33, this.getAspectRatio());
         this.sceneService.createPlane(this.scene, 0x151b60);
         this.sceneService.createText('Work', this.scene, this.textWork, 0x11e3ff, this.textPosition);
+        //this.sceneService.createGeometrys(this.scene, this.box, 20, 'box');
         this.createBoxGeometry();
         this.startRendering();
         this.addControls();
@@ -135,7 +136,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public createBoxGeometry(){
-        this.box = this.createGeomtry.setBoxs(20);
+        this.box = this.createGeometry.setBoxs(20);
         this.box.forEach((box: any) => {
             this.scene.add(box);
         });
@@ -202,11 +203,10 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnDestroy(){
         console.log('Destoryed!!');
         this.destoryRender();
-        this.createGeomtry.destoryGeometry();
+        this.createGeometry.destoryGeometry(this.scene, this.box);
         if(!environment.production){
             this.gui.destroy();
         }
-        this.scene.remove(this.box);
         this.renderer = null;
         this.camera = null;
         this.box = null;

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as THREE from 'three-full';
 import { FontLoaderService} from '../service/font-loader.service';
+//import { CreateGeometryService } from '../service/create-geometry.service';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -13,7 +14,10 @@ export class SceneService {
         farClippingPane : 1100    
     };
     
-    constructor(private fontLoader: FontLoaderService){ }
+    constructor(
+        private fontLoader: FontLoaderService
+        //private createGeometry: CreateGeometryService
+        ){ }
 
     public createScene(scene: THREE.Scene, bgColor: number) {
         scene.background = new THREE.Color(bgColor);
@@ -92,4 +96,27 @@ export class SceneService {
         textMesh.position.set(position.x, position.y, position.z);
         scene.add(textMesh);
     }
+    /*
+    public createGeometrys(scene:THREE.Scene, geometry: THREE.Mesh, amount: number, type: string){
+        switch(type){
+            case 'sphere':
+                geometry = this.createGeometry.setSphere(amount);
+            break;
+
+            case 'octahedron':
+                geometry = this.createGeometry.setOctahedron(amount);
+            break;
+
+            case 'box':
+                geometry = this.createGeometry.setBoxs(amount);
+            break;
+
+            default:
+                console.error('Find not type!!');
+        }
+        geometry.forEach((item: any) => {
+            scene.add(item);
+        });
+    }
+    */
 }

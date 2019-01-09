@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, ElementRef, ViewChild, HostListener, ViewContainerRef } from '@angular/core';
 import * as THREE from 'three-full';
 import * as dat from 'dat.gui';
-import { CreateGeomtryService } from '../service/create-geomtry.service';
+import { CreateGeometryService } from '../service/create-geometry.service';
 import { StatsHelperService } from '../service/stats-helper.service';
 import { ControlsService} from '../service/controls.service';
 import { SceneService} from '../service/scene.service';
@@ -30,7 +30,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     constructor(
         private elementRef: ElementRef,
         private viewContainer: ViewContainerRef,
-        private createGeomtry: CreateGeomtryService,
+        private createGeometry: CreateGeometryService,
         private guiHelper: StatsHelperService,
         private controls: ControlsService,
         private sceneService: SceneService
@@ -47,6 +47,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
         this.sceneService.createCamera(this.camera, 20, 30, 60, this.getAspectRatio());
         this.sceneService.createPlane(this.scene, 0x2b2f26);
         this.sceneService.createText('Benjamin', this.scene, this.textBenjamin, 0xfff600, this.textPosition);
+        //this.sceneService.createGeometrys(this.scene, this.sphere, 20, 'sphere');
         this.createSphereGeometry();
         this.startRendering();
         this.addControls();
@@ -113,7 +114,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     }
 
     public createSphereGeometry(){
-        this.sphere = this.createGeomtry.setSphere(20);
+        this.sphere = this.createGeometry.setSphere(20);
         this.sphere.forEach((cube: any) => {
             this.scene.add(cube);
         });
@@ -176,11 +177,10 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     ngOnDestroy(){
         console.log('Destoryed!!');
         this.destoryRender();
-        this.createGeomtry.destoryGeometry();
+        this.createGeometry.destoryGeometry(this.scene, this.sphere);
         if(!environment.production){
             this.gui.destroy();
         }
-        this.scene.remove(this.sphere);
         this.renderer = null;
         this.camera = null;
         this.sphere = null;

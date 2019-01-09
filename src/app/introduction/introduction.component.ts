@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, ElementRef, ViewChild, HostListener, ViewContainerRef } from '@angular/core';
 import * as THREE from 'three-full';
 import * as dat from 'dat.gui';
-import { CreateGeomtryService } from '../service/create-geomtry.service';
+import { CreateGeometryService } from '../service/create-geometry.service';
 import { StatsHelperService } from '../service/stats-helper.service';
 import { ControlsService} from '../service/controls.service';
 import { SceneService} from '../service/scene.service';
@@ -34,7 +34,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
     constructor(
         private elementRef: ElementRef,
         private viewContainer: ViewContainerRef,
-        private createGeomtry: CreateGeomtryService,
+        private createGeomtry: CreateGeometryService,
         private guiHelper: StatsHelperService,
         
         private controls: ControlsService,
@@ -52,6 +52,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
         this.sceneService.createCamera(this.camera, -41, 11, 55, this.getAspectRatio());
         this.sceneService.createPlane(this.scene, 0x5b2158);
         this.sceneService.createText('UX Engineer', this.scene, this.textEngineer, 0xff4799, this.textPosition);
+        //this.sceneService.createGeometrys(this.scene, this.octahedron, 20, 'octahedron');
         this.createOctahedronGeometry();
         this.startRendering();
         this.addControls();
@@ -180,11 +181,10 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
     ngOnDestroy(){
         console.log('Destoryed!!');
         this.destoryRender();
-        this.createGeomtry.destoryGeometry();
+        this.createGeomtry.destoryGeometry(this.scene, this.octahedron);
         if(!environment.production){
             this.gui.destroy();
         }
-        this.scene.remove(this.octahedron);
         this.renderer = null;
         this.camera = null;
         this.octahedron = null;

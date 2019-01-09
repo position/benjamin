@@ -9,12 +9,11 @@ import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 
 import { AppComponent } from './app.component';
-import { SceneComponent } from './scene/scene.component';
 import { ProfileComponent } from './profile/profile.component';
 import { IntroductionComponent } from './introduction/introduction.component';
 import { PortfolioComponent } from './portfolio/portfolio.component';
 
-import { CreateGeomtryService } from './service/create-geomtry.service';
+import { CreateGeometryService } from './service/create-geometry.service';
 import { SceneService } from './service/scene.service';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
@@ -25,7 +24,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 @NgModule({
 	declarations: [
 		AppComponent,
-		SceneComponent,
 		ProfileComponent,
 		IntroductionComponent,
 		PortfolioComponent
@@ -38,7 +36,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 		SwiperModule
 	],
 	providers: [
-		CreateGeomtryService,
+		CreateGeometryService,
 		SceneService,
 		{
 			provide: SWIPER_CONFIG,

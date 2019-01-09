@@ -4,7 +4,7 @@ import * as THREE from 'three-full';
 @Injectable({
 	providedIn: 'root'
 })
-export class CreateGeomtryService {
+export class CreateGeometryService {
     public scene: THREE.Scene;
     public mesh: THREE.Mesh;
     public box: THREE.BoxBufferGeometry;
@@ -65,11 +65,7 @@ export class CreateGeomtryService {
         return spheres;
     }
 
-    public destoryGeometry(){
-        this.scene = null;
-        this.box = null;
-        this.octahedron = null;
-        this.sphere = null;
+    public destoryGeometry(scene: THREE.Scene, geometry: THREE.Mesh){
+        scene.remove(geometry);
     }
-
 }

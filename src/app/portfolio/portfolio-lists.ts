@@ -3,17 +3,17 @@ import { PortfolioData } from '../interface/portfolio';
 export const PortfolioLists: PortfolioData[] = [
     {
         thumnail: 'img_chivas.jpg',
-        project: 'Ballantine',
-        participation: 'Angular(20%), Sass(70%)',
-        subject: '포커 게임 클라이언트 웹버전',
-        link:'https://swt.ggpoker.network'
-    },
-    {
-        thumnail: 'img_chivas.jpg',
         project: 'Chivas(포커 게임 클라이언트 설치형)',
         participation: 'Angular(20%), Sass(70%)',
         subject: '기존 설치형 WPF 포커 게임 클라이언트를 Html5 버전으로 개발',
         link: null
+    },
+    {
+        thumnail: 'img_chivas.jpg',
+        project: 'Ballantine',
+        participation: 'Angular(20%), Sass(70%)',
+        subject: '포커 게임 클라이언트 웹버전',
+        link:'https://swt.ggpoker.network'
     },
     {
         thumnail: 'img_ux.jpg',

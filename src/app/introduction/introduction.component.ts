@@ -15,11 +15,11 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
     public assetPath: string = environment.assetsPath;
     public imgPath: string = environment.assetsPath + 'img/';
     public docPath: string = environment.assetsPath + 'doc/';
-    public gui: dat.GUI;
+    public gui: dat.GUI = new dat.GUI();
 
-    private renderer: THREE.WebGLRenderer;
+    public renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
     private scene: THREE.Scene = new THREE.Scene();
-    private camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera();
+    public camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera();
 
     public octahedron: THREE.Mesh;
     public textEngineer: THREE.Mesh = new THREE.Mesh();
@@ -40,9 +40,6 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
         private controls: ControlsService,
         private sceneService: SceneService
         ) {
-        if(!environment.production){
-            this.guiHelper.addStats(this.elementRef);
-        }
     }
 
     /* LIFECYCLE */
@@ -58,7 +55,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
         this.addControls();
 
         if(!environment.production){
-            this.setGui();
+            //this.setGui();
         }
     }
 
@@ -147,44 +144,10 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
         }
     }
 
-    public setGui(){
-        this.gui = new dat.GUI();
-        let options = {
-            reset : () => {
-                console.log('reset click');
-                this.camera.position.x = 20;
-                this.camera.position.y = 30;
-                this.camera.position.z = 60;
-            }   
-        };
-        let cam = this.gui.addFolder('Camera');
-        cam.add(this.camera.position, 'x', -200, 200, 1).listen();
-        cam.add(this.camera.position, 'y', -200, 200, 1).listen();
-        cam.add(this.camera.position, 'z', -200, 200, 1).listen();
-        cam.add(this.camera, 'fov', 1, 150).listen();
-        
-        cam.open();
-
-        this.gui.add(options, 'reset');
-    }
-    
-    @HostListener('window:resize', ['$event'])
-    public onResize(event: Event) {
-        this.canvas.style.width = "100%";
-        this.canvas.style.height = "100%";
-        //console.log("onResize: " + this.canvas.clientWidth + ", " + this.canvas.clientHeight);
-        this.camera.aspect = this.getAspectRatio();
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
-    }
- 
     ngOnDestroy(){
         console.log('Destoryed!!');
         this.destoryRender();
         this.createGeomtry.destoryGeometry(this.scene, this.octahedron);
-        if(!environment.production){
-            this.gui.destroy();
-        }
         this.renderer = null;
         this.camera = null;
         this.octahedron = null;

@@ -15,6 +15,8 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
 
 import { CreateGeometryService } from './service/create-geometry.service';
 import { SceneService } from './service/scene.service';
+import { ResizeDirective } from './directive/resize.directive';
+import { DatGuiDirective } from './directive/dat-gui.directive';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 	direction: 'horizontal',
@@ -26,7 +28,9 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 		AppComponent,
 		ProfileComponent,
 		IntroductionComponent,
-		PortfolioComponent
+		PortfolioComponent,
+		ResizeDirective,
+		DatGuiDirective
 	],
 	imports: [
 		BrowserModule,

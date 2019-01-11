@@ -16,9 +16,8 @@ export class FontLoaderService {
             this.textLoader.load(this.fontPath + 'droid_serif_regular.typeface.json', (font: any) => {
                 if(font){
                     resolve(font);
-                } else {
-                    reject(new Error('Request is failed'));
                 }
+                reject(new Error('Request is failed'));
             });
         });
     }

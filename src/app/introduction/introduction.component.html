@@ -1,5 +1,5 @@
 <div class="sceneArea">
-    <canvas #canvas></canvas>
+    <canvas #canvas appResize [canvas]="canvas" [camera]="camera" [renderer]="renderer" appDatGui [datGui]="gui" [datCamera]="camera"></canvas>
 </div>
 <section class="introductionWrap sectionArea">
     <h2 class="introTitle">Introduction</h2>

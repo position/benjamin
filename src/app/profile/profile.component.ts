@@ -12,10 +12,10 @@ import { environment } from '../../environments/environment';
     templateUrl: './profile.component.html'
 })
 export class ProfileComponent implements AfterViewInit, OnDestroy {
-    public gui: dat.GUI;
-    private renderer: THREE.WebGLRenderer;
+    public gui: dat.GUI = new dat.GUI();
+    public renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
     private scene: THREE.Scene = new THREE.Scene();
-    private camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera();
+    public camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera();
 
     public sphere: THREE.Mesh;
     public textBenjamin: THREE.Mesh = new THREE.Mesh();
@@ -51,10 +51,6 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
         this.createSphereGeometry();
         this.startRendering();
         this.addControls();
-
-        if(!environment.production){
-            this.setGui();
-        }
     }
 
     private get canvas(): HTMLCanvasElement {
@@ -141,46 +137,11 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
             }
         }
     }
-
-    public setGui(){
-        this.gui = new dat.GUI();
-        let options = {
-            reset : () => {
-                console.log('reset click');
-                this.camera.position.x = 20;
-                this.camera.position.y = 30;
-                this.camera.position.z = 60;
-            }   
-        };
-        let cam = this.gui.addFolder('Camera');
-        cam.add(this.camera.position, 'x', -200, 200, 1).listen();
-        cam.add(this.camera.position, 'y', -200, 200, 1).listen();
-        cam.add(this.camera.position, 'z', -200, 200, 1).listen();
-        cam.add(this.camera, 'fov', 1, 150).listen();
-        
-        cam.open();
-
-        this.gui.add(options, 'reset');
-    }
     
-    @HostListener('window:resize', ['$event'])
-    public onResize(event: Event) {
-        this.canvas.style.width = "100%";
-        this.canvas.style.height = "100%";
-        //console.log("onResize: " + this.canvas.clientWidth + ", " + this.canvas.clientHeight);
-
-        this.camera.aspect = this.getAspectRatio();
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
-    }
-
     ngOnDestroy(){
         console.log('Destoryed!!');
         this.destoryRender();
         this.createGeometry.destoryGeometry(this.scene, this.sphere);
-        if(!environment.production){
-            this.gui.destroy();
-        }
         this.renderer = null;
         this.camera = null;
         this.sphere = null;

@@ -25,14 +25,21 @@ export const PortfolioLists: PortfolioData[] = [
     {
         thumnail: 'img_leaflet_v2.jpg',
         project: 'Leaflet',
-        participation: 'Html(100%), Css(100%), Javascript(50%)',
-        subject: '브랜드용 포커 게임 홍보 사이트로 반응형 웹으로 구현 되었습니다.',
+        participation: 'Html(100%), Sass(100%), Angular(50%)',
+        subject: '브랜드용 포커 게임 홍보 사이트로 Angular로 구성되었고 반응형 웹으로 구현 되었습니다.',
         link: 'https://leaflet.good-game-network.com/leaflet/SWT/main/en?tz=%2009:00'
+    },
+    {
+        thumnail: 'img_portal.png',
+        project: 'Game Portal Lobby',
+        participation: 'Html(70%), Css(70%), KnockoutJS(50%)',
+        subject: 'SPA의 라이브러리인 knockout.js를 사용하여 포커 게임 로비를 구현하였습니다.',
+        link: null
     },
     {
         thumnail: 'img_intra.jpg',
         project: '엔도어즈 인트라넷 리뉴얼',
-        participation: 'Html, css, Javascript의 커스터마이징 (참여도:100%)',
+        participation: 'Html, Css, Javascript의 커스터마이징 (참여도:100%), Ajax(50%)',
         subject: '프레임워크인 부트스트랩 3를 사용하여 엔도어즈의 인트라넷 사이트를 데스크탑과 모바일 버전 두가지로 구축하였습니다.',
         link: null
     },

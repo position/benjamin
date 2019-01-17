@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -17,6 +17,8 @@ import { CreateGeometryService } from './service/create-geometry.service';
 import { SceneService } from './service/scene.service';
 import { ResizeDirective } from './directive/resize.directive';
 import { DatGuiDirective } from './directive/dat-gui.directive';
+import { MyFamilyComponent } from './my-family/my-family.component';
+
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 	direction: 'horizontal',
@@ -30,7 +32,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 		IntroductionComponent,
 		PortfolioComponent,
 		ResizeDirective,
-		DatGuiDirective
+		DatGuiDirective,
+		MyFamilyComponent
 	],
 	imports: [
 		BrowserModule,

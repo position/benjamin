@@ -29,7 +29,7 @@ $ux-dashboard-kor-font-path:'./assets/fonts/NanumGothic-Regular.woff';
 
 *{margin:0;padding:0;}
 html, body{background-color:$black-color;height:100%;overflow:hidden;}
-body{font-family: 'Apple SD Gothic Neo', 'Roboto', 'NanumGothic', sans-serif; font-size:1em;}
+body{font-family: 'Apple SD Gothic Neo', 'Roboto', 'NanumGothic', sans-serif; font-size:1em; color: $white-color;}
 h1, h2, h3, h4, h5, h6{font-weight:normal;}
 a{text-decoration: underline; color:$white-color;}
 ol, ul, dt{list-style-type: none;}
@@ -50,6 +50,11 @@ uxe-benjamin{
 	display: block;
 	position: relative;
 	height:100%;
+}
+.kakaoLoginBtn{
+	position:fixed;
+	top:40px;
+	right:10px;
 }
 
 #scene{

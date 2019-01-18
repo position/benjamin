@@ -39,6 +39,7 @@ router-outlet ~ * {
 	height: 100%;
 	width: 100%;
 }
+.hidden{display:none !important;}
 /* scroll style start */
 ::-webkit-scrollbar{width:6px;}
 ::-webkit-scrollbar-track{background:$scrollbar-track;border-left:1px solid $scrollbar-line;}
@@ -51,10 +52,45 @@ uxe-benjamin{
 	position: relative;
 	height:100%;
 }
-.kakaoLoginBtn{
+.kakaoLoginArea{
+	display:flex;
 	position:fixed;
 	top:40px;
 	right:10px;
+	> li{
+		margin-right:10px;
+		&.login{
+			transform:scale(0.6);
+		}
+		&.profile{
+			.nickname, .thumnail{
+				display:inline-block;
+				vertical-align:middle;
+				margin-left:10px;
+			}
+			.thumnail{
+				> img{
+					border-radius:50%;
+					width:50px;
+					height:50px;
+				}
+			}
+		}
+		&.logout{
+			a{
+				display:block;
+				background-color:#FFEB00;
+				border-radius:5px;
+				color:#3C1E1E;
+				font-weight: bold;
+				padding:0 10px;
+				height:47px;
+				line-height:45px;
+				text-decoration:none;
+				&:hover{background-color:darken(#FFEB00, 10%);}
+			}
+		}
+	}
 }
 
 #scene{

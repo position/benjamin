@@ -1,13 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { KakaoLoginService } from './service/kakao-login.service';
+import { Subscription } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 import { fadeAnimation } from './app-routing.animation';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { mergeMap, map, filter } from 'rxjs/operators';
+import { myProfile } from './interface/profile';
 
 @Component({
     selector: 'uxe-benjamin',
     templateUrl: './app.component.html',
-    animations: [ fadeAnimation ]
+    animations: [ fadeAnimation ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit{
     public navLinks = [
@@ -16,16 +20,43 @@ export class AppComponent implements OnInit{
         { path: 'portfolio', label: 'Portfolio' }
     ];
 
+    private myProfileSubscription: Subscription;
+	private isLoginSubscription: Subscription;
+	public myProfileList: myProfile[] = [];
+	public isLogin: boolean = false;
+
     constructor(
         private titleService: Title,
         private router: Router,
-        private activatedRoute: ActivatedRoute
+        private activatedRoute: ActivatedRoute,
+        private loginService: KakaoLoginService,
+		private zone: NgZone,
+		private cd: ChangeDetectorRef
     ){
     }
 
     ngOnInit(){
         this.onActiveRouteTitle();
         //this.onActiveRoutePath();
+
+        this.loginService.getLoginToken();
+
+		this.myProfileSubscription = this.loginService.response.subscribe((item) => {
+			this.zone.runOutsideAngular(() => {
+				console.log('item', item);
+				this.myProfileList.push(item.properties);
+				console.log('this.myProfileList', this.myProfileList, this.isLogin);
+				this.zone.run(() => { this.cd.markForCheck(); });
+			});
+		});
+
+		this.isLoginSubscription = this.loginService.isLogin.subscribe(isLogin => {
+			this.zone.runOutsideAngular(() => {
+				this.isLogin = isLogin;
+				console.log('islogin', isLogin);
+				this.zone.run(() => { this.cd.markForCheck(); });
+			});
+		});
     }
 
     private onActiveRouteTitle(){
@@ -60,4 +91,9 @@ export class AppComponent implements OnInit{
         );
     }
     */
+    ngOnDestroy(){
+        this.loginService.kakaoCleanup();
+        this.myProfileSubscription.unsubscribe();
+        this.isLoginSubscription.unsubscribe();
+    }
 }

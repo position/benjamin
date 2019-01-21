@@ -8,6 +8,10 @@ import * as Kakao from '../../assets/js/kakao.min.js';
 })
 export class KakaoLoginService {
     readonly appKey: string ='5bf586648691c53a1e9e38bce5b06d03';
+    readonly apiUri: any = {
+        myProfile : '/v2/user/me',
+        myFriends : '/v1/friends?offset=1'
+    };
     public response: Subject<any>;
     public isLogin: BehaviorSubject<boolean>;
     
@@ -27,7 +31,8 @@ export class KakaoLoginService {
             success: (auth: any) => {
                 console.log('auth', auth);
                 this.isLogin.next(auth ? true : false);
-                this.getMyData();
+                //this.getApiRequest(this.apiUri.myProfile);
+                this.getApiRequest(this.apiUri.myFriends);
             },
             fail: (err: any) => {
                 alert(JSON.stringify(err));
@@ -35,10 +40,11 @@ export class KakaoLoginService {
         });
     }
 
-    getMyData(){
+    getApiRequest(uri: string){
         Kakao.API.request({
-            url: '/v2/user/me',
+            url: uri,
             success: (res: any) => {
+                console.log('res', res);
                 this.response.next(res);
             },
             fail: (err: any) => {

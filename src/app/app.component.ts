@@ -45,7 +45,6 @@ export class AppComponent implements OnInit{
 			this.zone.runOutsideAngular(() => {
 				console.log('item', item);
 				this.myProfileList.push(item.properties);
-				console.log('this.myProfileList', this.myProfileList, this.isLogin);
 				this.zone.run(() => { this.cd.markForCheck(); });
 			});
 		});

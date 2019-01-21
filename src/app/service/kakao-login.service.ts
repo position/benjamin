@@ -10,15 +10,17 @@ export class KakaoLoginService {
     readonly appKey: string ='5bf586648691c53a1e9e38bce5b06d03';
     readonly apiUri: any = {
         myProfile : '/v2/user/me',
-        myFriends : '/v1/friends?offset=1'
+        myFriends : '/v1/friends?limit=3'
     };
-    public response: Subject<any>;
+    public responseProfile: Subject<any>;
+    public responseFriends: Subject<any>;
     public isLogin: BehaviorSubject<boolean>;
     
     constructor(
         @Inject (HttpClient) protected http: HttpClient
     ) { 
-        this.response = new Subject<any>();
+        this.responseProfile = new Subject<any>();
+        this.responseFriends = new Subject<any>();
         this.isLogin = new BehaviorSubject<boolean>(false);
     }
     
@@ -31,8 +33,10 @@ export class KakaoLoginService {
             success: (auth: any) => {
                 console.log('auth', auth);
                 this.isLogin.next(auth ? true : false);
-                //this.getApiRequest(this.apiUri.myProfile);
-                this.getApiRequest(this.apiUri.myFriends);
+                this.getProfileApiRequest(this.apiUri.myProfile);
+                
+                //this.getFriendsApiRequest(this.apiUri.myFriends);
+                
             },
             fail: (err: any) => {
                 alert(JSON.stringify(err));
@@ -40,12 +44,25 @@ export class KakaoLoginService {
         });
     }
 
-    getApiRequest(uri: string){
+    getProfileApiRequest(uri: string){
         Kakao.API.request({
             url: uri,
             success: (res: any) => {
                 console.log('res', res);
-                this.response.next(res);
+                this.responseProfile.next(res);
+            },
+            fail: (err: any) => {
+                alert(JSON.stringify(err));
+            }
+        });
+    }
+
+    getFriendsApiRequest(uri: string){
+        Kakao.API.request({
+            url: uri,
+            success: (res: any) => {
+                console.log('res', res);
+                this.responseFriends.next(res);
             },
             fail: (err: any) => {
                 alert(JSON.stringify(err));

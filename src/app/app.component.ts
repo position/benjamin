@@ -21,8 +21,9 @@ export class AppComponent implements OnInit{
     ];
 
     private myProfileSubscription: Subscription;
+    private myFriendsSubscription: Subscription;
 	private isLoginSubscription: Subscription;
-	public myProfileList: myProfile[] = [];
+    public myProfileList: myProfile[] = [];
 	public isLogin: boolean = false;
 
     constructor(
@@ -41,10 +42,17 @@ export class AppComponent implements OnInit{
 
         this.loginService.getLoginToken();
 
-		this.myProfileSubscription = this.loginService.response.subscribe((item) => {
+		this.myProfileSubscription = this.loginService.responseProfile.subscribe((item) => {
 			this.zone.runOutsideAngular(() => {
 				console.log('item', item);
 				this.myProfileList.push(item.properties);
+				this.zone.run(() => { this.cd.markForCheck(); });
+			});
+        });
+        
+        this.myFriendsSubscription = this.loginService.responseFriends.subscribe((item) => {
+			this.zone.runOutsideAngular(() => {
+				console.log('friends item', item);
 				this.zone.run(() => { this.cd.markForCheck(); });
 			});
 		});
@@ -93,6 +101,7 @@ export class AppComponent implements OnInit{
     ngOnDestroy(){
         this.loginService.kakaoCleanup();
         this.myProfileSubscription.unsubscribe();
+        this.myFriendsSubscription.unsubscribe();
         this.isLoginSubscription.unsubscribe();
     }
 }

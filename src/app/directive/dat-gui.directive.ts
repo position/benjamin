@@ -35,8 +35,9 @@ export class DatGuiDirective implements OnInit{
     }
 
     ngOnDestroy(){
-        this.gui.destroy();
+        if(this.gui != null){
+            this.gui.destroy();
+        }
     }
-
 }
 

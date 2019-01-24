@@ -15,7 +15,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
     public assetPath: string = environment.assetsPath;
     public imgPath: string = environment.assetsPath + 'img/';
     public docPath: string = environment.assetsPath + 'doc/';
-    public gui: dat.GUI = new dat.GUI();
+    public gui: dat.GUI = !environment.production ? new dat.GUI() : null;
 
     public renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
     private scene: THREE.Scene = new THREE.Scene();
@@ -55,7 +55,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
         this.addControls();
 
         if(!environment.production){
-            //this.setGui();
+            this.guiHelper.addStats(this.elementRef);
         }
     }
 

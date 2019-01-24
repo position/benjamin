@@ -5,17 +5,16 @@ import { environment } from '../../environments/environment';
 @Injectable({
     providedIn: 'root'
 })
-export class FontLoaderService {
-    private textLoader = new THREE.FontLoader();
-    private fontPath: string = environment.assetsPath + 'fonts/';
-
+export class TextureLoaderService {
+    private textureLoader: THREE.TextureLoader = new THREE.TextureLoader();
+    private imgPath: string = environment.assetsPath + 'img/';
     constructor() { }
 
-    public onFontLoader(): Promise<any>{
+    public onLoad(imgName: string){
         return new Promise<void>((resolve, reject) => {
-            this.textLoader.load(this.fontPath + 'droid_serif_regular.typeface.json', (font: any) => {
-                if(font){
-                    resolve(font);
+            this.textureLoader.load(this.imgPath + imgName, (texture: any) => {
+                if(texture){
+                    resolve(texture);
                 }
                 reject(new Error('Request is failed'));
             });

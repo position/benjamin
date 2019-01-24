@@ -39,9 +39,8 @@ export class AppComponent implements OnInit{
     ngOnInit(){
         this.onActiveRouteTitle();
         //this.onActiveRoutePath();
-
+        
         this.loginService.getLoginToken();
-
 		this.myProfileSubscription = this.loginService.responseProfile.subscribe((item) => {
 			this.zone.runOutsideAngular(() => {
 				console.log('item', item);

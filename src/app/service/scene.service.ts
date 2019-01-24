@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as THREE from 'three-full';
 import { FontLoaderService} from '../service/font-loader.service';
+import { TextureLoaderService} from '../service/texture-loader.service';
 //import { CreateGeometryService } from '../service/create-geometry.service';
 import { environment } from '../../environments/environment';
 
@@ -15,7 +16,8 @@ export class SceneService {
     };
     
     constructor(
-        private fontLoader: FontLoaderService
+        private fontLoader: FontLoaderService,
+        private texture: TextureLoaderService
         //private createGeometry: CreateGeometryService
         ){ }
 
@@ -41,9 +43,11 @@ export class SceneService {
         scene.add(mesh);
     }
 
-    public createPlane(scene:THREE.Scene, bgColor: number){
+    public async createPlane(scene:THREE.Scene, bgColor: number){
+        let normalMapImg: string = "sand_normal_map.jpg";
+        let sandBg = await this.texture.onLoad(normalMapImg);
         let geometry = new THREE.PlaneGeometry(120, 120, 0);
-        let material = new THREE.MeshStandardMaterial({ color: bgColor, side: THREE.DoubleSide });
+        let material = new THREE.MeshStandardMaterial({ color: bgColor, side: THREE.DoubleSide, normalMap: sandBg });
         let plane = new THREE.Mesh(geometry, material);
         plane.rotation.x = -Math.PI / 2;
         plane.position.set(0, 0, 0);

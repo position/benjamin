@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
-import { KakaoLoginService } from './service/kakao-login.service';
 import { Subscription } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 import { fadeAnimation } from './app-routing.animation';
@@ -20,17 +19,12 @@ export class AppComponent implements OnInit{
         { path: 'portfolio', label: 'Portfolio' }
     ];
 
-    private myProfileSubscription: Subscription;
-    private myFriendsSubscription: Subscription;
-	private isLoginSubscription: Subscription;
     public myProfileList: myProfile[] = [];
-	public isLogin: boolean = false;
 
     constructor(
         private titleService: Title,
         private router: Router,
         private activatedRoute: ActivatedRoute,
-        private loginService: KakaoLoginService,
 		private zone: NgZone,
 		private cd: ChangeDetectorRef
     ){
@@ -39,30 +33,6 @@ export class AppComponent implements OnInit{
     ngOnInit(){
         this.onActiveRouteTitle();
         //this.onActiveRoutePath();
-        
-        this.loginService.getLoginToken();
-		this.myProfileSubscription = this.loginService.responseProfile.subscribe((item) => {
-			this.zone.runOutsideAngular(() => {
-				console.log('item', item);
-				this.myProfileList.push(item.properties);
-				this.zone.run(() => { this.cd.markForCheck(); });
-			});
-        });
-        
-        this.myFriendsSubscription = this.loginService.responseFriends.subscribe((item) => {
-			this.zone.runOutsideAngular(() => {
-				console.log('friends item', item);
-				this.zone.run(() => { this.cd.markForCheck(); });
-			});
-		});
-
-		this.isLoginSubscription = this.loginService.isLogin.subscribe(isLogin => {
-			this.zone.runOutsideAngular(() => {
-				this.isLogin = isLogin;
-				console.log('islogin', isLogin);
-				this.zone.run(() => { this.cd.markForCheck(); });
-			});
-		});
     }
 
     private onActiveRouteTitle(){
@@ -98,9 +68,5 @@ export class AppComponent implements OnInit{
     }
     */
     ngOnDestroy(){
-        this.loginService.kakaoCleanup();
-        this.myProfileSubscription.unsubscribe();
-        this.myFriendsSubscription.unsubscribe();
-        this.isLoginSubscription.unsubscribe();
     }
 }

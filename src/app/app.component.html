@@ -1,4 +1,3 @@
-<!--<scene id="scene" [routePath]="routePath"></scene>-->
 <article class="benjaminContainer" [@fadeAnimation]="page.isActivated ? page.activatedRoute : ''">
     <header class="benjaminHeader">
         <h1>UXE. Benjamin</h1>
@@ -7,14 +6,6 @@
                 {{link.label}}
             </a>
         </nav>
-        <ul class="kakaoLoginArea">
-            <li class="login" [class.hidden]="isLogin"><a id="kakao-login-btn" class="kakaoLoginBtn"></a></li>
-            <li class="profile" *ngFor="let profile of myProfileList">
-                <span class="nickname">{{ profile.nickname }}</span>
-                <span class="thumnail"><img [src]="profile.thumbnail_image" [alt]="profile.nickname"></span>
-            </li>
-            <li class="logout" [class.hidden]="!isLogin"><a href="http://developers.kakao.com/logout">로그아웃</a></li>
-        </ul>
     </header>
     <section class="benjaminSection">
         <router-outlet #page="outlet"></router-outlet>

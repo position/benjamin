@@ -23,6 +23,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
 
     public octahedron: THREE.Mesh;
     public textEngineer: THREE.Mesh = new THREE.Mesh();
+    public cameraPosition: any = {x : -41, y : 11, z : 55};
     readonly textPosition: Object = {x : -20, y : -6, z : 0};
     public animationFrame: any;
 
@@ -46,7 +47,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
     ngAfterViewInit() {
         this.sceneService.createScene(this.scene, 0xd660d0);
         this.sceneService.createLight(this.scene, 0xffffff);
-        this.sceneService.createCamera(this.camera, -41, 11, 55, this.getAspectRatio());
+        this.sceneService.createCamera(this.camera, this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z, this.getAspectRatio());
         this.sceneService.createPlane(this.scene, 0x5b2158);
         this.sceneService.createText('UX Engineer', this.scene, this.textEngineer, 0xff4799, this.textPosition);
         //this.sceneService.createGeometrys(this.scene, this.octahedron, 20, 'octahedron');

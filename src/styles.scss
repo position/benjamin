@@ -51,6 +51,9 @@ uxe-benjamin{
 	display: block;
 	position: relative;
 	height:100%;
+	&::after{
+		content:url(./assets/img/sand_normal_map.jpg);
+	}
 }
 
 #scene{

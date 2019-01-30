@@ -23,6 +23,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     
     public box: THREE.Mesh;
     public textWork: THREE.Mesh = new THREE.Mesh();
+    public cameraPosition: any = {x : -33, y : 1, z : 33};
     readonly textPosition: Object = {x : -11, y : -6, z : 0};
     public animationFrame: any;
 
@@ -66,7 +67,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit(){
         this.sceneService.createScene(this.scene, 0x262f99);
         this.sceneService.createLight(this.scene, 0xffffff);
-        this.sceneService.createCamera(this.camera, -33, 1, 33, this.getAspectRatio());
+        this.sceneService.createCamera(this.camera, this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z, this.getAspectRatio());
         this.sceneService.createPlane(this.scene, 0x151b60);
         this.sceneService.createText('Work', this.scene, this.textWork, 0x11e3ff, this.textPosition);
         //this.sceneService.createGeometrys(this.scene, this.box, 20, 'box');

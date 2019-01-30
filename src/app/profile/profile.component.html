@@ -1,5 +1,14 @@
 <div class="sceneArea">
-    <canvas #canvas appResize [canvas]="canvas" [camera]="camera" [renderer]="renderer" appDatGui [datGui]="gui" [datCamera]="camera"></canvas>
+    <canvas #canvas appResize 
+        [canvas]="canvas" 
+        [camera]="camera" 
+        [renderer]="renderer" 
+        
+        appDatGui 
+        [datGui]="gui" 
+        [datCamera]="camera"
+        [resetCameraPosition]="cameraPosition">
+    </canvas>
 </div>
 <section class="profileListWrap sectionArea">
     <h2 class="profileTitle">Profile</h2>

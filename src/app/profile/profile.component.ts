@@ -19,6 +19,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
 
     public sphere: THREE.Mesh;
     public textBenjamin: THREE.Mesh = new THREE.Mesh();
+    public cameraPosition: any = {x : 20, y : 30, z : 60};
     readonly textPosition: Object = {x : -15, y : -6, z : 0};
     public animationFrame: any;
 
@@ -44,7 +45,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     ngAfterViewInit() {
         this.sceneService.createScene(this.scene, 0x2b2f26);
         this.sceneService.createLight(this.scene, 0xffffff);
-        this.sceneService.createCamera(this.camera, 20, 30, 60, this.getAspectRatio());
+        this.sceneService.createCamera(this.camera, this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z, this.getAspectRatio());
         this.sceneService.createPlane(this.scene, 0x2b2f26);
         this.sceneService.createText('Benjamin', this.scene, this.textBenjamin, 0xfff600, this.textPosition);
         //this.sceneService.createGeometrys(this.scene, this.sphere, 20, 'sphere');

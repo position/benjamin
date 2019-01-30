@@ -9,17 +9,19 @@ import { environment } from '../../environments/environment';
 export class DatGuiDirective implements OnInit{
     @Input('datCamera') camera: THREE.PerspectiveCamera;
     @Input('datGui') gui: dat.GUI;
+    @Input('resetCameraPosition') resetPosition: any;
 
     constructor() { }
 
     ngOnInit(){
+        console.log(this.resetPosition);
         if(!environment.production){
             let options = {
                 reset : () => {
                     console.log('reset click');
-                    this.camera.position.x = 20;
-                    this.camera.position.y = 30;
-                    this.camera.position.z = 60;
+                    this.camera.position.x = this.resetPosition.x;
+                    this.camera.position.y = this.resetPosition.y;
+                    this.camera.position.z = this.resetPosition.z;
                 }   
             };
             let cam = this.gui.addFolder('Camera');

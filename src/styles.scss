@@ -167,6 +167,7 @@ uxe-benjamin{
 		&.profileListWrap{	
 			max-height:500px;
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 			.profileList{
 				display:flex;
 				flex-wrap: wrap;
@@ -184,6 +185,7 @@ uxe-benjamin{
 		&.introductionWrap{
 			max-height:500px;
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 			.introSec{
 				.myPhoto{
 					display:block;
@@ -257,6 +259,7 @@ uxe-benjamin{
 					.projectList{
 						max-height:205px;
 						overflow-y:auto;
+						-webkit-overflow-scrolling: touch;
 						color:#000;
 						> ul{
 							> li{

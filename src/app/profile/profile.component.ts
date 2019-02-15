@@ -152,7 +152,8 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
 
             if(dust.position.y < 30){
                 dust.position.y += 0.05;
-                dust.material.opacity -= 0.1;
+            } else {
+                dust.material.opacity = 0;
             }
         });
     }

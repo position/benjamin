@@ -161,6 +161,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
         console.log('Destoryed!!');
         this.destoryRender();
         this.createGeometry.destoryGeometry(this.scene, this.sphere);
+        this.createGeometry.destoryGeometry(this.scene, this.dust);
         this.renderer = null;
         this.camera = null;
         this.sphere = null;

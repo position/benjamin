@@ -187,6 +187,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('Destoryed!!');
         this.destoryRender();
         this.createGeometry.destoryGeometry(this.scene, this.box);
+        this.createGeometry.destoryGeometry(this.scene, this.dust);
         this.renderer = null;
         this.camera = null;
         this.box = null;

@@ -23,6 +23,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     
     public box: THREE.Mesh;
     public textWork: THREE.Mesh = new THREE.Mesh();
+    public dust: THREE.Mesh;
     public cameraPosition: any = {x : -33, y : 1, z : 33};
     readonly textPosition: Object = {x : -11, y : -6, z : 0};
     public animationFrame: any;
@@ -133,9 +134,14 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public createBoxGeometry(){
-        this.box = this.createGeometry.setBoxs(20);
+        this.box = this.createGeometry.getBoxs(20);
         this.box.forEach((box: any) => {
             this.scene.add(box);
+        });
+
+        this.dust = this.createGeometry.getDustParticle(500);
+        this.dust.forEach((dust: any) => {
+            this.scene.add(dust);
         });
     }
     
@@ -159,6 +165,18 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.textWork.position.y += 0.05;
             }
         }
+
+        this.dust.forEach((dust: any, index: number) => {
+            dust.rotation.x += 0.05;
+            dust.rotation.y += 0.05;
+            dust.rotation.z += 0.05;
+            dust.material.opacity = 1;
+
+            if(dust.position.y < 30){
+                dust.position.y += 0.05;
+                dust.material.opacity -= 0.1;
+            }
+        });
     }
 
     public onLinkProject(link: string){
@@ -173,5 +191,6 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         this.camera = null;
         this.box = null;
         this.textWork = null;
+        this.dust = null;
     }
 }

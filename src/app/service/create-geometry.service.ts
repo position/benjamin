@@ -10,10 +10,12 @@ export class CreateGeometryService {
     public box: THREE.BoxBufferGeometry;
     public sphere: THREE.SphereBufferGeometry;
     public octahedron: THREE.OctahedronBufferGeometry;
+    public dest: THREE.PlaneGeometry;
     public meterial: THREE.MeshLambertMaterial;
+    
 	constructor() { }
 
-	public setBoxs(boxIndex: number){
+	public getBoxs(boxIndex: number){
         let boxs = [];
         for(let i = 0; i < boxIndex; i++){
             this.box = new THREE.BoxBufferGeometry(1, 1, 1);
@@ -30,7 +32,7 @@ export class CreateGeometryService {
         return boxs;
     }
 
-    public setSphere(sphereIndex: number){
+    public getSphere(sphereIndex: number){
         let spheres = [];
         for(let i = 0; i < sphereIndex; i++){
             let radius = Math.random() * 1;
@@ -48,8 +50,8 @@ export class CreateGeometryService {
         return spheres;
     }
 
-    public setOctahedron(octahedronIndex: number){
-        let spheres = [];
+    public getOctahedron(octahedronIndex: number){
+        let octahedrons = [];
         for(let i = 0; i < octahedronIndex; i++){
             let radius = Math.random() * 1;
             this.octahedron = new THREE.OctahedronBufferGeometry(radius, 0);
@@ -60,9 +62,30 @@ export class CreateGeometryService {
             this.mesh.position.y = Math.random() * 50 + 0.5;
             this.mesh.position.z = Math.random() * 50;
             
-            spheres.push(this.mesh);
+            octahedrons.push(this.mesh);
         }
-        return spheres;
+        return octahedrons;
+    }
+
+    public getDustParticle(dustIndex: number){
+        let dusts = [];
+        const min: number = -100;
+        const max: number = 100;
+        for(let i = 0; i < dustIndex; i++){
+            this.dest = new THREE.PlaneGeometry(0.1, 0.1, 1);
+            this.meterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true });
+
+            this.mesh = new THREE.Mesh(this.dest, this.meterial);
+            this.mesh.rotation.x = Math.random() * 10;
+            this.mesh.rotation.y = Math.random() * 10;
+            this.mesh.rotation.z = Math.random() * 10;
+            this.mesh.position.x = (Math.random() * (max - min)) + min;
+            this.mesh.position.y = (Math.random() * max) - max;
+            this.mesh.position.z = (Math.random() * (max - min)) + min;
+
+            dusts.push(this.mesh);
+        }
+        return dusts;
     }
 
     public destoryGeometry(scene: THREE.Scene, geometry: THREE.Mesh){

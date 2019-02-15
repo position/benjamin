@@ -19,6 +19,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
 
     public sphere: THREE.Mesh;
     public textBenjamin: THREE.Mesh = new THREE.Mesh();
+    public dust: THREE.Mesh;
     public cameraPosition: any = {x : 20, y : 30, z : 60};
     readonly textPosition: Object = {x : -15, y : -6, z : 0};
     public animationFrame: any;
@@ -111,9 +112,14 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     }
 
     public createSphereGeometry(){
-        this.sphere = this.createGeometry.setSphere(20);
+        this.sphere = this.createGeometry.getSphere(20);
         this.sphere.forEach((cube: any) => {
             this.scene.add(cube);
+        });
+
+        this.dust = this.createGeometry.getDustParticle(500);
+        this.dust.forEach((dust: any) => {
+            this.scene.add(dust);
         });
     }
     
@@ -137,6 +143,18 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
                 this.textBenjamin.position.y += 0.05;
             }
         }
+
+        this.dust.forEach((dust: any, index: number) => {
+            dust.rotation.x += 0.05;
+            dust.rotation.y += 0.05;
+            dust.rotation.z += 0.05;
+            dust.material.opacity = 1;
+
+            if(dust.position.y < 30){
+                dust.position.y += 0.05;
+                dust.material.opacity -= 0.1;
+            }
+        });
     }
     
     ngOnDestroy(){
@@ -147,5 +165,6 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
         this.camera = null;
         this.sphere = null;
         this.textBenjamin = null;
+        this.dust = null;
     }
 }

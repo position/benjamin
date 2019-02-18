@@ -25,7 +25,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
     public textEngineer: THREE.Mesh = new THREE.Mesh();
     public dust: THREE.Mesh;
     public cameraPosition: any = {x : -41, y : 11, z : 55};
-    readonly textPosition: Object = {x : -20, y : -6, z : 0};
+    readonly textPosition: object = {x : -20, y : -6, z : 0};
     public animationFrame: any;
 
     private radianX: number = 0;    

@@ -21,7 +21,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     public textBenjamin: THREE.Mesh = new THREE.Mesh();
     public dust: THREE.Mesh;
     public cameraPosition: any = {x : 20, y : 30, z : 60};
-    readonly textPosition: Object = {x : -15, y : -6, z : 0};
+    readonly textPosition: object = {x : -15, y : -6, z : 0};
     public animationFrame: any;
 
     private radianX: number = 0;    

@@ -25,7 +25,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     public textWork: THREE.Mesh = new THREE.Mesh();
     public dust: THREE.Mesh;
     public cameraPosition: any = {x : -33, y : 1, z : 33};
-    readonly textPosition: Object = {x : -11, y : -6, z : 0};
+    readonly textPosition: object = {x : -11, y : -6, z : 0};
     public animationFrame: any;
 
     private radianX: number = 0;    

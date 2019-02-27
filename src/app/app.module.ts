@@ -12,12 +12,14 @@ import { AppComponent } from './app.component';
 import { ProfileComponent } from './profile/profile.component';
 import { IntroductionComponent } from './introduction/introduction.component';
 import { PortfolioComponent } from './portfolio/portfolio.component';
+import { ContactComponent } from './contact/contact.component';
 
 import { CreateGeometryService } from './service/create-geometry.service';
 import { SceneService } from './service/scene.service';
 import { ResizeDirective } from './directive/resize.directive';
 import { DatGuiDirective } from './directive/dat-gui.directive';
 import { MyFamilyComponent } from './my-family/my-family.component';
+
 
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
@@ -33,7 +35,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 		PortfolioComponent,
 		ResizeDirective,
 		DatGuiDirective,
-		MyFamilyComponent
+		ContactComponent
 	],
 	imports: [
 		BrowserModule,

@@ -16,7 +16,8 @@ export class AppComponent implements OnInit{
     public navLinks = [
         { path: 'profile', label: 'Profile' },
         { path: 'introduction', label: 'Introduction' },
-        { path: 'portfolio', label: 'Portfolio' }
+        { path: 'portfolio', label: 'Portfolio' },
+        { path: 'contact', label: 'Contact' }
     ];
 
     public myProfileList: myProfile[] = [];

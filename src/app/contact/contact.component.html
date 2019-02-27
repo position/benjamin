@@ -1,0 +1,27 @@
+<section class="sectionArea contactWrap">
+    <h2 class="introTitle">Contact</h2>
+    <form id="gform" method="POST" action="https://script.google.com/macros/s/AKfycbzeoI39OyycrUxXkxv6S5-ItIVASIt9pDyEHpIehQ/exec">
+        <div class="form-elements">
+            <div class="label-group">
+                <div class="table-cell"><label for="name">Name</label></div>
+                <div class="table-cell"><input id="name" name="name" placeholder="Your Name" /></div>
+            </div>
+            <div class="label-group">
+                <div class="table-cell"><label for="message">Message</label></div>
+                <div class="table-cell"><textarea id="message" name="message" rows="10" placeholder="Tell us what's on your mind..."></textarea></div>
+            </div>
+            <div class="label-group">
+                <div class="table-cell"><label for="email">Your Email Address</label></div>
+                <div class="table-cell">
+                    <input id="email" name="email" type="email" value="" required placeholder="your.name@email.com" />
+                    <span class="email-invalid" style="display:none">Must be a valid email address</span>
+                </div>
+            </div>
+            <button class="sendBtn"><i class="icon_email"></i>Send</button>
+        </div>
+        <!-- Customise the Thankyou Message People See when they submit the form: -->
+        <div class="thankyou_message" style="display:none;">
+            <h2><em>Thanks</em> for contacting us! We will get back to you soon!</h2>
+        </div>
+    </form>
+</section>

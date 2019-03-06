@@ -18,9 +18,6 @@ import { CreateGeometryService } from './service/create-geometry.service';
 import { SceneService } from './service/scene.service';
 import { ResizeDirective } from './directive/resize.directive';
 import { DatGuiDirective } from './directive/dat-gui.directive';
-import { MyFamilyComponent } from './my-family/my-family.component';
-
-
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 	direction: 'horizontal',
@@ -33,9 +30,9 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 		ProfileComponent,
 		IntroductionComponent,
 		PortfolioComponent,
+		ContactComponent,
 		ResizeDirective,
 		DatGuiDirective,
-		ContactComponent
 	],
 	imports: [
 		BrowserModule,

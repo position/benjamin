@@ -1,4 +1,10 @@
-<section class="sectionArea contactWrap">
+<div class="sceneArea">
+    <canvas #canvas 
+        appResize [canvas]="canvas" [camera]="camera" [renderer]="renderer" 
+        appDatGui [datGui]="gui" [datCamera]="camera" [datCamPosition]="cameraPosition">
+    </canvas>
+</div>
+<section class="contactWrap sectionArea">
     <h2 class="introTitle">Contact</h2>
     <form id="gform" method="POST" action="https://script.google.com/macros/s/AKfycbzeoI39OyycrUxXkxv6S5-ItIVASIt9pDyEHpIehQ/exec">
         <div class="form-elements">
@@ -17,7 +23,7 @@
                     <span class="email-invalid" style="display:none">Must be a valid email address</span>
                 </div>
             </div>
-            <button class="sendBtn"><i class="icon_email"></i>Send</button>
+            <button type="submit" class="sendBtn"><i class="icon_email"></i>Send</button>
         </div>
         <!-- Customise the Thankyou Message People See when they submit the form: -->
         <div class="thankyou_message" style="display:none;">

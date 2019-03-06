@@ -50,7 +50,14 @@ export class AppComponent implements OnInit{
             mergeMap((route) => route.data))
             .subscribe(item => { this.titleService.setTitle(item.title); }
         );
-    }
+
+        // this.router.navigateByUrl('/refresh', { skipLocationChange: true })
+        //     .then(()=> this.router.navigate(['contact']));
+        
+    }    
+        
+        
+
     /*
     private onActiveRoutePath(){
         this.router.events.pipe(

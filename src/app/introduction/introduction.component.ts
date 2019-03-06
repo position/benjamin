@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, OnDestroy, ElementRef, ViewChild, HostListener, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import * as THREE from 'three-full';
 import * as dat from 'dat.gui';
 import { CreateGeometryService } from '../service/create-geometry.service';
 import { StatsHelperService } from '../service/stats-helper.service';
-import { ControlsService} from '../service/controls.service';
 import { SceneService} from '../service/scene.service';
+import { ControlsService } from '../service/controls.service';
 import { environment } from '../../environments/environment';
 
 @Component({
@@ -16,6 +16,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
     public imgPath: string = environment.assetsPath + 'img/';
     public docPath: string = environment.assetsPath + 'doc/';
     public gui: dat.GUI = new dat.GUI();
+    public controls: THREE.OrbitControls;
 
     public renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
     private scene: THREE.Scene = new THREE.Scene();
@@ -23,8 +24,10 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
 
     public octahedron: THREE.Mesh;
     public textEngineer: THREE.Mesh = new THREE.Mesh();
-    readonly textPosition: Object = {x : -20, y : -6, z : 0};
+    readonly cameraPosition: any = {x : -41, y : 11, z : 55};
+    readonly textPosition: any = {x : -20, y : -6, z : 0};
     public animationFrame: any;
+    public control: THREE.OrbitControls;
 
     private radianX: number = 0;    
     private radianY: number = 0;
@@ -33,30 +36,32 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
 
     constructor(
         private elementRef: ElementRef,
-        private viewContainer: ViewContainerRef,
         private createGeomtry: CreateGeometryService,
         private guiHelper: StatsHelperService,
-        
-        private controls: ControlsService,
-        private sceneService: SceneService
+        private sceneService: SceneService,
+        private controlService: ControlsService
         ) {
+        if(!environment.production){
+            this.guiHelper.addStats(this.elementRef);
+        }
     }
 
     /* LIFECYCLE */
     ngAfterViewInit() {
         this.sceneService.createScene(this.scene, 0xd660d0);
         this.sceneService.createLight(this.scene, 0xffffff);
-        this.sceneService.createCamera(this.camera, -41, 11, 55, this.getAspectRatio());
+        this.sceneService.createCamera(this.camera, this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z, this.getAspectRatio());
         this.sceneService.createPlane(this.scene, 0x5b2158);
         this.sceneService.createText('UX Engineer', this.scene, this.textEngineer, 0xff4799, this.textPosition);
-        //this.sceneService.createGeometrys(this.scene, this.octahedron, 20, 'octahedron');
         this.createOctahedronGeometry();
         this.startRendering();
         this.addControls();
+    }
 
-        if(!environment.production){
-            //this.setGui();
-        }
+    private addControls() {
+        let scene = this.renderer.domElement;
+        this.control = new THREE.OrbitControls(this.camera, scene);
+        this.controlService.addControl(this.control);
     }
 
     private get canvas(): HTMLCanvasElement {
@@ -110,11 +115,6 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
         }
     }
 
-    public addControls() {
-        let scene = this.viewContainer.element.nativeElement;
-        this.controls.addControl(this.controls, scene, this.camera);
-    }
-
     public createOctahedronGeometry(){
         this.octahedron = this.createGeomtry.setOctahedron(20);
         this.octahedron.forEach((octahedron: any) => {
@@ -152,5 +152,6 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
         this.camera = null;
         this.octahedron = null;
         this.textEngineer = null;
+        this.controlService.removeControl(this.control);
     }
 }

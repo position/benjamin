@@ -6,9 +6,10 @@ import { environment } from '../../environments/environment';
 @Directive({
     selector: '[appDatGui]'
 })
-export class DatGuiDirective implements OnInit{
+export class DatGuiDirective implements OnInit, OnDestroy{
     @Input('datCamera') camera: THREE.PerspectiveCamera;
     @Input('datGui') gui: dat.GUI;
+    @Input('datCamPosition') cameraPosition: any;
 
     constructor() { }
 
@@ -17,9 +18,9 @@ export class DatGuiDirective implements OnInit{
             let options = {
                 reset : () => {
                     console.log('reset click');
-                    this.camera.position.x = 20;
-                    this.camera.position.y = 30;
-                    this.camera.position.z = 60;
+                    this.camera.position.x = this.cameraPosition.x;
+                    this.camera.position.y = this.cameraPosition.y;
+                    this.camera.position.z = this.cameraPosition.z;
                 }   
             };
             let cam = this.gui.addFolder('Camera');

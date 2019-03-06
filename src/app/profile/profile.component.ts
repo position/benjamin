@@ -1,11 +1,12 @@
-import { AfterViewInit, Component, OnDestroy, ElementRef, ViewChild, HostListener, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import * as THREE from 'three-full';
 import * as dat from 'dat.gui';
 import { CreateGeometryService } from '../service/create-geometry.service';
 import { StatsHelperService } from '../service/stats-helper.service';
-import { ControlsService} from '../service/controls.service';
 import { SceneService} from '../service/scene.service';
+import { ControlsService } from '../service/controls.service';
 import { environment } from '../../environments/environment';
+
 
 @Component({
     selector: 'benjamin-profile',
@@ -13,14 +14,17 @@ import { environment } from '../../environments/environment';
 })
 export class ProfileComponent implements AfterViewInit, OnDestroy {
     public gui: dat.GUI = new dat.GUI();
-    public renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
+    
+    public renderer: THREE.WebGLRenderer;
     private scene: THREE.Scene = new THREE.Scene();
     public camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera();
 
     public sphere: THREE.Mesh;
     public textBenjamin: THREE.Mesh = new THREE.Mesh();
-    readonly textPosition: Object = {x : -15, y : -6, z : 0};
+    readonly cameraPosition: any = {x : 20, y : 30, z : 60};
+    readonly textPosition: any = {x : -15, y : -6, z : 0};
     public animationFrame: any;
+    public control: THREE.OrbitControls;
 
     private radianX: number = 0;    
     private radianY: number = 0;
@@ -29,11 +33,10 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     
     constructor(
         private elementRef: ElementRef,
-        private viewContainer: ViewContainerRef,
         private createGeometry: CreateGeometryService,
         private guiHelper: StatsHelperService,
-        private controls: ControlsService,
-        private sceneService: SceneService
+        private sceneService: SceneService,
+        private controlService: ControlsService
         ) {
         if(!environment.production){
             this.guiHelper.addStats(this.elementRef);
@@ -44,13 +47,18 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     ngAfterViewInit() {
         this.sceneService.createScene(this.scene, 0x2b2f26);
         this.sceneService.createLight(this.scene, 0xffffff);
-        this.sceneService.createCamera(this.camera, 20, 30, 60, this.getAspectRatio());
+        this.sceneService.createCamera(this.camera, this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z, this.getAspectRatio());
         this.sceneService.createPlane(this.scene, 0x2b2f26);
         this.sceneService.createText('Benjamin', this.scene, this.textBenjamin, 0xfff600, this.textPosition);
-        //this.sceneService.createGeometrys(this.scene, this.sphere, 20, 'sphere');
         this.createSphereGeometry();
         this.startRendering();
         this.addControls();
+    }
+
+    private addControls() {
+        let scene = this.renderer.domElement;
+        this.control = new THREE.OrbitControls(this.camera, scene);
+        this.controlService.addControl(this.control);
     }
 
     private get canvas(): HTMLCanvasElement {
@@ -104,11 +112,6 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
         }
     }
 
-    public addControls() {
-        let scene = this.viewContainer.element.nativeElement;
-        this.controls.addControl(this.controls, scene, this.camera);
-    }
-
     public createSphereGeometry(){
         this.sphere = this.createGeometry.setSphere(20);
         this.sphere.forEach((cube: any) => {
@@ -146,5 +149,6 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
         this.camera = null;
         this.sphere = null;
         this.textBenjamin = null;
+        this.controlService.removeControl(this.control);
     }
 }

@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, OnInit, OnDestroy, ElementRef, ViewChild, HostListener, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import * as THREE from 'three-full';
 import * as dat from 'dat.gui';
 import { CreateGeometryService } from '../service/create-geometry.service';
 import { StatsHelperService } from '../service/stats-helper.service';
 import { SceneService} from '../service/scene.service';
-import { ControlsService} from '../service/controls.service';
+import { ControlsService } from '../service/controls.service';
 import { SwiperConfigInterface, SwiperAutoplayInterface, SwiperComponent } from 'ngx-swiper-wrapper';
 import { PortfolioData } from '../interface/portfolio';
 import { PortfolioLists } from './portfolio-lists';
@@ -16,6 +16,7 @@ import { environment } from '../../environments/environment';
 })
 export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     public gui: dat.GUI = new dat.GUI();
+    public control: THREE.OrbitControls;
 
     public renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
     private scene: THREE.Scene = new THREE.Scene();
@@ -23,7 +24,8 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     
     public box: THREE.Mesh;
     public textWork: THREE.Mesh = new THREE.Mesh();
-    readonly textPosition: Object = {x : -11, y : -6, z : 0};
+    readonly cameraPosition: any = {x : -33, y : 1, z : 33};
+    readonly textPosition: object = {x : -11, y : -6, z : 0};
     public animationFrame: any;
 
     private radianX: number = 0;    
@@ -48,11 +50,10 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     
     constructor(
         private elementRef: ElementRef,
-        private viewContainer: ViewContainerRef,
         private createGeometry: CreateGeometryService,
         private guiHelper: StatsHelperService,
-        private controls: ControlsService,
-        private sceneService: SceneService
+        private sceneService: SceneService,
+        private controlService: ControlsService
     ) { 
         if(!environment.production){
             this.guiHelper.addStats(this.elementRef);
@@ -66,13 +67,18 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit(){
         this.sceneService.createScene(this.scene, 0x262f99);
         this.sceneService.createLight(this.scene, 0xffffff);
-        this.sceneService.createCamera(this.camera, -33, 1, 33, this.getAspectRatio());
+        this.sceneService.createCamera(this.camera, this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z, this.getAspectRatio());
         this.sceneService.createPlane(this.scene, 0x151b60);
         this.sceneService.createText('Work', this.scene, this.textWork, 0x11e3ff, this.textPosition);
-        //this.sceneService.createGeometrys(this.scene, this.box, 20, 'box');
         this.createBoxGeometry();
         this.startRendering();
         this.addControls();
+    }
+
+    private addControls() {
+        let scene = this.renderer.domElement;
+        this.control = new THREE.OrbitControls(this.camera, scene);
+        this.controlService.addControl(this.control);
     }
 
     private get canvas(): HTMLCanvasElement {
@@ -126,11 +132,6 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public addControls() {
-        let scene = this.viewContainer.element.nativeElement;
-        this.controls.addControl(this.controls, scene, this.camera);
-    }
-
     public createBoxGeometry(){
         this.box = this.createGeometry.setBoxs(20);
         this.box.forEach((box: any) => {
@@ -172,5 +173,6 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         this.camera = null;
         this.box = null;
         this.textWork = null;
+        this.controlService.removeControl(this.control);
     }
 }

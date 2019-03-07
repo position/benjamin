@@ -15,7 +15,7 @@ import { environment } from '../../environments/environment';
 export class ProfileComponent implements AfterViewInit, OnDestroy {
     public gui: dat.GUI = new dat.GUI();
     
-    public renderer: THREE.WebGLRenderer;
+    public renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
     private scene: THREE.Scene = new THREE.Scene();
     public camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera();
 

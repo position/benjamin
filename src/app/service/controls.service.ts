@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as THREE from 'three-full';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'

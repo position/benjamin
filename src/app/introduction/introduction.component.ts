@@ -26,6 +26,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
     public textEngineer: THREE.Mesh = new THREE.Mesh();
     readonly cameraPosition: any = {x : -41, y : 11, z : 55};
     readonly textPosition: any = {x : -20, y : -6, z : 0};
+    public dust: THREE.Mesh;
     public animationFrame: any;
     public control: THREE.OrbitControls;
 
@@ -36,7 +37,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
 
     constructor(
         private elementRef: ElementRef,
-        private createGeomtry: CreateGeometryService,
+        private createGeometry: CreateGeometryService,
         private guiHelper: StatsHelperService,
         private sceneService: SceneService,
         private controlService: ControlsService
@@ -116,9 +117,14 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
     }
 
     public createOctahedronGeometry(){
-        this.octahedron = this.createGeomtry.setOctahedron(20);
+        this.octahedron = this.createGeometry.getOctahedron(20);
         this.octahedron.forEach((octahedron: any) => {
             this.scene.add(octahedron);
+        });
+
+        this.dust = this.createGeometry.getDustParticle(500);
+        this.dust.forEach((dust: any) => {
+            this.scene.add(dust);
         });
     }
     
@@ -137,21 +143,37 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
             cube.position.z = Math.sin(this.radianY * idx) * radius * (index + 1);
             
         });
+
         if(this.textEngineer){
             if(this.textEngineer.position.y < 3){
                 this.textEngineer.position.y += 0.05;
             }
         }
+
+        this.dust.forEach((dust: any, index: number) => {
+            dust.rotation.x += 0.05;
+            dust.rotation.y += 0.05;
+            dust.rotation.z += 0.05;
+            dust.material.opacity = 1;
+
+            if(dust.position.y < 30){
+                dust.position.y += 0.05;
+            } else {
+                dust.material.opacity = 0;
+            }
+        });
     }
 
     ngOnDestroy(){
         console.log('Destoryed!!');
         this.destoryRender();
-        this.createGeomtry.destoryGeometry(this.scene, this.octahedron);
+        this.createGeometry.destoryGeometry(this.scene, this.octahedron);
+        this.createGeometry.destoryGeometry(this.scene, this.dust);
         this.renderer = null;
         this.camera = null;
         this.octahedron = null;
         this.textEngineer = null;
         this.controlService.removeControl(this.control);
+        this.dust = null;
     }
 }

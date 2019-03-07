@@ -32,7 +32,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 		PortfolioComponent,
 		ContactComponent,
 		ResizeDirective,
-		DatGuiDirective,
+		DatGuiDirective
 	],
 	imports: [
 		BrowserModule,

@@ -11,6 +11,7 @@ export class CreateGeometryService {
     public sphere: THREE.SphereBufferGeometry;
     public octahedron: THREE.OctahedronBufferGeometry;
     public dest: THREE.PlaneGeometry;
+    public email: THREE.PlaneGeometry;
     public meterial: THREE.MeshLambertMaterial;
     
 	constructor() { }
@@ -86,6 +87,26 @@ export class CreateGeometryService {
             dusts.push(this.mesh);
         }
         return dusts;
+    }
+
+    public getPlaneParticle(planeIndex: number){
+        let planes = [];
+        const min: number = -100;
+        const max: number = 100;
+        for(let i = 0; i < planeIndex; i++){
+            this.email = new THREE.PlaneGeometry(0.5, 1, 1);
+            this.meterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            
+            this.mesh = new THREE.Mesh(this.email, this.meterial);
+
+            this.mesh.position.x = (Math.random() * (max - min)) + min;
+            this.mesh.position.y = Math.random() * 50;
+            this.mesh.position.z = (Math.random() * (max - min)) + min;
+
+            planes.push(this.mesh);
+        }
+
+        return planes;
     }
 
     public destoryGeometry(scene: THREE.Scene, geometry: THREE.Mesh){

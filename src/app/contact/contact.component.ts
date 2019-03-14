@@ -1,6 +1,7 @@
 import { Component, AfterViewInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import * as THREE from 'three-full';
 import * as dat from 'dat.gui';
+import { CreateGeometryService } from '../service/create-geometry.service';
 import { StatsHelperService } from '../service/stats-helper.service';
 import { SceneService} from '../service/scene.service';
 import { ControlsService } from '../service/controls.service';
@@ -16,14 +17,16 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
 	public control: THREE.OrbitControls;
     public renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
     private scene: THREE.Scene = new THREE.Scene();
-	public camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera();
+    public camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera();
+    public email: THREE.Mesh;
 	readonly cameraPosition: any = {x : 0, y : 3, z : 40};
 	public animationFrame: any;
 
 	@ViewChild('canvas') private canvasRef: ElementRef;
 	
 	constructor(
-		private elementRef: ElementRef,
+        private elementRef: ElementRef,
+        private createGeometry: CreateGeometryService,
         private guiHelper: StatsHelperService,
 		private sceneService: SceneService,
 		private controlService: ControlsService
@@ -38,7 +41,7 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
         this.sceneService.createLight(this.scene, 0xffffff);
         this.sceneService.createCamera(this.camera, this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z, this.getAspectRatio());
 		this.sceneService.createPlane(this.scene, 0x2c2d23);
-		
+		this.createMailGeometry();
 		this.startRendering();
 		this.addControls();
 		
@@ -83,11 +86,24 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
         this.renderer.render(this.scene, this.camera);
         this.animationFrame = requestAnimationFrame(this.render);
         this.camera.updateProjectionMatrix();
-        //this.animationBoxGeometry();
+        this.animationMailGeometry();
         
         this.guiHelper.updateStats();
     }
 
+    public createMailGeometry(){
+        this.email = this.createGeometry.getPlaneParticle(300);
+        this.email.forEach((email: any) => {
+            this.scene.add(email);
+        });
+    }
+
+    public animationMailGeometry(){
+        this.email.forEach((email: any) => {
+            email.rotation.x = -Math.PI / 2;
+            email.position.z += 0.1;
+        });
+    }
 
 	public destoryRender(){
         window.cancelAnimationFrame(this.animationFrame);
@@ -106,7 +122,8 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
 		console.log('Destoryed!!');
 		this.destoryRender();
 		this.renderer = null;
-		this.camera = null;
+        this.camera = null;
+        this.email = null;
 		this.controlService.removeControl(this.control);
 	}
 }

@@ -13,7 +13,9 @@ export class ControlsService {
         controls.rotateSpeed = 1.0;
         controls.zoomSpeed = 1.2;
         controls.enableZoom = false;
-        controls.enableRotate = false;
+        if(environment.production){
+            controls.enableRotate = false;
+        }
     }
 
     public removeControl(controls: THREE.OrbitControls) {

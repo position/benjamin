@@ -300,7 +300,6 @@ uxe-benjamin{
 				position:relative;
 				display:table;
 				width:100%;
-				padding-bottom:80px;
 				.label-group{
 					display:table-row;
 					.table-cell{
@@ -329,20 +328,17 @@ uxe-benjamin{
 					}
 				}
 				.sendBtn { 
-					position: absolute;
 					width: 200px;
 					border: 0 none; 
 					border-radius: 5px; 
 					padding: 7px 15px; 
+					margin-top:20px;
 					font-size: 1.2em; 
 					color: $white-color; 
 					vertical-align: middle; 
 					box-shadow: 0 5px 7px rgba($black-color, 0.5);
 					background-color:#1f8dd6;
 					outline:none;
-					left:50%;
-					bottom:10px;
-					transform:translateX(-50%);
 					.icon_email{
 						display: inline-block;
 						width:20px;

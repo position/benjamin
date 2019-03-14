@@ -27,7 +27,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     public animationFrame: any;
     public control: THREE.OrbitControls;
 
-    private radianX: number = 0;    
+    private radianX: number = 0;
     private radianY: number = 0;
 
     @ViewChild('canvas') private canvasRef: ElementRef;

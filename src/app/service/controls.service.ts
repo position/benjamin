@@ -12,6 +12,7 @@ export class ControlsService {
     public addControl(controls: THREE.OrbitControls) {
         controls.rotateSpeed = 1.0;
         controls.zoomSpeed = 1.2;
+        controls.enableKeys = false;
         if(environment.production){
             controls.enableZoom = false;
             controls.enableRotate = false;

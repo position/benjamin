@@ -47,24 +47,12 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
         this.sceneService.createCamera(this.camera, this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z, this.getAspectRatio());
         this.sceneService.createPlane(this.scene, 0x2c2d23);
         
-        this.createPaperAirplane();
+        //this.createPaperAirplane();
 		this.createMailGeometry();
 		this.startRendering();
 		this.addControls();
-    //    this.objLoader.load('./assets/models/paper_airplane.obj', this.onModelLoadingCompleted, (xhr)=>{ console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); });
     }
-    private onModelLoadingCompleted = (model) => {
-        console.log('model', model);
-        model.position.set(0, 5, 0);
-        model.scale.x = 10;
-        model.scale.y = 10;
-        model.scale.z = 10;
-
-        this.scene.add(model);
-        
-        this.render();
-    }
-
+    
 	private addControls() {
         let scene = this.renderer.domElement;
         this.control = new THREE.OrbitControls(this.camera, scene);
@@ -110,24 +98,19 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
     }
 
     public async createPaperAirplane(){
-        let airPlanes = [];
         this.airPlane = await this.modelLoaderService.objLoad('paper_airplane');
-        for(let i = 0; i < 100; i++){
-            this.airPlane.scale.x = 30;
-            this.airPlane.scale.y = 30;
-            this.airPlane.scale.z = 30;
-            this.airPlane.rotation.y = Math.PI;
-            this.airPlane.position.set(0, 5, 0);
-            airPlanes.push(this.airPlane);
-        }
-        airPlanes.forEach((item: any) => {
-            this.scene.add(item);
-        });
         
+        this.airPlane.scale.x = 30;
+        this.airPlane.scale.y = 30;
+        this.airPlane.scale.z = 30;
+        this.airPlane.rotation.y = Math.PI;
+        this.airPlane.position.set(0, 5, 0);
+    
+        this.scene.add(this.airPlane);
     }
 
     public createMailGeometry(){
-        this.email = this.createGeometry.getPlaneParticle(300);
+        this.email = this.createGeometry.getPlaneParticle(100);
         this.email.forEach((email: any) => {
             this.scene.add(email);
         });
@@ -136,7 +119,12 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
     public animationMailGeometry(){
         this.email.forEach((email: any) => {
             email.rotation.x = -Math.PI / 2;
-            email.position.z += 0.1;
+            email.position.z += 0.3;
+            email.material.opacity = 1;
+            if(email.position.z > 50){
+                email.position.z = -50;
+                email.material.opacity = 0;
+            }
         });
     }
 

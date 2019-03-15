@@ -91,8 +91,8 @@ export class CreateGeometryService {
 
     public getPlaneParticle(planeIndex: number){
         let planes = [];
-        const min: number = -100;
-        const max: number = 100;
+        const min: number = -50;
+        const max: number = 50;
         for(let i = 0; i < planeIndex; i++){
             this.email = new THREE.PlaneGeometry(0.5, 1, 1);
             this.meterial = new THREE.MeshBasicMaterial({ color: 0xffffff });

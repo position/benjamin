@@ -5,6 +5,7 @@ import { CreateGeometryService } from '../service/create-geometry.service';
 import { StatsHelperService } from '../service/stats-helper.service';
 import { SceneService} from '../service/scene.service';
 import { ControlsService } from '../service/controls.service';
+import { ModelLoaderService} from '../service/model-loader.service';
 import { environment } from '../../environments/environment';
 import "../../assets/js/form-submission-handler.js";
 
@@ -19,8 +20,11 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
     private scene: THREE.Scene = new THREE.Scene();
     public camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera();
     public email: THREE.Mesh;
-	readonly cameraPosition: any = {x : 0, y : 3, z : 40};
-	public animationFrame: any;
+    public airPlane: THREE.Group;
+	readonly cameraPosition: any = {x : 0, y : 15, z : 40};
+    public animationFrame: any;
+    private objLoader = new THREE.OBJLoader();
+    public manager: THREE.LoadingManager;
 
 	@ViewChild('canvas') private canvasRef: ElementRef;
 	
@@ -29,7 +33,8 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
         private createGeometry: CreateGeometryService,
         private guiHelper: StatsHelperService,
 		private sceneService: SceneService,
-		private controlService: ControlsService
+        private controlService: ControlsService,
+        private modelLoaderService : ModelLoaderService
 	) { 
 		if(!environment.production){
             this.guiHelper.addStats(this.elementRef);
@@ -37,15 +42,28 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
 	}
 
 	ngAfterViewInit(){
-		this.sceneService.createScene(this.scene, 0xffffff);
+		this.sceneService.createScene(this.scene, 0x000000);
         this.sceneService.createLight(this.scene, 0xffffff);
         this.sceneService.createCamera(this.camera, this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z, this.getAspectRatio());
-		this.sceneService.createPlane(this.scene, 0x2c2d23);
+        this.sceneService.createPlane(this.scene, 0x2c2d23);
+        
+        this.createPaperAirplane();
 		this.createMailGeometry();
 		this.startRendering();
 		this.addControls();
-		
-	}
+    //    this.objLoader.load('./assets/models/paper_airplane.obj', this.onModelLoadingCompleted, (xhr)=>{ console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); });
+    }
+    private onModelLoadingCompleted = (model) => {
+        console.log('model', model);
+        model.position.set(0, 5, 0);
+        model.scale.x = 10;
+        model.scale.y = 10;
+        model.scale.z = 10;
+
+        this.scene.add(model);
+        
+        this.render();
+    }
 
 	private addControls() {
         let scene = this.renderer.domElement;
@@ -89,6 +107,23 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
         this.animationMailGeometry();
         
         this.guiHelper.updateStats();
+    }
+
+    public async createPaperAirplane(){
+        let airPlanes = [];
+        this.airPlane = await this.modelLoaderService.objLoad('paper_airplane');
+        for(let i = 0; i < 100; i++){
+            this.airPlane.scale.x = 30;
+            this.airPlane.scale.y = 30;
+            this.airPlane.scale.z = 30;
+            this.airPlane.rotation.y = Math.PI;
+            this.airPlane.position.set(0, 5, 0);
+            airPlanes.push(this.airPlane);
+        }
+        airPlanes.forEach((item: any) => {
+            this.scene.add(item);
+        });
+        
     }
 
     public createMailGeometry(){

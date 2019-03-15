@@ -100,6 +100,7 @@ export class SceneService {
         textMesh.position.set(position.x, position.y, position.z);
         scene.add(textMesh);
     }
+    
     /*
     public createGeometrys(scene:THREE.Scene, geometry: THREE.Mesh, amount: number, type: string){
         switch(type){

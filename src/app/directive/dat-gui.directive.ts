@@ -14,7 +14,7 @@ export class DatGuiDirective implements OnInit, OnDestroy{
     constructor() { }
 
     ngOnInit(){
-        if(!environment.production){
+        if(!environment.production && this.gui != null){
             let options = {
                 reset : () => {
                     console.log('reset click');

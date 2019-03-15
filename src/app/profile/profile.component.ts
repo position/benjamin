@@ -13,7 +13,7 @@ import { environment } from '../../environments/environment';
     templateUrl: './profile.component.html'
 })
 export class ProfileComponent implements AfterViewInit, OnDestroy {
-    public gui: dat.GUI = new dat.GUI();
+    public gui: dat.GUI = (!environment.production) ? new dat.GUI() : null;
     
     public renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
     private scene: THREE.Scene = new THREE.Scene();

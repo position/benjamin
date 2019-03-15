@@ -15,7 +15,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
     public assetPath: string = environment.assetsPath;
     public imgPath: string = environment.assetsPath + 'img/';
     public docPath: string = environment.assetsPath + 'doc/';
-    public gui: dat.GUI = new dat.GUI();
+    public gui: dat.GUI = (!environment.production) ? new dat.GUI() : null;
     public controls: THREE.OrbitControls;
 
     public renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();

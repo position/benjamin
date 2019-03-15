@@ -15,7 +15,7 @@ import { environment } from '../../environments/environment';
     templateUrl: './portfolio.component.html'
 })
 export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
-    public gui: dat.GUI = new dat.GUI();
+    public gui: dat.GUI = (!environment.production) ? new dat.GUI() : null;
     public control: THREE.OrbitControls;
 
     public renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();

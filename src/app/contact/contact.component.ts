@@ -14,7 +14,7 @@ import "../../assets/js/form-submission-handler.js";
 	templateUrl: './contact.component.html'
 })
 export class ContactComponent implements AfterViewInit, OnDestroy {
-	public gui: dat.GUI = new dat.GUI();
+	public gui: dat.GUI = (!environment.production) ? new dat.GUI() : null;
 	public control: THREE.OrbitControls;
     public renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
     private scene: THREE.Scene = new THREE.Scene();

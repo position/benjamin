@@ -138,7 +138,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
             this.scene.add(box);
         });
 
-        this.dust = this.createGeometry.getDustParticle(500);
+        this.dust = this.createGeometry.getDustParticle(200);
         this.dust.forEach((dust: any) => {
             this.scene.add(dust);
         });

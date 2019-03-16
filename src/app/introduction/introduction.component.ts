@@ -122,7 +122,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
             this.scene.add(octahedron);
         });
 
-        this.dust = this.createGeometry.getDustParticle(500);
+        this.dust = this.createGeometry.getDustParticle(200);
         this.dust.forEach((dust: any) => {
             this.scene.add(dust);
         });

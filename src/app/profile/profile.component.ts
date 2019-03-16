@@ -119,7 +119,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
             this.scene.add(cube);
         });
 
-        this.dust = this.createGeometry.getDustParticle(300);
+        this.dust = this.createGeometry.getDustParticle(200);
         this.dust.forEach((dust: any) => {
             this.scene.add(dust);
         });

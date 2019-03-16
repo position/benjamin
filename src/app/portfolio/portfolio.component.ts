@@ -144,6 +144,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
     
+    
     public animationBoxGeometry = () => {
         const radius = 3;
         

@@ -160,6 +160,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
                 dust.position.y += 0.05;
             } else {
                 dust.material.opacity = 0;
+                dust.position.y = -30;
             }
         });
     }

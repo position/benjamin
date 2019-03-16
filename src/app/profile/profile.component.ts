@@ -119,7 +119,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
             this.scene.add(cube);
         });
 
-        this.dust = this.createGeometry.getDustParticle(500);
+        this.dust = this.createGeometry.getDustParticle(300);
         this.dust.forEach((dust: any) => {
             this.scene.add(dust);
         });
@@ -156,6 +156,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
                 dust.position.y += 0.05;
             } else {
                 dust.material.opacity = 0;
+                dust.position.y = -30;
             }
         });
     }

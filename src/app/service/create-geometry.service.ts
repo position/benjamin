@@ -70,8 +70,8 @@ export class CreateGeometryService {
 
     public getDustParticle(dustIndex: number){
         let dusts = [];
-        const min: number = -100;
-        const max: number = 100;
+        const min: number = -50;
+        const max: number = 50;
         for(let i = 0; i < dustIndex; i++){
             this.dest = new THREE.PlaneGeometry(0.1, 0.1, 1);
             this.meterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true });

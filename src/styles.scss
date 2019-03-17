@@ -429,7 +429,21 @@ uxe-benjamin{
 			top:10px;
 			right:10px;
 		}
-	}	
+	}
+	
+	.benjaminSection{
+		.sectionArea{
+			&.contactWrap{
+				.form-elements{
+					.label-group{
+						.table-cell{
+							input, textarea{min-width:195px;}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 @keyframes rotatePreloader {

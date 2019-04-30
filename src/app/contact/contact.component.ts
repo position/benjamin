@@ -7,7 +7,6 @@ import { SceneService} from '../service/scene.service';
 import { ControlsService } from '../service/controls.service';
 import { ModelLoaderService} from '../service/model-loader.service';
 import { environment } from '../../environments/environment';
-import "../../assets/js/form-submission-handler.js";
 
 @Component({
 	selector: 'benjamin-contact',

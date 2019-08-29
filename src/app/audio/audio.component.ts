@@ -12,8 +12,7 @@ declare const window: any;
         [volume]="volume"
         [loop]="loop"
         [preload]="preload"
-        [muted]="muted"
-    >
+        [muted]="muted">
     </audio>
     <button type="button" (click)="play()" *ngIf="playButton">Play</button>
     <button type="button" (click)="pause()" *ngIf="pauseButton">Pause</button>
@@ -22,7 +21,15 @@ declare const window: any;
     <button type="button" (click)="muteVideo()" *ngIf="muteButton">Mute</button>
     `,
     styles:[
-        ':host{display:none;position:fixed;left:50%;top:50%;transform:translate(-50%, -50%);}'
+        `
+        :host{
+            display:none;
+            position:fixed;
+            left:50%;
+            top:50%;
+            transform:translate(-50%, -50%);
+        }
+        `
     ]
 })
 

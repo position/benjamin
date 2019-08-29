@@ -19,6 +19,7 @@ import { SceneService } from './service/scene.service';
 import { ResizeDirective } from './directive/resize.directive';
 import { DatGuiDirective } from './directive/dat-gui.directive';
 import { AudioComponent } from './audio/audio.component';
+import { FacebookModule } from 'ngx-facebook';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 	direction: 'horizontal',
@@ -41,7 +42,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 		BrowserAnimationsModule,
 		AppRoutingModule,
 		HttpClientModule,
-		SwiperModule
+        SwiperModule,
+        FacebookModule.forRoot()
 	],
 	providers: [
 		CreateGeometryService,

@@ -13,7 +13,7 @@ export const PortfolioLists: PortfolioData[] = [
         project: 'Ballantine',
         participation: 'Angular(20%), Sass(70%)',
         subject: '포커 게임 클라이언트 웹버전',
-        link:'https://swt.ggpoker.network'
+        link: 'https://swt.ggpoker.network'
     },
     {
         thumnail: 'img_ux.jpg',

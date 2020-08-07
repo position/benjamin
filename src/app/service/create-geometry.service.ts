@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as THREE from 'three-full';
 
 @Injectable({
-	providedIn: 'root'
+    providedIn: 'root'
 })
 export class CreateGeometryService {
     public scene: THREE.Scene;
@@ -13,14 +13,14 @@ export class CreateGeometryService {
     public dest: THREE.PlaneGeometry;
     public email: THREE.PlaneGeometry;
     public meterial: THREE.MeshLambertMaterial;
-    
-	constructor() { }
 
-	public getBoxs(boxIndex: number){
-        let boxs = [];
-        for(let i = 0; i < boxIndex; i++){
+    constructor() { }
+
+    public getBoxs(boxIndex: number){
+        const boxs = [];
+        for (let i = 0; i < boxIndex; i++) {
             this.box = new THREE.BoxBufferGeometry(1, 1, 1);
-            this.meterial = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff });    
+            this.meterial = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff });
             this.mesh = new THREE.Mesh(this.box, this.meterial);
             this.mesh.position.x = Math.random() * 50 - i;
             this.mesh.position.y = Math.random() * 50 - i;
@@ -33,28 +33,28 @@ export class CreateGeometryService {
         return boxs;
     }
 
-    public getSphere(sphereIndex: number){
-        let spheres = [];
-        for(let i = 0; i < sphereIndex; i++){
-            let radius = Math.random() * 1;
+    public getSphere(sphereIndex: number) {
+        const spheres = [];
+        for (let i = 0; i < sphereIndex; i++) {
+            const radius = Math.random() * 1;
             this.sphere = new THREE.SphereBufferGeometry(radius, 30, 30);
-            //color: 0xbad790
+            // color: 0xbad790
             this.meterial = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff });
-            
+
             this.mesh = new THREE.Mesh(this.sphere, this.meterial);
             this.mesh.position.x = Math.random() * 50;
             this.mesh.position.y = Math.random() * 50 + 0.5;
             this.mesh.position.z = Math.random() * 50;
-            
+
             spheres.push(this.mesh);
         }
         return spheres;
     }
 
-    public getOctahedron(octahedronIndex: number){
-        let octahedrons = [];
-        for(let i = 0; i < octahedronIndex; i++){
-            let radius = Math.random() * 1;
+    public getOctahedron(octahedronIndex: number) {
+        const octahedrons = [];
+        for (let i = 0; i < octahedronIndex; i++) {
+            const radius = Math.random() * 1;
             this.octahedron = new THREE.OctahedronBufferGeometry(radius, 0);
             this.meterial = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff });
 
@@ -62,17 +62,17 @@ export class CreateGeometryService {
             this.mesh.position.x = Math.random() * 50;
             this.mesh.position.y = Math.random() * 50 + 0.5;
             this.mesh.position.z = Math.random() * 50;
-            
+
             octahedrons.push(this.mesh);
         }
         return octahedrons;
     }
 
-    public getDustParticle(dustIndex: number){
-        let dusts = [];
-        const min: number = -100;
-        const max: number = 100;
-        for(let i = 0; i < dustIndex; i++){
+    public getDustParticle(dustIndex: number) {
+        const dusts = [];
+        const min = -100;
+        const max = 100;
+        for (let i = 0; i < dustIndex; i++) {
             this.dest = new THREE.PlaneGeometry(0.1, 0.1, 1);
             this.meterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true });
 
@@ -89,14 +89,14 @@ export class CreateGeometryService {
         return dusts;
     }
 
-    public getPlaneParticle(planeIndex: number){
-        let planes = [];
+    public getPlaneParticle(planeIndex: number) {
+        const planes = [];
         const min: number = -50;
         const max: number = 50;
-        for(let i = 0; i < planeIndex; i++){
+        for (let i = 0; i < planeIndex; i++) {
             this.email = new THREE.PlaneGeometry(0.5, 1, 1);
             this.meterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-            
+
             this.mesh = new THREE.Mesh(this.email, this.meterial);
 
             this.mesh.position.x = (Math.random() * (max - min)) + min;

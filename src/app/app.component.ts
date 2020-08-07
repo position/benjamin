@@ -21,10 +21,9 @@ export class AppComponent implements OnInit{
         private titleService: Title,
         private router: Router,
         private activatedRoute: ActivatedRoute
-    ){
-    }
+    ) {}
 
-    ngOnInit(){
+    ngOnInit() {
         this.onActiveRouteTitle();
     }
 

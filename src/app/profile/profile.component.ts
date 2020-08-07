@@ -14,24 +14,24 @@ import { environment } from '../../environments/environment';
 })
 export class ProfileComponent implements AfterViewInit, OnDestroy {
     public gui: dat.GUI = new dat.GUI();
-    
+
     public renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
     private scene: THREE.Scene = new THREE.Scene();
     public camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera();
 
     public sphere: THREE.Mesh;
     public textBenjamin: THREE.Mesh = new THREE.Mesh();
-    readonly cameraPosition: any = {x : 20, y : 30, z : 60};
-    readonly textPosition: any = {x : -15, y : -6, z : 0};
+    readonly cameraPosition: any = { x : 20, y : 30, z : 60 };
+    readonly textPosition: any = { x : -15, y : -6, z : 0 };
     public dust: THREE.Mesh;
     public animationFrame: any;
     public control: THREE.OrbitControls;
 
-    private radianX: number = 0;
-    private radianY: number = 0;
+    private radianX = 0;
+    private radianY = 0;
 
     @ViewChild('canvas') private canvasRef: ElementRef;
-    
+
     constructor(
         private elementRef: ElementRef,
         private createGeometry: CreateGeometryService,
@@ -39,7 +39,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
         private sceneService: SceneService,
         private controlService: ControlsService
         ) {
-        if(!environment.production){
+        if (!environment.production) {
             this.guiHelper.addStats(this.elementRef);
         }
     }
@@ -57,7 +57,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     }
 
     private addControls() {
-        let scene = this.renderer.domElement;
+        const scene = this.renderer.domElement;
         this.control = new THREE.OrbitControls(this.camera, scene);
         this.controlService.addControl(this.control);
     }
@@ -67,7 +67,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     }
 
     private getAspectRatio(): number {
-        let height = this.canvas.clientHeight;
+        const height = this.canvas.clientHeight;
         if (height === 0) {
             return 0;
         }
@@ -86,8 +86,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.setClearColor(0x000000, 1);
-        this.renderer.autoClear = true;        
-     
+        this.renderer.autoClear = true;
         this.render();
     }
 
@@ -96,24 +95,24 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
         this.animationFrame = requestAnimationFrame(this.render);
         this.camera.updateProjectionMatrix();
         this.animationSphereGeometry();
-        
+
         this.guiHelper.updateStats();
     }
 
-    public destoryRender(){
+    public destoryRender() {
         window.cancelAnimationFrame(this.animationFrame);
 
-        for(let index = this.scene.children.length -1; index > 0; index--) {
-            let removeTarget = this.scene.children[index];
+        for (let index = this.scene.children.length - 1; index > 0; index--) {
+            const removeTarget = this.scene.children[index];
             if (removeTarget instanceof THREE.Mesh) {
-                this.scene.remove(removeTarget);            
+                this.scene.remove(removeTarget);
                 removeTarget.geometry.dispose();
                 removeTarget.material.dispose();
             }
         }
     }
 
-    public createSphereGeometry(){
+    public createSphereGeometry() {
         this.sphere = this.createGeometry.getSphere(20);
         this.sphere.forEach((cube: any) => {
             this.scene.add(cube);
@@ -124,24 +123,24 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
             this.scene.add(dust);
         });
     }
-    
-    public animationSphereGeometry(){
+
+    public animationSphereGeometry() {
         const radius = 3;
-        
+
         this.radianX += 0.003;
         this.radianY += 0.003;
         this.sphere.forEach((cube: any, index: number) => {
-            let idx: number = (index + 1) * 0.5;
-            //cube.rotation.x += 0.05;
+            const idx: number = (index + 1) * 0.5;
+            // cube.rotation.x += 0.05;
             cube.rotation.y += 0.05;
-            //cube.rotation.z += 0.05;
+            // cube.rotation.z += 0.05;
             cube.position.x = Math.cos(this.radianX * idx) * radius * (index + 1);
-            //cube.position.y = Math.cos(this.radianX) * radius;
+            // cube.position.y = Math.cos(this.radianX) * radius;
             cube.position.z = Math.sin(this.radianY * idx) * radius * (index + 1);
-            
         });
-        if(this.textBenjamin){
-            if(this.textBenjamin.position.y < 3){
+
+        if (this.textBenjamin) {
+            if (this.textBenjamin.position.y < 3) {
                 this.textBenjamin.position.y += 0.05;
             }
         }
@@ -152,15 +151,15 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
             dust.rotation.z += 0.05;
             dust.material.opacity = 1;
 
-            if(dust.position.y < 30){
+            if (dust.position.y < 30) {
                 dust.position.y += 0.05;
             } else {
                 dust.material.opacity = 0;
             }
         });
     }
-    
-    ngOnDestroy(){
+
+    ngOnDestroy() {
         console.log('Destoryed!!');
         this.destoryRender();
         this.createGeometry.destoryGeometry(this.scene, this.sphere);

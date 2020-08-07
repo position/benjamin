@@ -11,15 +11,15 @@ const routes: Routes = [
     { path: 'introduction', component: IntroductionComponent, data: { title: "Benjamin's Introduction" } },
     { path: 'portfolio', component: PortfolioComponent, data: { title: "Benjamin's Portfolio" } },
     { path: 'contact', component: ContactComponent, data: { title: "Contact to Benjamin" } }
-    //{ path: '**', component: PageNotFoundComponent }
+    // { path: '**', component: PageNotFoundComponent }
 ];
 
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, 
-        { 
-            useHash: true, 
-            initialNavigation: 'enabled', 
+    imports: [RouterModule.forRoot(routes,
+        {
+            useHash: true,
+            initialNavigation: 'enabled',
             preloadingStrategy: PreloadAllModules
         }
     )],

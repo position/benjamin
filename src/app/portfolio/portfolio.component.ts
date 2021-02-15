@@ -33,7 +33,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @ViewChild('canvas') private canvasRef: ElementRef;
     @ViewChild('portfolioSwipe') portfolioSwiper: SwiperComponent;
-    readonly portfolioSwipeConifg: SwiperConfigInterface = {
+    readonly portfolioSwipeConfig: SwiperConfigInterface = {
         width: 300,
         spaceBetween: 0,
         freeMode: true,
@@ -63,12 +63,12 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         this.portfolioLists = PortfolioLists;
     }
 
-    ngAfterViewInit() {
+    async ngAfterViewInit() {
         this.sceneService.createScene(this.scene, 0x262f99);
         this.sceneService.createLight(this.scene, 0xffffff);
         this.sceneService.createCamera(this.camera, this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z, this.getAspectRatio());
-        this.sceneService.createPlane(this.scene, 0x151b60);
-        this.sceneService.createText('Work', this.scene, this.textWork, 0x11e3ff, this.textPosition);
+        await this.sceneService.createPlane(this.scene, 0x151b60);
+        await this.sceneService.createText('Work', this.scene, this.textWork, 0x11e3ff, this.textPosition);
         this.createBoxGeometry();
         this.startRendering();
         this.addControls();

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, ElementRef, ViewChild, HostListener} from '@angular/core';
 import * as THREE from 'three-full';
 import * as dat from 'dat.gui';
 import { CreateGeometryService } from '../service/create-geometry.service';
@@ -29,8 +29,18 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
 
     private radianX = 0;
     private radianY = 0;
+    private direction = 1;
 
     @ViewChild('canvas') private canvasRef: ElementRef;
+    @HostListener('document:mousemove', ['$event']) onMouseMove(e) {
+        const winWidth = window.innerWidth;
+        if (e.clientX > winWidth / 2) {
+            this.direction = 1;
+        } else {
+            this.direction = -1;
+        }
+        console.log(this.direction);
+    }
 
     constructor(
         private elementRef: ElementRef,
@@ -45,12 +55,12 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     }
 
     /* LIFECYCLE */
-    ngAfterViewInit() {
+    async ngAfterViewInit() {
         this.sceneService.createScene(this.scene, 0x2b2f26);
         this.sceneService.createLight(this.scene, 0xffffff);
         this.sceneService.createCamera(this.camera, this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z, this.getAspectRatio());
-        this.sceneService.createPlane(this.scene, 0x2b2f26);
-        this.sceneService.createText('Benjamin', this.scene, this.textBenjamin, 0xfff600, this.textPosition);
+        await this.sceneService.createPlane(this.scene, 0x2b2f26);
+        await this.sceneService.createText('Benjamin', this.scene, this.textBenjamin, 0xfff600, this.textPosition);
         this.createSphereGeometry();
         this.startRendering();
         this.addControls();
@@ -127,13 +137,13 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     public animationSphereGeometry() {
         const radius = 3;
 
-        this.radianX += 0.003;
-        this.radianY += 0.003;
+        this.radianX += (0.003 * this.direction);
+        this.radianY += (0.003 * this.direction);
         this.sphere.forEach((cube: any, index: number) => {
             const idx: number = (index + 1) * 0.5;
             // cube.rotation.x += 0.05;
-            cube.rotation.y += 0.05;
-            // cube.rotation.z += 0.05;
+            // cube.rotation.y += 0.05;
+            cube.rotation.z += 0.05;
             cube.position.x = Math.cos(this.radianX * idx) * radius * (index + 1);
             // cube.position.y = Math.cos(this.radianX) * radius;
             cube.position.z = Math.sin(this.radianY * idx) * radius * (index + 1);
@@ -145,7 +155,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
             }
         }
 
-        this.dust.forEach((dust: any, index: number) => {
+        this.dust.forEach(dust => {
             dust.rotation.x += 0.05;
             dust.rotation.y += 0.05;
             dust.rotation.z += 0.05;

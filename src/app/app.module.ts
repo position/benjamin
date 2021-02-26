@@ -20,35 +20,35 @@ import { ResizeDirective } from './directive/resize.directive';
 import { DatGuiDirective } from './directive/dat-gui.directive';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
-    direction: 'horizontal',
-    slidesPerView: 'auto'
+	direction: 'horizontal',
+	slidesPerView: 'auto'
 };
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        ProfileComponent,
-        IntroductionComponent,
-        PortfolioComponent,
-        ContactComponent,
-        ResizeDirective,
-        DatGuiDirective
-    ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        HttpClientModule,
-        SwiperModule
-    ],
-    providers: [
-        CreateGeometryService,
-        SceneService,
-        {
-            provide: SWIPER_CONFIG,
-            useValue: DEFAULT_SWIPER_CONFIG
-        }
-    ],
-    bootstrap: [AppComponent]
+	declarations: [
+		AppComponent,
+		ProfileComponent,
+		IntroductionComponent,
+		PortfolioComponent,
+		ContactComponent,
+		ResizeDirective,
+		DatGuiDirective
+	],
+	imports: [
+		BrowserModule,
+		BrowserAnimationsModule,
+		AppRoutingModule,
+		HttpClientModule,
+		SwiperModule
+	],
+	providers: [
+		CreateGeometryService,
+		SceneService,
+		{
+			provide: SWIPER_CONFIG,
+			useValue: DEFAULT_SWIPER_CONFIG
+		}
+	],
+	bootstrap: [AppComponent]
 })
 export class AppModule { }

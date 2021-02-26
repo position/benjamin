@@ -10,10 +10,10 @@ export class TextureLoaderService {
     private imgPath: string = environment.assetsPath + 'img/';
     constructor() { }
 
-    public onLoad(imgName: string) {
+    public onLoad(imgName: string){
         return new Promise<void>((resolve, reject) => {
             this.textureLoader.load(this.imgPath + imgName, (texture: any) => {
-                if (texture) {
+                if(texture){
                     resolve(texture);
                 }
                 reject(new Error('Request is failed'));

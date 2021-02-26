@@ -11,10 +11,10 @@ export class FontLoaderService {
 
     constructor() { }
 
-    public onFontLoader(): Promise<any> {
+    public onFontLoader(): Promise<any>{
         return new Promise<void>((resolve, reject) => {
             this.textLoader.load(this.fontPath + 'droid_serif_regular.typeface.json', (font: any) => {
-                if (font) {
+                if(font){
                     resolve(font);
                 }
                 reject(new Error('Request is failed'));

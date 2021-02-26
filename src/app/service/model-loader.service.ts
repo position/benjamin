@@ -10,11 +10,11 @@ export class ModelLoaderService {
     private modelPath: string = environment.assetsPath + 'models/';
     constructor() { }
 
-    public objLoad(filename: string): Promise<any> {
+    public objLoad(filename: string): Promise<any>{
         return new Promise<void>((resolve, reject) => {
-            this.objLoader.load(this.modelPath + filename + '.obj',
+            this.objLoader.load(this.modelPath + filename + '.obj', 
             (obj: any) => {
-                if (obj) {
+                if(obj){
                     resolve(obj);
                 }
                 reject(new Error('Request is failed'));

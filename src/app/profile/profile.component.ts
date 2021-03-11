@@ -26,8 +26,8 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     public animationFrame: any;
     public control: THREE.OrbitControls;
 
-    private radianX: number = 0;
-    private radianY: number = 0;
+    private radianX = 0;
+    private radianY = 0;
 
     @ViewChild('canvas') private canvasRef: ElementRef;
 
@@ -97,7 +97,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
         this.animationSphereGeometry();
 
         this.guiHelper.updateStats();
-    };
+    }
 
     public destroyRender() {
         window.cancelAnimationFrame(this.animationFrame);
@@ -156,7 +156,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     }
 
     public ngOnDestroy() {
-        console.log('Destoryed!!');
+        console.log('Destroyed!!');
 
         this.destroyRender();
         this.createGeometry.destroyGeometry(this.scene, this.sphere);

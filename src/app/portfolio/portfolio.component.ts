@@ -28,8 +28,8 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     readonly textPosition: object = {x: -11, y: -6, z: 0};
     public dust: THREE.Mesh;
     public animationFrame: any;
-    private radianX: number = 0;
-    private radianY: number = 0;
+    private radianX = 0;
+    private radianY = 0;
 
     @ViewChild('canvas') private canvasRef: ElementRef;
     @ViewChild('portfolioSwipe') portfolioSwiper: SwiperComponent;
@@ -181,7 +181,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public ngOnDestroy() {
-        console.log('Destoryed!!');
+        console.log('Destroyed!!');
 
         this.destroyRender();
         this.createGeometry.destroyGeometry(this.scene, this.box);

@@ -7,7 +7,7 @@ import { SceneService} from '../service/scene.service';
 import { ControlsService } from '../service/controls.service';
 import { ModelLoaderService} from '../service/model-loader.service';
 import { environment } from '../../environments/environment';
-import "../../assets/js/form-submission-handler.js";
+import '../../assets/js/form-submission-handler.js';
 
 @Component({
     selector: 'benjamin-contact',
@@ -23,7 +23,6 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
     public airPlane: THREE.Group;
     readonly cameraPosition: any = {x: 0, y: 15, z: 40};
     public animationFrame: any;
-    private objLoader = new THREE.OBJLoader();
     public manager: THREE.LoadingManager;
 
     @ViewChild('canvas') private canvasRef: ElementRef;
@@ -93,7 +92,7 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
         this.animationMailGeometry();
 
         this.guiHelper.updateStats();
-    };
+    }
 
     public async createPaperAirplane() {
         this.airPlane = await this.modelLoaderService.objLoad('paper_airplane');
@@ -126,7 +125,7 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
         });
     }
 
-    public destoryRender() {
+    public destroyRender() {
         window.cancelAnimationFrame(this.animationFrame);
 
         for (let index = this.scene.children.length - 1; index > 0; index--) {
@@ -140,9 +139,9 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
     }
 
     public ngOnDestroy() {
-        console.log('Destoryed!!');
+        console.log('Destroyed!!');
 
-        this.destoryRender();
+        this.destroyRender();
         this.renderer = null;
         this.camera = null;
         this.email = null;

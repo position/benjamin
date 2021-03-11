@@ -9,26 +9,26 @@ import { mergeMap, map, filter } from 'rxjs/operators';
     templateUrl: './app.component.html',
     animations: [ fadeAnimation ]
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
     public navLinks = [
-        { path: 'profile', label: 'Profile' },
-        { path: 'introduction', label: 'Introduction' },
-        { path: 'portfolio', label: 'Portfolio' },
-        { path: 'contact', label: 'Contact' }
+        {path: 'profile', label: 'Profile'},
+        {path: 'introduction', label: 'Introduction'},
+        {path: 'portfolio', label: 'Portfolio'},
+        {path: 'contact', label: 'Contact'}
     ];
 
     constructor(
         private titleService: Title,
         private router: Router,
         private activatedRoute: ActivatedRoute
-    ){
+    ) {
     }
 
-    ngOnInit(){
+    ngOnInit() {
         this.onActiveRouteTitle();
     }
 
-    private onActiveRouteTitle(){
+    private onActiveRouteTitle() {
         this.router.events.pipe(
             filter(event => event instanceof NavigationEnd),
             map(() => this.activatedRoute),
@@ -40,7 +40,9 @@ export class AppComponent implements OnInit{
                 }
             ),
             mergeMap((route) => route.data))
-            .subscribe(item => { this.titleService.setTitle(item.title); }
-        );
+            .subscribe(item => {
+                    this.titleService.setTitle(item.title);
+                }
+            );
     }
 }

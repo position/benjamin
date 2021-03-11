@@ -24,14 +24,14 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
 
     public octahedron: THREE.Mesh;
     public textEngineer: THREE.Mesh = new THREE.Mesh();
-    readonly cameraPosition: any = {x : -41, y : 11, z : 55};
-    readonly textPosition: any = {x : -20, y : -6, z : 0};
+    readonly cameraPosition: any = {x: -41, y: 11, z: 55};
+    readonly textPosition: any = {x: -20, y: -6, z: 0};
     public dust: THREE.Mesh;
     public animationFrame: any;
     public control: THREE.OrbitControls;
 
-    private radianX: number = 0;    
-    private radianY: number = 0;
+    private radianX = 0;
+    private radianY = 0;
 
     @ViewChild('canvas') private canvasRef: ElementRef;
 
@@ -41,26 +41,26 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
         private guiHelper: StatsHelperService,
         private sceneService: SceneService,
         private controlService: ControlsService
-        ) {
-        if(!environment.production){
+    ) {
+        if (!environment.production) {
             this.guiHelper.addStats(this.elementRef);
         }
     }
 
     /* LIFECYCLE */
-    ngAfterViewInit() {
+    public async ngAfterViewInit() {
         this.sceneService.createScene(this.scene, 0xd660d0);
         this.sceneService.createLight(this.scene, 0xffffff);
         this.sceneService.createCamera(this.camera, this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z, this.getAspectRatio());
-        this.sceneService.createPlane(this.scene, 0x5b2158);
-        this.sceneService.createText('UX Engineer', this.scene, this.textEngineer, 0xff4799, this.textPosition);
+        await this.sceneService.createPlane(this.scene, 0x5b2158);
+        await this.sceneService.createText('UX Engineer', this.scene, this.textEngineer, 0xff4799, this.textPosition);
         this.createOctahedronGeometry();
         this.startRendering();
         this.addControls();
     }
 
     private addControls() {
-        let scene = this.renderer.domElement;
+        const scene = this.renderer.domElement;
         this.control = new THREE.OrbitControls(this.camera, scene);
         this.controlService.addControl(this.control);
     }
@@ -70,7 +70,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
     }
 
     private getAspectRatio(): number {
-        let height = this.canvas.clientHeight;
+        const height = this.canvas.clientHeight;
         if (height === 0) {
             return 0;
         }
@@ -89,8 +89,8 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.setClearColor(0x000000, 1);
-        this.renderer.autoClear = true;        
-        
+        this.renderer.autoClear = true;
+
         this.render();
     }
 
@@ -99,24 +99,24 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
         this.animationFrame = requestAnimationFrame(this.render);
         this.camera.updateProjectionMatrix();
         this.animationOctahedronGeometry();
-        
-        this.guiHelper.updateStats();
-    }
 
-    public destoryRender(){
+        this.guiHelper.updateStats();
+    };
+
+    public destroyRender() {
         window.cancelAnimationFrame(this.animationFrame);
 
-        for(let index = this.scene.children.length -1; index > 0; index--) {
-            let removeTarget = this.scene.children[index];
+        for (let index = this.scene.children.length - 1; index > 0; index--) {
+            const removeTarget = this.scene.children[index];
             if (removeTarget instanceof THREE.Mesh) {
-                this.scene.remove(removeTarget);            
+                this.scene.remove(removeTarget);
                 removeTarget.geometry.dispose();
                 removeTarget.material.dispose();
             }
         }
     }
 
-    public createOctahedronGeometry(){
+    public createOctahedronGeometry() {
         this.octahedron = this.createGeometry.getOctahedron(20);
         this.octahedron.forEach((octahedron: any) => {
             this.scene.add(octahedron);
@@ -127,25 +127,21 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
             this.scene.add(dust);
         });
     }
-    
-    public animationOctahedronGeometry(){
+
+    public animationOctahedronGeometry() {
         const radius = 3;
-        
+
         this.radianX += 0.003;
         this.radianY += 0.003;
         this.octahedron.forEach((cube: any, index: number) => {
-            let idx: number = (index + 1) * 0.5;
-            //cube.rotation.x += 0.05;
+            const idx: number = (index + 1) * 0.5;
             cube.rotation.y += 0.05;
-            //cube.rotation.z += 0.05;
             cube.position.x = Math.cos(this.radianX * idx) * radius * (index + 1);
-            //cube.position.y = Math.cos(this.radianX) * radius;
             cube.position.z = Math.sin(this.radianY * idx) * radius * (index + 1);
-            
         });
 
-        if(this.textEngineer){
-            if(this.textEngineer.position.y < 3){
+        if (this.textEngineer) {
+            if (this.textEngineer.position.y < 3) {
                 this.textEngineer.position.y += 0.05;
             }
         }
@@ -156,7 +152,7 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
             dust.rotation.z += 0.05;
             dust.material.opacity = 1;
 
-            if(dust.position.y < 30){
+            if (dust.position.y < 30) {
                 dust.position.y += 0.05;
             } else {
                 dust.material.opacity = 0;
@@ -165,11 +161,12 @@ export class IntroductionComponent implements AfterViewInit, OnDestroy {
         });
     }
 
-    ngOnDestroy(){
-        console.log('Destoryed!!');
-        this.destoryRender();
-        this.createGeometry.destoryGeometry(this.scene, this.octahedron);
-        this.createGeometry.destoryGeometry(this.scene, this.dust);
+    public ngOnDestroy() {
+        console.log('Destroyed!!');
+
+        this.destroyRender();
+        this.createGeometry.destroyGeometry(this.scene, this.octahedron);
+        this.createGeometry.destroyGeometry(this.scene, this.dust);
         this.renderer = null;
         this.camera = null;
         this.octahedron = null;

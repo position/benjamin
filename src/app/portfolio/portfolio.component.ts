@@ -15,31 +15,31 @@ import { environment } from '../../environments/environment';
     templateUrl: './portfolio.component.html'
 })
 export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
-    public gui: dat.GUI = (!environment.production) ? new dat.GUI() : null;
+    public gui: dat.GUI = new dat.GUI();
     public control: THREE.OrbitControls;
 
     public renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
     private scene: THREE.Scene = new THREE.Scene();
     public camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera();
-    
+
     public box: THREE.Mesh;
     public textWork: THREE.Mesh = new THREE.Mesh();
-    readonly cameraPosition: any = {x : -33, y : 1, z : 33};
-    readonly textPosition: object = {x : -11, y : -6, z : 0};
+    readonly cameraPosition: any = {x: -33, y: 1, z: 33};
+    readonly textPosition: object = {x: -11, y: -6, z: 0};
     public dust: THREE.Mesh;
     public animationFrame: any;
-    private radianX: number = 0;    
-    private radianY: number = 0;
+    private radianX = 0;
+    private radianY = 0;
 
     @ViewChild('canvas') private canvasRef: ElementRef;
     @ViewChild('portfolioSwipe') portfolioSwiper: SwiperComponent;
-    readonly portfolioSwipeConifg: SwiperConfigInterface = {
+    readonly portfolioSwipeConfig: SwiperConfigInterface = {
         width: 300,
         spaceBetween: 0,
         freeMode: true,
         preloadImages: false,
-        lazy: { loadPrevNext : true, loadPrevNextAmount : 5 },
-        //updateOnImagesReady: true,
+        lazy: {loadPrevNext: true, loadPrevNextAmount: 5},
+        // updateOnImagesReady: true,
         autoplay: <SwiperAutoplayInterface>{
             disableOnInteraction: false
         }
@@ -47,36 +47,36 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     public portfolioLists: Array<PortfolioData>;
     public assetPath: string = environment.assetsPath;
     public imgPath: string = environment.assetsPath + 'img/';
-    
+
     constructor(
         private elementRef: ElementRef,
         private createGeometry: CreateGeometryService,
         private guiHelper: StatsHelperService,
         private sceneService: SceneService,
         private controlService: ControlsService
-    ) { 
-        if(!environment.production){
+    ) {
+        if (!environment.production) {
             this.guiHelper.addStats(this.elementRef);
         }
     }
 
-    ngOnInit() {
+    public ngOnInit() {
         this.portfolioLists = PortfolioLists;
     }
 
-    ngAfterViewInit(){
+    async ngAfterViewInit() {
         this.sceneService.createScene(this.scene, 0x262f99);
         this.sceneService.createLight(this.scene, 0xffffff);
         this.sceneService.createCamera(this.camera, this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z, this.getAspectRatio());
-        this.sceneService.createPlane(this.scene, 0x151b60);
-        this.sceneService.createText('Work', this.scene, this.textWork, 0x11e3ff, this.textPosition);
+        await this.sceneService.createPlane(this.scene, 0x151b60);
+        await this.sceneService.createText('Work', this.scene, this.textWork, 0x11e3ff, this.textPosition);
         this.createBoxGeometry();
         this.startRendering();
         this.addControls();
     }
 
     private addControls() {
-        let scene = this.renderer.domElement;
+        const scene = this.renderer.domElement;
         this.control = new THREE.OrbitControls(this.camera, scene);
         this.controlService.addControl(this.control);
     }
@@ -86,7 +86,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getAspectRatio(): number {
-        let height = this.canvas.clientHeight;
+        const height = this.canvas.clientHeight;
         if (height === 0) {
             return 0;
         }
@@ -106,7 +106,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.setClearColor(0x000000, 1);
         this.renderer.autoClear = true;
-        
+
         this.render();
     }
 
@@ -115,53 +115,49 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         this.animationFrame = requestAnimationFrame(this.render);
         this.camera.updateProjectionMatrix();
         this.animationBoxGeometry();
-        
-        this.guiHelper.updateStats();
-    }
 
-    public destoryRender(){
+        this.guiHelper.updateStats();
+    };
+
+    public destroyRender() {
         window.cancelAnimationFrame(this.animationFrame);
 
-        for(let index = this.scene.children.length -1; index > 0; index--) {
-            let removeTarget = this.scene.children[index];
+        for (let index = this.scene.children.length - 1; index > 0; index--) {
+            const removeTarget = this.scene.children[index];
             if (removeTarget instanceof THREE.Mesh) {
-                this.scene.remove(removeTarget);            
+                this.scene.remove(removeTarget);
                 removeTarget.geometry.dispose();
                 removeTarget.material.dispose();
             }
         }
     }
 
-    public createBoxGeometry(){
+    public createBoxGeometry() {
         this.box = this.createGeometry.getBoxs(20);
         this.box.forEach((box: any) => {
             this.scene.add(box);
         });
 
-        this.dust = this.createGeometry.getDustParticle(200);
+        this.dust = this.createGeometry.getDustParticle(500);
         this.dust.forEach((dust: any) => {
             this.scene.add(dust);
         });
     }
-    
-    
+
     public animationBoxGeometry = () => {
         const radius = 3;
-        
+
         this.radianX += 0.003;
         this.radianY += 0.003;
         this.box.forEach((cube: any, index: number) => {
-            let idx: number = (index + 1) * 0.5;
-            //cube.rotation.x += 0.05;
+            const idx: number = (index + 1) * 0.5;
             cube.rotation.y += 0.05;
-            //cube.rotation.z += 0.05;
             cube.position.x = Math.cos(this.radianX * idx) * radius * (index + 1);
-            //cube.position.y = Math.cos(this.radianX) * radius;
             cube.position.z = Math.sin(this.radianY * idx) * radius * (index + 1);
-            
         });
-        if(this.textWork){
-            if(this.textWork.position.y < 5){
+
+        if (this.textWork) {
+            if (this.textWork.position.y < 5) {
                 this.textWork.position.y += 0.05;
             }
         }
@@ -172,24 +168,24 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
             dust.rotation.z += 0.05;
             dust.material.opacity = 1;
 
-            if(dust.position.y < 30){
+            if (dust.position.y < 30) {
                 dust.position.y += 0.05;
             } else {
                 dust.material.opacity = 0;
-                dust.position.y = -30;
             }
         });
+    };
+
+    public onLinkProject(link: string) {
+        window.open(link, '_blank');
     }
 
-    public onLinkProject(link: string){
-        window.open(link, "_blank");
-    }
+    public ngOnDestroy() {
+        console.log('Destroyed!!');
 
-    ngOnDestroy(){
-        console.log('Destoryed!!');
-        this.destoryRender();
-        this.createGeometry.destoryGeometry(this.scene, this.box);
-        this.createGeometry.destoryGeometry(this.scene, this.dust);
+        this.destroyRender();
+        this.createGeometry.destroyGeometry(this.scene, this.box);
+        this.createGeometry.destroyGeometry(this.scene, this.dust);
         this.renderer = null;
         this.camera = null;
         this.box = null;

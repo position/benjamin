@@ -38,7 +38,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit, OnDestroy {
         spaceBetween: 0,
         freeMode: true,
         preloadImages: false,
-        lazy: {loadPrevNext: true, loadPrevNextAmount: 5},
+        lazy: { loadPrevNext: true, loadPrevNextAmount: 5 },
         // updateOnImagesReady: true,
         autoplay: <SwiperAutoplayInterface>{
             disableOnInteraction: false

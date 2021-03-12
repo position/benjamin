@@ -2,16 +2,23 @@ import { PortfolioData } from '../interface/portfolio';
 
 export const PortfolioLists: PortfolioData[] = [
     {
+        thumnail: 'img_npm.png',
+        project: 'New Promotion Manager',
+        participation: 'Angular(70%), Sass(100%)',
+        subject: '지정된 기간 동안 지정된 게임에서 발생한 핸드마다 포인트를 쌓고, 기간이 끝나면 순위에 따라 상금을 지급하는 프로모션 방식의 백오피스',
+        link: null
+    },
+    {
         thumnail: 'img_chivas.jpg',
         project: 'Chivas(포커 게임 클라이언트 설치형)',
-        participation: 'Angular(20%), Sass(70%)',
+        participation: 'Angular(50%), Sass(70%)',
         subject: '기존 설치형 WPF 포커 게임 클라이언트를 Html5 버전으로 개발',
         link: null
     },
     {
         thumnail: 'img_chivas.jpg',
         project: 'Ballantine',
-        participation: 'Angular(20%), Sass(70%)',
+        participation: 'Angular(50%), Sass(70%)',
         subject: '포커 게임 클라이언트 웹버전',
         link:'https://swt.ggpoker.network'
     },

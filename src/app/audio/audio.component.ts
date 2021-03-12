@@ -5,23 +5,22 @@ declare const window: any;
 @Component({
     selector: 'audio-component',
     template: `
-    <audio #audioplayer
-        [src]="list"
-        [autoplay]="true"
-        [controls]="controls"
-        [volume]="volume"
-        [loop]="loop"
-        [preload]="preload"
-        [muted]="muted"
-    >
-    </audio>
-    <button type="button" (click)="play()" *ngIf="playButton">Play</button>
-    <button type="button" (click)="pause()" *ngIf="pauseButton">Pause</button>
-    <button type="button" (click)="previousTrack()" *ngIf="selectableButton">Previous</button>
-    <button type="button" (click)="nextTrack()" *ngIf="selectableButton">Next</button>
-    <button type="button" (click)="muteVideo()" *ngIf="muteButton">Mute</button>
+        <audio #audioplayer
+            [src]="list"
+            [autoplay]="true"
+            [controls]="controls"
+            [volume]="volume"
+            [loop]="loop"
+            [preload]="preload"
+            [muted]="muted">
+        </audio>
+        <button type="button" (click)="play()" *ngIf="playButton">Play</button>
+        <button type="button" (click)="pause()" *ngIf="pauseButton">Pause</button>
+        <button type="button" (click)="previousTrack()" *ngIf="selectableButton">Previous</button>
+        <button type="button" (click)="nextTrack()" *ngIf="selectableButton">Next</button>
+        <button type="button" (click)="muteVideo()" *ngIf="muteButton">Mute</button>
     `,
-    styles:[
+    styles: [
         ':host{display:none;position:fixed;left:50%;top:50%;transform:translate(-50%, -50%);}'
     ]
 })
@@ -33,43 +32,43 @@ export class AudioComponent implements AfterViewInit, OnInit {
     private startTransition: any;
     private interval: any;
 
-    private list: string;
+    public list: string;
     /**
      * @Input -> custom properties.
      *
      */
 
     /** Programmatically buttons. */
-    @Input() playButton: boolean = false;
-    @Input() pauseButton: boolean = false;
-    @Input() selectableButton: boolean = false;
-    @Input() muteButton: boolean = false;
+    @Input() playButton = false;
+    @Input() pauseButton = false;
+    @Input() selectableButton = false;
+    @Input() muteButton = false;
     /** Array of audio tracks.*/
     @Input() src: Array<string> = [
         `${environment.assetsPath}sound/BogCreaturesOnMove.mp3`
     ];
     /** Display or not the controls, default: true */
-    @Input() controls: boolean = true;
+    @Input() controls = true;
     /** Set autoplay status, default true. */
-    @Input() autoplay: boolean = true;
+    @Input() autoplay = true;
     /** Set loop status, default false. */
-    @Input() loop: boolean = true;
+    @Input() loop = true;
     /** Set the volume, default: 1 (max). */
-    @Input() volume: number = 1;
+    @Input() volume = 1;
     /** Set the start index of the playlist. */
-    @Input() startPosition: number = 0;
+    @Input() startPosition = 0;
     /** Number in s, in order to start the transition, default: 5s */
-    @Input() transition: number = 5;
+    @Input() transition = 5;
     /** Interval in order to set the audio transition, in ms, default: 500ms. */
     @Input() intervalTransition = 500;
     /** Define if transition, default: false. */
-    @Input() transitionEnd: boolean = true;
+    @Input() transitionEnd = true;
     /** Define the preload status, default metadata. */
-    @Input() transitionStart: boolean = false;
+    @Input() transitionStart = false;
     /** Define the preload status, default metadata. */
-    @Input() preload: string = 'metadata';
+    @Input() preload = 'metadata';
     /** Define the mute status, default false. */
-    @Input() muted: boolean = false;
+    @Input() muted = false;
     /**
      * Custom events who could be intercepted.
      * @type {EventEmitter}
@@ -92,7 +91,8 @@ export class AudioComponent implements AfterViewInit, OnInit {
 
     ngAfterViewInit() {
         if (this.transitionEnd) {
-            this.player.nativeElement.addEventListener('play', () => this.audioTransition(this.player.nativeElement.duration, this.player.nativeElement.currentTime));
+            this.player.nativeElement.addEventListener('play', () =>
+                this.audioTransition(this.player.nativeElement.duration, this.player.nativeElement.currentTime));
         }
 
         this.player.nativeElement.addEventListener('ended', () => {
@@ -101,11 +101,13 @@ export class AudioComponent implements AfterViewInit, OnInit {
             /** Increment array position in order to get next audio track. */
             this.startPosition += 1;
             /** If loop is true && startPosition is at last index then reset the playlist. */
-            if (this.startPosition >= this.src.length && this.loop)
+            if (this.startPosition >= this.src.length && this.loop) {
                 this.startPosition = 0;
+            }
             /** Else stop the playlist. */
-            if (this.startPosition >= this.src.length && !this.loop)
+            if (this.startPosition >= this.src.length && !this.loop) {
                 return;
+            }
 
             /** Set new src track */
             this.player.nativeElement.src = this.src[this.startPosition];
@@ -116,8 +118,9 @@ export class AudioComponent implements AfterViewInit, OnInit {
         this.player.nativeElement.addEventListener('loadstart', () => {
             this.emitCurrentTrack();
 
-            if (this.transitionStart)
+            if (this.transitionStart) {
                 this.audioStartTransition(this.intervalTransition);
+            }
         });
 
         this.player.nativeElement.addEventListener('pause', () => {
@@ -128,6 +131,7 @@ export class AudioComponent implements AfterViewInit, OnInit {
 
         this.player.nativeElement.addEventListener('progress', (data: any) => this.downloading.emit(true));
     }
+
     /** Set programmatically audio controls. */
     play(): void {
         this.player.nativeElement.play();
@@ -143,14 +147,18 @@ export class AudioComponent implements AfterViewInit, OnInit {
 
     previousTrack() {
         /** If first track, then do nothing. */
-        if (this.src.indexOf(this.player.nativeElement.src) <= 0) { return; }
+        if (this.src.indexOf(this.player.nativeElement.src) <= 0) {
+            return;
+        }
         /** Else go back to previous element in track's array. */
         this.player.nativeElement.src = this.src[this.src.indexOf(this.player.nativeElement.src) - 1];
     }
 
     nextTrack(): void {
         /** If last track, then do nothing. */
-        if (this.src.indexOf(this.player.nativeElement.src) >= this.src.length - 1) { return; }
+        if (this.src.indexOf(this.player.nativeElement.src) >= this.src.length - 1) {
+            return;
+        }
 
         /** Else, go to the next element in track's array. */
         this.player.nativeElement.src = this.src[this.src.indexOf(this.player.nativeElement.src) + 1];

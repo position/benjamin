@@ -6,24 +6,25 @@ import { environment } from '../../environments/environment';
 @Directive({
     selector: '[appDatGui]'
 })
-export class DatGuiDirective implements OnInit, OnDestroy{
+export class DatGuiDirective implements OnInit, OnDestroy {
     @Input('datCamera') camera: THREE.PerspectiveCamera;
     @Input('datGui') gui: dat.GUI;
     @Input('datCamPosition') cameraPosition: any;
 
-    constructor() { }
+    constructor() {
+    }
 
-    ngOnInit(){
-        if(!environment.production && this.gui != null){
-            let options = {
-                reset : () => {
+    ngOnInit() {
+        if (!environment.production && this.gui != null) {
+            const options = {
+                reset: () => {
                     console.log('reset click');
                     this.camera.position.x = this.cameraPosition.x;
                     this.camera.position.y = this.cameraPosition.y;
                     this.camera.position.z = this.cameraPosition.z;
                 }
             };
-            let cam = this.gui.addFolder('Camera');
+            const cam = this.gui.addFolder('Camera');
             cam.add(this.camera.position, 'x', -200, 200, 1).listen();
             cam.add(this.camera.position, 'y', -200, 200, 1).listen();
             cam.add(this.camera.position, 'z', -200, 200, 1).listen();
@@ -34,9 +35,9 @@ export class DatGuiDirective implements OnInit, OnDestroy{
             this.gui.add(options, 'reset');
         }
     }
-    //test
-    ngOnDestroy(){
-        if(this.gui != null){
+
+    ngOnDestroy() {
+        if (this.gui != null) {
             this.gui.destroy();
         }
     }

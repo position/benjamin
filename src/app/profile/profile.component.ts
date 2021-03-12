@@ -12,7 +12,7 @@ import { environment } from '../../environments/environment';
     templateUrl: './profile.component.html'
 })
 export class ProfileComponent implements AfterViewInit, OnDestroy {
-    public gui: dat.GUI = new dat.GUI();
+    public gui: dat.GUI;
 
     public renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
     private scene: THREE.Scene = new THREE.Scene();
@@ -40,6 +40,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     ) {
         if (!environment.production) {
             this.guiHelper.addStats(this.elementRef);
+            this.gui = new dat.GUI();
         }
     }
 

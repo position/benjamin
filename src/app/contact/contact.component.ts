@@ -14,7 +14,7 @@ import '../../assets/js/form-submission-handler.js';
     templateUrl: './contact.component.html'
 })
 export class ContactComponent implements AfterViewInit, OnDestroy {
-    public gui: dat.GUI = new dat.GUI();
+    public gui: dat.GUI;
     public control: THREE.OrbitControls;
     public renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
     private scene: THREE.Scene = new THREE.Scene();
@@ -37,6 +37,7 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
     ) {
         if (!environment.production) {
             this.guiHelper.addStats(this.elementRef);
+            this.gui = new dat.GUI();
         }
     }
 

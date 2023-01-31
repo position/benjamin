@@ -43,7 +43,7 @@ export class SceneService {
     }
 
     public async createPlane(scene: THREE.Scene, bgColor: number) {
-        const normalMapImg: string = 'sand_normal_map.jpg';
+        const normalMapImg = 'sand_normal_map.jpg';
         const sandBg = await this.texture.onLoad(normalMapImg);
         const geometry = new THREE.PlaneGeometry(120, 120, 0);
         const material = new THREE.MeshStandardMaterial({color: bgColor, side: THREE.DoubleSide, normalMap: sandBg});

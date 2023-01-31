@@ -44,7 +44,13 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
     public async ngAfterViewInit() {
         this.sceneService.createScene(this.scene, 0x000000);
         this.sceneService.createLight(this.scene, 0xffffff);
-        this.sceneService.createCamera(this.camera, this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z, this.getAspectRatio());
+        this.sceneService.createCamera(
+            this.camera,
+            this.cameraPosition.x,
+            this.cameraPosition.y,
+            this.cameraPosition.z,
+            this.getAspectRatio()
+        );
         await this.sceneService.createPlane(this.scene, 0x2c2d23);
         this.createMailGeometry();
         this.startRendering();

@@ -96,7 +96,7 @@
 					thankYouMessage.style.display = "block";
 				}
 				location.href = "https://position.github.io/benjamin/#/contact";
-				return;
+				return false;
 			};
 			// url encode form data for sending as post data
 			const encoded = Object.keys(data).map(function (k) {

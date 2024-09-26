@@ -145,6 +145,11 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
         }
     }
 
+    public goBack() {
+        window.history.back();
+        return false;
+    }
+
     public ngOnDestroy() {
         console.log('Destroyed!!');
 
